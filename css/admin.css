@@ -1,0 +1,180 @@
+.admin-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 100vh;
+}
+
+.admin-sidebar {
+  border-right: 1px solid var(--color-border);
+  padding: 24px 16px;
+  background: var(--color-surface);
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100vh;
+}
+
+.admin-sidebar h1 {
+  margin: 0 0 16px;
+  font-size: 1rem;
+}
+
+.admin-sidebar nav {
+  display: grid;
+  gap: 8px;
+}
+
+.admin-sidebar a {
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: var(--color-text-muted);
+}
+
+.admin-sidebar a:hover {
+  background: var(--color-accent-soft);
+  color: var(--color-text);
+}
+
+.admin-main {
+  padding: 24px;
+  display: grid;
+  gap: 20px;
+}
+
+.admin-header h2 {
+  margin: 0 0 6px;
+}
+
+.admin-header p {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.admin-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.admin-card h3 {
+  margin: 0 0 14px;
+}
+
+.grid-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.grid-form label {
+  display: grid;
+  gap: 6px;
+  font-size: 0.85rem;
+}
+
+.span-2 {
+  grid-column: 1 / -1;
+}
+
+.row-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.inline-form {
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr 1fr auto;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.table-wrap {
+  overflow: auto;
+  margin-bottom: 14px;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.admin-table th,
+.admin-table td {
+  border-bottom: 1px solid var(--color-border);
+  padding: 10px 8px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.admin-table th {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.actions {
+  display: flex;
+  gap: 6px;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.kpi-grid > div {
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.kpi-grid span {
+  display: block;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+}
+
+.kpi-grid strong {
+  font-size: 1.3rem;
+}
+
+.chart-wrap canvas {
+  width: 100%;
+  max-width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: linear-gradient(180deg, #fff, #fafafa);
+}
+
+.rank-grid {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 1024px) {
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+  .admin-sidebar {
+    position: static;
+    height: auto;
+  }
+  .inline-form {
+    grid-template-columns: 1fr;
+  }
+  .grid-form {
+    grid-template-columns: 1fr;
+  }
+  .kpi-grid,
+  .rank-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

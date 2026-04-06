@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Корзина — ZHUCHY club</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/product-card.css" />
+    <link rel="stylesheet" href="css/pages.css" />
+  </head>
+  <body class="page-enter">
+    <a class="skip-link" href="#main">К основному содержимому</a>
+
+    <header class="site-header" role="banner">
+      <div class="header-inner">
+        <a class="logo" href="index.html" aria-label="ZHUCHY club — на главную">ZHUCHY club</a>
+        <nav class="nav-desktop" aria-label="Категории">
+          <a href="catalog.html#mens">Мужское</a>
+          <a href="catalog.html#womens">Женское</a>
+          <a href="catalog.html#accessories">Аксессуары</a>
+          <a href="catalog.html#sale" class="is-sale">Sale</a>
+        </nav>
+        <div class="header-actions">
+          <a href="cart.html" class="icon-btn cart-btn" aria-label="Корзина">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M6 6h15l-1.5 9h-12z" stroke-linejoin="round" />
+              <path d="M6 6 5 3H2" stroke-linecap="round" />
+              <circle cx="9" cy="20" r="1" fill="currentColor" />
+              <circle cx="18" cy="20" r="1" fill="currentColor" />
+            </svg>
+            <span class="cart-badge" data-cart-count hidden>0</span>
+          </a>
+          <button type="button" class="menu-toggle icon-btn" aria-expanded="false" aria-controls="mobile-drawer" aria-label="Открыть меню">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="mobile-backdrop" aria-hidden="true"></div>
+    <aside id="mobile-drawer" class="mobile-drawer" aria-label="Мобильное меню">
+      <div class="drawer-header">
+        <span class="logo">ZHUCHY club</span>
+        <button type="button" class="icon-btn drawer-close" aria-label="Закрыть меню">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+      <nav class="drawer-nav">
+        <a href="catalog.html#mens">Мужское</a>
+        <a href="catalog.html#womens">Женское</a>
+        <a href="catalog.html#accessories">Аксессуары</a>
+        <a href="catalog.html#sale" class="is-sale">Sale</a>
+      </nav>
+    </aside>
+
+    <main id="main">
+      <section class="section section--tight-top">
+        <div class="section__inner">
+          <nav class="breadcrumbs" aria-label="Навигация">
+            <ol>
+              <li><a href="index.html">Главная</a></li>
+              <li><span aria-current="page">Корзина</span></li>
+            </ol>
+          </nav>
+
+          <h1 class="section__title cart-page__title">Корзина</h1>
+
+          <div id="cart-empty" class="cart-empty">
+            <p>В корзине пока ничего нет.</p>
+            <a class="btn btn--secondary" href="catalog.html">Перейти в каталог</a>
+          </div>
+
+          <div class="cart-layout" data-cart-layout hidden>
+            <div class="cart-lines" data-cart-lines role="list"></div>
+
+            <aside class="cart-summary" data-cart-summary aria-label="Итого">
+              <div class="cart-summary__row">
+                <span data-cart-lines-label>Товары</span>
+                <span data-cart-subtotal>0 ₽</span>
+              </div>
+              <div class="cart-summary__row">
+                <span>Доставка</span>
+                <span>от 0 ₽</span>
+              </div>
+              <div class="promo-row">
+                <label class="visually-hidden" for="promo">Промокод</label>
+                <input class="input" id="promo" type="text" name="promo" placeholder="Промокод" autocomplete="off" />
+                <button type="button" class="btn btn--outline" data-apply-promo>Применить</button>
+              </div>
+              <div class="cart-summary__row" data-cart-discount-row hidden>
+                <span>Скидка по промокоду</span>
+                <span data-cart-discount>0 ₽</span>
+              </div>
+              <p data-promo-message style="font-size:0.8rem;color:var(--color-text-muted);margin:-8px 0 10px;" hidden></p>
+              <div class="cart-summary__row cart-summary__row--total">
+                <span>Итого</span>
+                <span data-cart-total>0 ₽</span>
+              </div>
+              <a class="btn btn--secondary btn--block" href="checkout.html">Оформить заказ</a>
+              <p style="font-size: 0.75rem; color: var(--color-text-muted); margin: var(--space-md) 0 0; text-align: center">
+                Доставка и налоги уточнятся на следующем шаге.
+              </p>
+            </aside>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© ZHUCHY club</p>
+    </footer>
+
+    <script src="js/cart-storage.js"></script>
+    <script src="js/products-catalog.js"></script>
+    <script src="js/cart-badge.js"></script>
+    <script src="js/content.js"></script>
+    <script src="js/site.js"></script>
+    <script src="js/cart.js"></script>
+  </body>
+</html>

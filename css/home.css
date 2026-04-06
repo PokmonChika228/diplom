@@ -1,0 +1,201 @@
+/* Только главная: hero, о бренде, рассылка */
+
+/* ——— Hero ——— */
+.hero {
+  position: relative;
+  min-height: min(92vh, 900px);
+  display: grid;
+  align-items: end;
+  overflow: hidden;
+}
+
+.hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.08);
+  will-change: transform;
+}
+
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(26, 26, 26, 0.75) 0%,
+    rgba(26, 26, 26, 0.2) 45%,
+    rgba(26, 26, 26, 0.15) 100%
+  );
+}
+
+.hero__content {
+  position: relative;
+  z-index: 2;
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+  padding: clamp(var(--space-2xl), 6vw, var(--space-3xl))
+    clamp(var(--space-md), 4vw, var(--space-xl));
+  color: #fff;
+}
+
+.hero__eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.9;
+  margin-bottom: var(--space-md);
+  animation: fadeUp 0.9s var(--ease-out) both;
+}
+
+.hero__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 5.5vw, 3.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  max-width: 14ch;
+  margin: 0 0 var(--space-lg);
+  animation: fadeUp 0.9s var(--ease-out) 0.08s both;
+}
+
+.hero__lead {
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  max-width: 36ch;
+  opacity: 0.92;
+  margin: 0 0 var(--space-xl);
+  animation: fadeUp 0.9s var(--ease-out) 0.16s both;
+}
+
+.hero__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  animation: fadeUp 0.9s var(--ease-out) 0.24s both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ——— About ——— */
+.about {
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.about__grid {
+  display: grid;
+  gap: var(--space-2xl);
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .about__grid {
+    grid-template-columns: 1fr 1.1fr;
+    gap: var(--space-3xl);
+  }
+}
+
+.about__visual {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: #e8e6e3;
+}
+
+.about__visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about__text .section__title {
+  margin-bottom: var(--space-lg);
+}
+
+.about__text p {
+  color: var(--color-text-muted);
+  margin: 0 0 var(--space-md);
+  max-width: 52ch;
+}
+
+.about__text p:last-child {
+  margin-bottom: 0;
+}
+
+/* ——— Newsletter ——— */
+.newsletter {
+  text-align: center;
+}
+
+.newsletter__box {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.newsletter__box > p {
+  color: var(--color-text-muted);
+  margin: 0 0 var(--space-xl);
+}
+
+.newsletter-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+@media (min-width: 480px) {
+  .newsletter-form {
+    flex-direction: row;
+    align-items: stretch;
+  }
+}
+
+.newsletter-form input[type="email"] {
+  flex: 1;
+  min-height: 52px;
+  padding: 0 var(--space-lg);
+  font: inherit;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  transition: border-color var(--duration), box-shadow var(--duration);
+}
+
+.newsletter-form input[type="email"]::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.7;
+}
+
+.newsletter-form input[type="email"]:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-soft);
+}
+
+.newsletter-form .btn {
+  flex-shrink: 0;
+}
+
+.newsletter-note {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin: var(--space-md) 0 0;
+}

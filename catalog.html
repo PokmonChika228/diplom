@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Каталог — ZHUCHY club</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/product-card.css" />
+    <link rel="stylesheet" href="css/pages.css" />
+  </head>
+  <body class="page-enter">
+    <a class="skip-link" href="#main">К основному содержимому</a>
+
+    <header class="site-header" role="banner">
+      <div class="header-inner">
+        <a class="logo" href="index.html" aria-label="ZHUCHY club — на главную">ZHUCHY club</a>
+        <nav class="nav-desktop" aria-label="Категории">
+          <a href="catalog.html#mens" data-nav-cat="mens">Мужское</a>
+          <a href="catalog.html#womens" data-nav-cat="womens">Женское</a>
+          <a href="catalog.html#accessories" data-nav-cat="accessories">Аксессуары</a>
+          <a href="catalog.html#sale" class="is-sale" data-nav-cat="sale">Sale</a>
+        </nav>
+        <div class="header-actions">
+          <a href="cart.html" class="icon-btn cart-btn" aria-label="Корзина">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M6 6h15l-1.5 9h-12z" stroke-linejoin="round" />
+              <path d="M6 6 5 3H2" stroke-linecap="round" />
+              <circle cx="9" cy="20" r="1" fill="currentColor" />
+              <circle cx="18" cy="20" r="1" fill="currentColor" />
+            </svg>
+            <span class="cart-badge" data-cart-count hidden>0</span>
+          </a>
+          <button type="button" class="menu-toggle icon-btn" aria-expanded="false" aria-controls="mobile-drawer" aria-label="Открыть меню">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="mobile-backdrop" aria-hidden="true"></div>
+    <aside id="mobile-drawer" class="mobile-drawer" aria-label="Мобильное меню">
+      <div class="drawer-header">
+        <span class="logo">ZHUCHY club</span>
+        <button type="button" class="icon-btn drawer-close" aria-label="Закрыть меню">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+      <nav class="drawer-nav">
+        <a href="catalog.html#mens" data-nav-cat="mens">Мужское</a>
+        <a href="catalog.html#womens" data-nav-cat="womens">Женское</a>
+        <a href="catalog.html#accessories" data-nav-cat="accessories">Аксессуары</a>
+        <a href="catalog.html#sale" class="is-sale" data-nav-cat="sale">Sale</a>
+      </nav>
+    </aside>
+
+    <main id="main">
+      <section class="section section--tight-top">
+        <div class="section__inner">
+          <!-- DYNAMIC: хлебные крошки из маршрута -->
+          <nav class="breadcrumbs" aria-label="Навигация">
+            <ol>
+              <li><a href="index.html">Главная</a></li>
+              <li><a href="catalog.html" aria-current="page">Каталог</a></li>
+            </ol>
+          </nav>
+
+          <h1 class="section__title" style="margin-bottom: var(--space-xl)">Каталог</h1>
+
+          <div class="catalog-toolbar">
+            <div class="catalog-toolbar__left">
+              <p class="catalog-count">
+                Показано <span data-catalog-shown>10</span> из
+                <span data-catalog-total>10</span>
+              </p>
+            </div>
+            <div class="sort-row">
+              <label for="sort">Сортировка</label>
+              <select id="sort" class="sort-select" name="sort" data-sort>
+                <!-- DYNAMIC: опции с бэкенда -->
+                <option value="new">По новизне</option>
+                <option value="price-asc">Цена: по возрастанию</option>
+                <option value="price-desc">Цена: по убыванию</option>
+                <option value="name">По названию</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+              <!-- DYNAMIC: сетка товаров из API — та же карточка, что на главной -->
+              <div class="product-grid" data-catalog-grid>
+                <article class="product-card" data-category="mens" data-sale="false" data-name="Пальто оверсайз, шерсть" data-price="42900" data-tags="outer" data-sizes="xs s m l" data-colors="black beige" data-new="true">
+                  <div class="product-card__top">
+                    <div class="product-card__badges"><span class="badge badge--new">Новинка</span></div>
+                    <div class="product-card__media">
+                      <img src="https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=800&q=80&auto=format&fit=crop" alt="" width="800" height="600" loading="lazy" />
+                    </div>
+                  </div>
+                  <div class="product-card__body">
+                    <h3 class="product-card__name">Пальто оверсайз, шерсть</h3>
+                    <p class="product-card__price">42 900 ₽</p>
+                  </div>
+                  <a href="product.html?id=coat" class="product-card__stretched-link"><span class="visually-hidden">Пальто оверсайз, шерсть — карточка товара</span></a>
+                </article>
+                <article class="product-card" data-category="womens" data-sale="false" data-name="Кашемировый свитер" data-price="18500" data-tags="knit" data-sizes="xs s m l xl" data-colors="beige black" data-new="false">
+                  <div class="product-card__top">
+                    <div class="product-card__media">
+                      <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800&q=80&auto=format&fit=crop" alt="" width="800" height="600" loading="lazy" />
+                    </div>
+                  </div>
+                  <div class="product-card__body">
+                    <h3 class="product-card__name">Кашемировый свитер</h3>
+                    <p class="product-card__price">18 500 ₽</p>
+                  </div>
+                  <a href="product.html?id=sweater" class="product-card__stretched-link"><span class="visually-hidden">Кашемировый свитер — карточка товара</span></a>
+                </article>
+                <article class="product-card" data-category="mens" data-sale="true" data-name="Брюки с защипами" data-price="9900" data-tags="pants" data-sizes="44 46 48 50" data-colors="blue" data-new="false">
+                  <div class="product-card__top">
+                    <div class="product-card__badges"><span class="badge badge--sale">Sale</span></div>
+                    <div class="product-card__media">
+                      <img src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800&q=80&auto=format&fit=crop" alt="" width="800" height="600" loading="lazy" />
+                    </div>
+                  </div>
+                  <div class="product-card__body">
+                    <h3 class="product-card__name">Брюки с защипами</h3>
+                    <p class="product-card__price"><del>12 900 ₽</del> <strong>9 900 ₽</strong></p>
+                  </div>
+                  <a href="product.html?id=pants" class="product-card__stretched-link"><span class="visually-hidden">Брюки с защипами — карточка товара</span></a>
+                </article>
+                <article class="product-card" data-category="mens" data-sale="false" data-name="Пиджак двубортный" data-price="31200" data-tags="outer" data-sizes="44 46 48 50" data-colors="black" data-new="false">
+                  <div class="product-card__top">
+                    <div class="product-card__media">
+                      <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?w=800&q=80&auto=format&fit=crop" alt="" width="800" height="600" loading="lazy" />
+                    </div>
+                  </div>
+                  <div class="product-card__body">
+                    <h3 class="product-card__name">Пиджак двубортный</h3>
+                    <p class="product-card__price">31 200 ₽</p>
+                  </div>
+                  <a href="product.html?id=blazer" class="product-card__stretched-link"><span class="visually-hidden">Пиджак двубортный — карточка товара</span></a>
+                </article>
+                <article class="product-card" data-category="mens" data-sale="false" data-name="Куртка утеплённая" data-price="27400" data-tags="outer" data-sizes="s m l xl" data-colors="black blue" data-new="false">
+                  <div class="product-card__top">
+                    <div class="product-card__media">
+                      <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&q=80&auto=format&fit=crop" alt="" width="800" height="600" loading="lazy" />
+                    </div>
+                  </div>
+                  <div class="product-card__body">
+                    <h3 class="product-card__name">Куртка утеплённая</h3>
+                    <p class="product-card__price">27 400 ₽</p>
+                  </div>
+                  <a href="product.html?id=jacket" class="product-card__stretched-link"><span class="visually-hidden">Куртка утеплённая — карточка товара</span></a>
+                </article>
+                <article class="product-card" data-category="mens" data-sale="false" data-name="Рубашка изо льна" data-price="9800" data-tags="tops" data-sizes="xs s m l" data-colors="white beige" data-new="true">
+                  <div class="product-card__top">
+                    <div class="product-card__badges"><span class="badge badge--new">Новинка</span></div>
+                    <div class="product-card__media">
+                      <img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=800&q=80&auto=format&fit=crop" alt="" width="800" height="600" loading="lazy" />
+                    </div>
+                  </div>
+                  <div class="product-card__body">
+                    <h3 class="product-card__name">Рубашка изо льна</h3>
+                    <p class="product-card__price">9 800 ₽</p>
+                  </div>
+                  <a href="product.html?id=shirt" class="product-card__stretched-link"><span class="visually-hidden">Рубашка изо льна — карточка товара</span></a>
+                </article>
+                <article class="product-card" data-category="mens" data-sale="false" data-name="Футболка плотный хлопок" data-price="4200" data-tags="tops" data-sizes="xs s m l xl" data-colors="white black" data-new="false">
+                  <div class="product-card__top">
+                    <div class="product-card__media">
+                      <img src="https://images.unsplash.com/photo-1620799140408-ed534d3b6327?w=800&q=80&auto=format&fit=crop" alt="" width="800" height="600" loading="lazy" />
+                    </div>
+                  </div>
+                  <div class="product-card__body">
+                    <h3 class="product-card__name">Футболка плотный хлопок</h3>
+                    <p class="product-card__price">4 200 ₽</p>
+                  </div>
+                  <a href="product.html?id=tee" class="product-card__stretched-link"><span class="visually-hidden">Футболка плотный хлопок — карточка товара</span></a>
+                </article>
+                <article class="product-card" data-category="accessories" data-sale="false" data-name="Кожаная сумка" data-price="24000" data-tags="acc" data-sizes="one" data-colors="black" data-new="false">
+                  <div class="product-card__top">
+                    <div class="product-card__media">
+                      <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&q=80&auto=format&fit=crop" alt="" width="800" height="600" loading="lazy" />
+                    </div>
+                  </div>
+                  <div class="product-card__body">
+                    <h3 class="product-card__name">Кожаная сумка</h3>
+                    <p class="product-card__price">24 000 ₽</p>
+                  </div>
+                  <a href="product.html?id=bag" class="product-card__stretched-link"><span class="visually-hidden">Кожаная сумка — карточка товара</span></a>
+                </article>
+                <article class="product-card" data-category="womens" data-sale="false" data-name="Платье миди" data-price="15600" data-tags="dresses" data-sizes="xs s m l" data-colors="black" data-new="true">
+                  <div class="product-card__top">
+                    <div class="product-card__badges"><span class="badge badge--new">Новинка</span></div>
+                    <div class="product-card__media">
+                      <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800&q=80&auto=format&fit=crop" alt="" width="800" height="600" loading="lazy" />
+                    </div>
+                  </div>
+                  <div class="product-card__body">
+                    <h3 class="product-card__name">Платье миди</h3>
+                    <p class="product-card__price">15 600 ₽</p>
+                  </div>
+                  <a href="product.html?id=dress" class="product-card__stretched-link"><span class="visually-hidden">Платье миди — карточка товара</span></a>
+                </article>
+                <article class="product-card" data-category="womens" data-sale="false" data-name="Шёлковая блузка" data-price="11200" data-tags="tops" data-sizes="xs s m l" data-colors="white beige" data-new="false">
+                  <div class="product-card__top">
+                    <div class="product-card__media">
+                      <img src="https://images.unsplash.com/photo-1564257631407-4deb1f99d992?w=800&q=80&auto=format&fit=crop" alt="" width="800" height="600" loading="lazy" />
+                    </div>
+                  </div>
+                  <div class="product-card__body">
+                    <h3 class="product-card__name">Шёлковая блузка</h3>
+                    <p class="product-card__price">11 200 ₽</p>
+                  </div>
+                  <a href="product.html?id=blouse" class="product-card__stretched-link"><span class="visually-hidden">Шёлковая блузка — карточка товара</span></a>
+                </article>
+              </div>
+
+              <div class="catalog-footer">
+                <nav class="pagination" aria-label="Страницы">
+                  <a href="#" aria-label="Предыдущая">←</a>
+                  <span class="is-current" aria-current="page">1</span>
+                  <a href="#">2</a>
+                  <a href="#">3</a>
+                  <a href="#" aria-label="Следующая">→</a>
+                </nav>
+              </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© ZHUCHY club</p>
+    </footer>
+
+    <script src="js/cart-storage.js"></script>
+    <script src="js/cart-badge.js"></script>
+    <script src="js/content.js"></script>
+    <script src="js/site.js"></script>
+    <script src="js/catalog.js"></script>
+  </body>
+</html>

@@ -1,0 +1,190 @@
+/**
+ * Карточка товара — единый компонент на всём сайте:
+ * прямоугольное фото (--product-card-aspect), снизу название и цена.
+ * DYNAMIC: href, img, текст, бейджи — из API/CMS.
+ */
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(var(--space-md), 3vw, var(--space-xl));
+}
+
+@media (min-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .product-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Каталог: 4 колонки на широком экране уже есть; на XL можно оставить 4 */
+
+.product-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--duration) var(--ease-out),
+    border-color var(--duration) var(--ease-out), transform var(--duration) var(--ease-out);
+}
+
+.product-card:hover {
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--color-border-strong);
+  transform: translateY(-4px);
+}
+
+.product-card.is-hidden {
+  display: none !important;
+}
+
+/* Одна ссылка на всю карточку (клик по фото/названию/цене) */
+.product-card__stretched-link {
+  position: absolute;
+  inset: 0;
+  display: block;
+  z-index: 2;
+  cursor: pointer;
+}
+
+.product-card__stretched-link:focus-visible {
+  outline-offset: -4px;
+}
+
+/* Область фото + бейджи */
+.product-card__top {
+  position: relative;
+  z-index: 0;
+}
+
+.product-card__badges {
+  position: absolute;
+  top: var(--space-md);
+  left: var(--space-md);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.6rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+.badge--sale {
+  background: var(--color-sale);
+  color: #fff;
+  border-color: transparent;
+}
+
+.badge--new {
+  background: var(--color-text);
+  color: var(--color-surface);
+  border-color: transparent;
+}
+
+/* Прямоугольное фото: единое соотношение на всех страницах */
+.product-card__media {
+  display: block;
+  aspect-ratio: var(--product-card-aspect);
+  overflow: hidden;
+  background: #e8e6e3;
+}
+
+.product-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s var(--ease-out);
+}
+
+.product-card:hover .product-card__media img {
+  transform: scale(1.04);
+}
+
+.product-card__body {
+  position: relative;
+  z-index: 0;
+  padding: var(--space-md) var(--space-lg) var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  flex: 1;
+}
+
+.product-card__name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.product-card:hover .product-card__name {
+  color: var(--color-accent);
+}
+
+.product-card__price {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.product-card__price del {
+  margin-right: var(--space-sm);
+  opacity: 0.65;
+}
+
+.product-card__price strong {
+  color: var(--color-sale);
+  font-weight: 700;
+}
+
+/* Миниатюра в корзине / чекауте — то же соотношение, фикс. ширина */
+.product-thumb {
+  flex-shrink: 0;
+  width: 112px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background: #e8e6e3;
+}
+
+a.product-thumb {
+  display: block;
+  color: inherit;
+}
+
+.product-thumb__media {
+  display: block;
+  aspect-ratio: var(--product-card-aspect);
+}
+
+.product-thumb__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (min-width: 768px) {
+  .product-thumb {
+    width: 128px;
+  }
+}

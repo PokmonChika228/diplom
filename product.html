@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Товар — ZHUCHY club</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/product-card.css" />
+    <link rel="stylesheet" href="css/pages.css" />
+  </head>
+  <body class="page-enter">
+    <a class="skip-link" href="#main">К основному содержимому</a>
+
+    <header class="site-header" role="banner">
+      <div class="header-inner">
+        <a class="logo" href="index.html" aria-label="ZHUCHY club — на главную">ZHUCHY club</a>
+        <nav class="nav-desktop" aria-label="Категории">
+          <a href="catalog.html#mens">Мужское</a>
+          <a href="catalog.html#womens">Женское</a>
+          <a href="catalog.html#accessories">Аксессуары</a>
+          <a href="catalog.html#sale" class="is-sale">Sale</a>
+        </nav>
+        <div class="header-actions">
+          <a href="cart.html" class="icon-btn cart-btn" aria-label="Корзина">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M6 6h15l-1.5 9h-12z" stroke-linejoin="round" />
+              <path d="M6 6 5 3H2" stroke-linecap="round" />
+              <circle cx="9" cy="20" r="1" fill="currentColor" />
+              <circle cx="18" cy="20" r="1" fill="currentColor" />
+            </svg>
+            <span class="cart-badge" data-cart-count hidden>0</span>
+          </a>
+          <button type="button" class="menu-toggle icon-btn" aria-expanded="false" aria-controls="mobile-drawer" aria-label="Открыть меню">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="mobile-backdrop" aria-hidden="true"></div>
+    <aside id="mobile-drawer" class="mobile-drawer" aria-label="Мобильное меню">
+      <div class="drawer-header">
+        <span class="logo">ZHUCHY club</span>
+        <button type="button" class="icon-btn drawer-close" aria-label="Закрыть меню">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+      <nav class="drawer-nav">
+        <a href="catalog.html#mens">Мужское</a>
+        <a href="catalog.html#womens">Женское</a>
+        <a href="catalog.html#accessories">Аксессуары</a>
+        <a href="catalog.html#sale" class="is-sale">Sale</a>
+      </nav>
+    </aside>
+
+    <main id="main" class="pdp">
+      <section class="section section--tight-top">
+        <div class="section__inner">
+          <nav class="breadcrumbs" aria-label="Навигация">
+            <ol>
+              <li><a href="index.html">Главная</a></li>
+              <li><a href="catalog.html">Каталог</a></li>
+              <li><span aria-current="page" data-pdp-breadcrumb>Товар</span></li>
+            </ol>
+          </nav>
+
+          <!-- DYNAMIC: данные товара с API -->
+          <div class="pdp-grid">
+            <div class="pdp-gallery">
+              <div class="pdp-gallery__main">
+                <img
+                  data-pdp-main
+                  src="https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=1200&q=80&auto=format&fit=crop"
+                  alt="Пальто оверсайз — вид спереди"
+                  width="960"
+                  height="1200"
+                />
+                <span class="pdp-gallery__zoom-hint">Нажмите для увеличения</span>
+              </div>
+              <div class="pdp-thumbs" role="tablist" aria-label="Галерея" data-pdp-thumbs></div>
+            </div>
+
+            <div class="pdp-buy">
+              <h1 class="pdp-buy__title">Пальто оверсайз, шерсть</h1>
+              <p class="pdp-buy__price" data-pdp-price></p>
+              <p class="pdp-buy__stock">В наличии</p>
+
+              <div data-pdp-colors-wrap>
+                <p class="pdp-option-label" id="label-color">Цвет</p>
+                <div class="swatch-list" role="group" aria-labelledby="label-color" data-pdp-colors style="margin-bottom: var(--space-lg)"></div>
+              </div>
+
+              <p class="pdp-option-label" id="label-size">Размер</p>
+              <div class="size-swatches" role="group" aria-labelledby="label-size" data-pdp-sizes></div>
+
+              <div class="pdp-actions">
+                <button type="button" class="btn btn--secondary btn--block" data-add-to-cart>В корзину</button>
+                <p class="pdp-toast" hidden data-pdp-toast>Товар добавлен в корзину</p>
+              </div>
+
+              <div class="accordion" role="region" aria-label="О товаре">
+                <div class="accordion-item is-open" data-accordion-item>
+                  <button type="button" class="accordion-trigger" data-accordion-trigger aria-expanded="true">
+                    Описание
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                      <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </button>
+                  <div class="accordion-panel" role="region" data-pdp-desc></div>
+                </div>
+                <div class="accordion-item" data-accordion-item>
+                  <button type="button" class="accordion-trigger" data-accordion-trigger aria-expanded="false">
+                    Состав
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                      <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </button>
+                  <div class="accordion-panel" role="region" data-pdp-composition></div>
+                </div>
+                <div class="accordion-item" data-accordion-item>
+                  <button type="button" class="accordion-trigger" data-accordion-trigger aria-expanded="false">
+                    Уход
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                      <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </button>
+                  <div class="accordion-panel" role="region" data-pdp-care></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <section class="section" style="padding-left: 0; padding-right: 0; padding-bottom: 0" aria-labelledby="related-title">
+            <h2 id="related-title" class="section__title" style="margin-bottom: var(--space-xl)">Вам может понравиться</h2>
+            <div class="product-grid" data-pdp-related></div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <div class="lightbox" data-lightbox role="dialog" aria-modal="true" aria-label="Увеличенное фото">
+      <button type="button" class="lightbox-close icon-btn" data-lightbox-close aria-label="Закрыть">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" stroke-linecap="round" />
+        </svg>
+      </button>
+      <img src="" alt="" />
+    </div>
+
+    <footer class="site-footer">
+      <p>© ZHUCHY club</p>
+    </footer>
+
+    <script src="js/cart-storage.js"></script>
+    <script src="js/products-catalog.js"></script>
+    <script src="js/cart-badge.js"></script>
+    <script src="js/content.js"></script>
+    <script src="js/site.js"></script>
+    <script src="js/product-detail.js"></script>
+  </body>
+</html>

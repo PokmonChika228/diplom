@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Вход в админку — ZHUCHY club</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+  </head>
+  <body class="page-enter">
+    <main class="section" style="min-height: 100vh; display: grid; place-items: center">
+      <section
+        style="
+          width: min(100%, 420px);
+          background: var(--color-surface);
+          border: 1px solid var(--color-border);
+          border-radius: var(--radius-lg);
+          padding: var(--space-xl);
+          box-shadow: var(--shadow-card);
+        "
+      >
+        <h1 style="margin: 0 0 var(--space-lg)">ZHUCHY club Admin</h1>
+        <form id="admin-login-form">
+          <div class="field">
+            <label class="field-label" for="admin-login">Логин</label>
+            <input class="input" id="admin-login" name="login" required autocomplete="username" />
+          </div>
+          <div class="field">
+            <label class="field-label" for="admin-password">Пароль</label>
+            <input
+              class="input"
+              id="admin-password"
+              name="password"
+              type="password"
+              required
+              autocomplete="current-password"
+            />
+          </div>
+          <button class="btn btn--secondary btn--block" type="submit">Войти</button>
+          <p id="admin-login-error" hidden style="color: var(--color-sale); margin-top: var(--space-md)"></p>
+        </form>
+      </section>
+    </main>
+    <script src="js/admin-login.js"></script>
+  </body>
+</html>

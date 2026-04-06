@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Оформление заказа — ZHUCHY club</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/product-card.css" />
+    <link rel="stylesheet" href="css/pages.css" />
+  </head>
+  <body class="page-enter">
+    <a class="skip-link" href="#main">К основному содержимому</a>
+
+    <header class="site-header" role="banner">
+      <div class="header-inner">
+        <a class="logo" href="index.html" aria-label="ZHUCHY club — на главную">ZHUCHY club</a>
+        <nav class="nav-desktop" aria-label="Категории">
+          <a href="catalog.html#mens">Мужское</a>
+          <a href="catalog.html#womens">Женское</a>
+          <a href="catalog.html#accessories">Аксессуары</a>
+          <a href="catalog.html#sale" class="is-sale">Sale</a>
+        </nav>
+        <div class="header-actions">
+          <a href="cart.html" class="icon-btn cart-btn" aria-label="Корзина">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M6 6h15l-1.5 9h-12z" stroke-linejoin="round" />
+              <path d="M6 6 5 3H2" stroke-linecap="round" />
+              <circle cx="9" cy="20" r="1" fill="currentColor" />
+              <circle cx="18" cy="20" r="1" fill="currentColor" />
+            </svg>
+            <span class="cart-badge" data-cart-count hidden>0</span>
+          </a>
+          <button type="button" class="menu-toggle icon-btn" aria-expanded="false" aria-controls="mobile-drawer" aria-label="Открыть меню">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="mobile-backdrop" aria-hidden="true"></div>
+    <aside id="mobile-drawer" class="mobile-drawer" aria-label="Мобильное меню">
+      <div class="drawer-header">
+        <span class="logo">ZHUCHY club</span>
+        <button type="button" class="icon-btn drawer-close" aria-label="Закрыть меню">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+      <nav class="drawer-nav">
+        <a href="catalog.html#mens">Мужское</a>
+        <a href="catalog.html#womens">Женское</a>
+        <a href="catalog.html#accessories">Аксессуары</a>
+        <a href="catalog.html#sale" class="is-sale">Sale</a>
+      </nav>
+    </aside>
+
+    <main id="main">
+      <section class="section section--tight-top">
+        <div class="section__inner">
+          <nav class="breadcrumbs" aria-label="Навигация">
+            <ol>
+              <li><a href="index.html">Главная</a></li>
+              <li><a href="cart.html">Корзина</a></li>
+              <li><span aria-current="page">Оформление</span></li>
+            </ol>
+          </nav>
+
+          <h1 class="section__title" style="margin-bottom: var(--space-md)">Оформление заказа</h1>
+
+          <div class="checkout-steps" aria-label="Прогресс">
+            <span class="checkout-step is-done">1. Контакты</span>
+            <span class="checkout-step is-current">2. Доставка и оплата</span>
+            <span class="checkout-step">3. Подтверждение</span>
+          </div>
+
+          <form class="checkout-layout" action="#" method="post" data-checkout-form novalidate>
+            <!-- DYNAMIC: отправка на ваш checkout API -->
+            <div>
+              <div class="checkout-form-section">
+                <h2>Контакты</h2>
+                <div class="field-grid field-grid--2">
+                  <div class="field">
+                    <label class="field-label" for="co-name">Имя и фамилия</label>
+                    <input class="input" id="co-name" name="name" type="text" autocomplete="name" required />
+                  </div>
+                  <div class="field">
+                    <label class="field-label" for="co-phone">Телефон</label>
+                    <input class="input" id="co-phone" name="phone" type="tel" autocomplete="tel" required />
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="field-label" for="co-email">Email</label>
+                  <input class="input" id="co-email" name="email" type="email" autocomplete="email" required />
+                </div>
+              </div>
+
+              <div class="checkout-form-section">
+                <h2>Доставка</h2>
+                <div class="radio-cards" role="radiogroup" aria-label="Способ доставки">
+                  <label class="radio-card">
+                    <input type="radio" name="delivery" value="pickup" checked />
+                    <span class="radio-card__text">
+                      <strong>Самовывоз</strong>
+                      <span>Бесплатно, Москва — уточните адрес в письме</span>
+                    </span>
+                  </label>
+                  <label class="radio-card">
+                    <input type="radio" name="delivery" value="courier" />
+                    <span class="radio-card__text">
+                      <strong>Курьер</strong>
+                      <span>от 500 ₽, 1–3 дня по городу</span>
+                    </span>
+                  </label>
+                  <label class="radio-card">
+                    <input type="radio" name="delivery" value="cdek" />
+                    <span class="radio-card__text">
+                      <strong>СДЭК / ПВЗ</strong>
+                      <span>Расчёт при подтверждении</span>
+                    </span>
+                  </label>
+                </div>
+                <div class="field" style="margin-top: var(--space-lg)">
+                  <label class="field-label" for="co-address">Адрес доставки</label>
+                  <input class="input" id="co-address" name="address" type="text" autocomplete="street-address" placeholder="Город, улица, дом, квартира" />
+                </div>
+                <div class="field">
+                  <label class="field-label" for="co-comment">Комментарий к заказу</label>
+                  <textarea class="textarea" id="co-comment" name="comment" rows="3" placeholder="Опционально"></textarea>
+                </div>
+              </div>
+
+              <div class="checkout-form-section">
+                <h2>Оплата</h2>
+                <div class="radio-cards" role="radiogroup" aria-label="Способ оплаты">
+                  <label class="radio-card">
+                    <input type="radio" name="pay" value="card" checked />
+                    <span class="radio-card__text">
+                      <strong>Картой онлайн</strong>
+                      <span>Visa, Mastercard, МИР</span>
+                    </span>
+                  </label>
+                  <label class="radio-card">
+                    <input type="radio" name="pay" value="receipt" />
+                    <span class="radio-card__text">
+                      <strong>При получении</strong>
+                      <span>Наличные или терминал у курьера</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn--secondary btn--block" style="margin-top: var(--space-md)">
+                Подтвердить заказ
+              </button>
+              <p data-checkout-error hidden style="color: var(--color-sale); margin-top: var(--space-md)"></p>
+              <p style="font-size: 0.75rem; color: var(--color-text-muted); margin-top: var(--space-md)">
+                Нажимая кнопку, вы принимаете условия оферты и политику обработки данных.
+              </p>
+            </div>
+
+            <aside class="order-mini" aria-label="Ваш заказ">
+              <h2>Ваш заказ</h2>
+              <div data-checkout-lines></div>
+              <div class="cart-summary__row" style="margin-top: var(--space-md)">
+                <span>Товары</span>
+                <span data-checkout-subtotal>0 ₽</span>
+              </div>
+              <div class="cart-summary__row">
+                <span>Доставка</span>
+                <span>0 ₽</span>
+              </div>
+              <div class="cart-summary__row" data-checkout-discount-row hidden>
+                <span>Скидка по промокоду</span>
+                <span data-checkout-discount>0 ₽</span>
+              </div>
+              <div class="order-mini__total">
+                <span>К оплате</span>
+                <span data-checkout-total>0 ₽</span>
+              </div>
+              <a href="cart.html" class="link-arrow" style="display: inline-block; margin-top: var(--space-lg)">← В корзину</a>
+            </aside>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© ZHUCHY club</p>
+    </footer>
+
+    <div class="modal-backdrop" data-checkout-modal aria-hidden="true">
+      <div class="modal" role="dialog" aria-modal="true" aria-label="Заказ принят">
+        <h2>Заказ принят</h2>
+        <p>
+          Спасибо! Заказ сформирован, детали и статус будут отправлены на вашу почту.
+        </p>
+        <div class="modal-actions">
+          <a class="btn btn--secondary" href="catalog.html">Вернуться к покупкам</a>
+          <button type="button" class="btn btn--outline" data-modal-close>Закрыть</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/cart-storage.js"></script>
+    <script src="js/products-catalog.js"></script>
+    <script src="js/cart-badge.js"></script>
+    <script src="js/content.js"></script>
+    <script src="js/site.js"></script>
+    <script src="js/checkout-order.js"></script>
+    <script src="js/checkout-submit.js"></script>
+  </body>
+</html>
