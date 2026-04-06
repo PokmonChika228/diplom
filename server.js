@@ -6,6 +6,7 @@ const path = require("path");
 const multer = require("multer");
 const session = require("express-session");
 const bcrypt = require("bcryptjs");
+const { v2: cloudinary } = require("cloudinary");
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -18,6 +19,22 @@ const ADMIN_PASSWORD_HASH = String(process.env.ADMIN_PASSWORD_HASH || "");
 const SESSION_SECRET = String(
   process.env.SESSION_SECRET || "change_this_session_secret_for_production"
 );
+const CLOUDINARY_CLOUD_NAME = String(process.env.CLOUDINARY_CLOUD_NAME || "");
+const CLOUDINARY_API_KEY = String(process.env.CLOUDINARY_API_KEY || "");
+const CLOUDINARY_API_SECRET = String(process.env.CLOUDINARY_API_SECRET || "");
+
+const HAS_CLOUDINARY = !!(
+  (CLOUDINARY_CLOUD_NAME && CLOUDINARY_API_KEY && CLOUDINARY_API_SECRET) ||
+  process.env.CLOUDINARY_URL
+);
+if (HAS_CLOUDINARY) {
+  cloudinary.config({
+    cloud_name: CLOUDINARY_CLOUD_NAME || undefined,
+    api_key: CLOUDINARY_API_KEY || undefined,
+    api_secret: CLOUDINARY_API_SECRET || undefined,
+    secure: true,
+  });
+}
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -161,10 +178,23 @@ app.get("/api/products/:id", (req, res) => {
   res.json(product);
 });
 
-app.post("/api/upload-image", requireAdminApi, upload.single("image"), (req, res) => {
+app.post("/api/upload-image", requireAdminApi, upload.single("image"), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: "image file is required" });
-  const url = `/uploads/${req.file.filename}`;
-  res.status(201).json({ url });
+  if (HAS_CLOUDINARY) {
+    try {
+      const uploaded = await cloudinary.uploader.upload(req.file.path, {
+        folder: "zhuchy-club/products",
+        resource_type: "image",
+      });
+      fs.unlink(req.file.path, () => {});
+      return res.status(201).json({ url: uploaded.secure_url });
+    } catch (err) {
+      console.error("Cloudinary upload failed:", err.message);
+      // fallback to local file if Cloudinary temporarily unavailable
+    }
+  }
+  const localUrl = `/uploads/${req.file.filename}`;
+  return res.status(201).json({ url: localUrl });
 });
 
 app.post("/api/products", requireAdminApi, (req, res) => {
@@ -538,6 +568,11 @@ app.listen(PORT, () => {
   }
   if (SESSION_SECRET === "change_this_session_secret_for_production") {
     console.warn("WARNING: Set SESSION_SECRET in environment for production.");
+  }
+  if (!HAS_CLOUDINARY) {
+    console.warn(
+      "INFO: Cloudinary is not configured. Image uploads are stored locally in /uploads."
+    );
   }
   console.log(`Server started: http://localhost:${PORT}`);
 });
