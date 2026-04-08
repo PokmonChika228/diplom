@@ -38,18 +38,26 @@
     return d.innerHTML;
   }
 
+  function fp(rub, usd) { return typeof window.formatPrice === "function" ? window.formatPrice(rub, usd) : formatRub(rub); }
+
+  let _saleProducts = [];
+
   function renderSaleCards(products) {
+    _saleProducts = products || _saleProducts;
     if (!saleGrid) return;
     saleGrid.innerHTML = "";
-    products.forEach((p) => {
+    _saleProducts.forEach((p) => {
       const name = escapeHtml(p.name || "Товар");
-      const price = formatRub(p.price);
+      const price = fp(p.price, p.priceUsd);
       const hasOldPrice = Number(p.oldPrice || 0) > Number(p.price || 0);
-      const oldPrice = formatRub(p.oldPrice);
+      const oldPrice = fp(p.oldPrice, 0);
       const image = p.image || "https://placehold.co/800x600?text=Product";
       const id = encodeURIComponent(String(p.id));
       const card = document.createElement("article");
       card.className = "product-card";
+      card.setAttribute("data-price", String(Number(p.price || 0)));
+      card.setAttribute("data-price-usd", String(Number(p.priceUsd || 0)));
+      card.setAttribute("data-old-price", String(Number(p.oldPrice || 0)));
       card.innerHTML = `
         <div class="product-card__top">
           <div class="product-card__badges"><span class="badge badge--sale">Sale</span></div>
@@ -89,4 +97,5 @@
   }
 
   loadSale();
+  window.addEventListener("currencychange", () => renderSaleCards());
 })();

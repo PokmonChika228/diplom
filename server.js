@@ -119,6 +119,12 @@ function ensureDb() {
   if (!db.uiSettings) db.uiSettings = { ticker: { enabled: false, text: "" }, heroImage: { src: "" } };
   if (!db.uiSettings.ticker) db.uiSettings.ticker = { enabled: false, text: "" };
   if (!db.uiSettings.heroImage) db.uiSettings.heroImage = { src: "" };
+  if (Array.isArray(db.products)) {
+    db.products = db.products.map((p) => {
+      if (p.priceUsd === undefined) p.priceUsd = 0;
+      return p;
+    });
+  }
   if (!db.counters.product) db.counters.product = 1;
   if (!db.counters.order) db.counters.order = 1;
   if (!db.counters.log) db.counters.log = 1;
@@ -248,6 +254,7 @@ app.post("/api/products", requireAdminApi, (req, res) => {
     description: String(body.description || ""),
     composition: String(body.composition || ""),
     care: String(body.care || ""),
+    priceUsd: Math.max(0, toNum(body.priceUsd, 0)),
     createdAt: nowIso(),
     updatedAt: nowIso(),
   };
@@ -298,6 +305,9 @@ app.put("/api/products/:id", requireAdminApi, (req, res) => {
   }
   if (body.care !== undefined) {
     product.care = String(body.care || "");
+  }
+  if (body.priceUsd !== undefined) {
+    product.priceUsd = Math.max(0, toNum(body.priceUsd, 0));
   }
   product.updatedAt = nowIso();
 
@@ -744,6 +754,19 @@ app.post("/api/admin/parse-vitrine", requireAdminApi, async (req, res) => {
 
   function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 
+  function prettyUsd(rubPrice) {
+    if (!rubPrice || rubPrice <= 0) return 0;
+    const raw = rubPrice / 90;
+    const tiers = [9, 12, 15, 18, 19, 24, 29, 34, 39, 44, 49, 59, 69, 79, 89, 99, 119, 139, 149, 179, 199, 229, 249, 299, 349, 399, 449, 499, 549, 599, 699, 799, 899, 999];
+    let closest = tiers[0];
+    let diff = Math.abs(raw - tiers[0]);
+    for (const t of tiers) {
+      const d = Math.abs(raw - t);
+      if (d < diff) { diff = d; closest = t; }
+    }
+    return closest;
+  }
+
   function shuffle(arr) {
     const a = arr.slice();
     for (let i = a.length - 1; i > 0; i--) {
@@ -1009,6 +1032,7 @@ app.post("/api/admin/parse-vitrine", requireAdminApi, async (req, res) => {
       description: String(item.description || "").slice(0, 500),
       composition: String(item.composition || ""),
       care: String(item.care || ""),
+      priceUsd: item.priceUsd ? Math.max(0, toNum(item.priceUsd, 0)) : prettyUsd(Math.max(0, toNum(item.price, 0))),
       createdAt: nowIso(),
       updatedAt: nowIso(),
     };
@@ -1177,6 +1201,31 @@ app.post("/api/admin/cleanup", requireAdminApi, (req, res) => {
 
   writeDb(db);
   return res.json({ ok: true, cleaned });
+});
+
+// Кэш курса валют (1 час)
+let _rateCache = null;
+let _rateCacheTime = 0;
+async function getUsdRubRate() {
+  const now = Date.now();
+  if (_rateCache && now - _rateCacheTime < 3600000) return _rateCache;
+  try {
+    const r = await fetch("https://www.cbr-xml-daily.ru/daily_json.js", { signal: AbortSignal.timeout(5000) });
+    if (!r.ok) throw new Error("CBR API error");
+    const data = await r.json();
+    const rate = data?.Valute?.USD?.Value;
+    if (rate && Number.isFinite(rate)) {
+      _rateCache = rate;
+      _rateCacheTime = now;
+      return rate;
+    }
+  } catch {}
+  return _rateCache || 90;
+}
+
+app.get("/api/exchange-rate", async (_req, res) => {
+  const rate = await getUsdRubRate();
+  res.json({ usdToRub: rate, updatedAt: new Date(_rateCacheTime || Date.now()).toISOString() });
 });
 
 app.get("/api/ui-settings", (_req, res) => {

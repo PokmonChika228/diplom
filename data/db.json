@@ -19,7 +19,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-16T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 2,
@@ -41,7 +42,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-21T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 3,
@@ -64,7 +66,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-30T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 4,
@@ -86,7 +89,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-04T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 5,
@@ -110,7 +114,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-21T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 6,
@@ -131,7 +136,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-09T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 7,
@@ -157,7 +163,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-12T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 8,
@@ -181,7 +188,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-24T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 9,
@@ -205,7 +213,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-24T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 10,
@@ -229,7 +238,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-11T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 11,
@@ -254,7 +264,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-15T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 12,
@@ -279,7 +290,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-02T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 13,
@@ -300,7 +312,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-09T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 14,
@@ -322,7 +335,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-24T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 15,
@@ -348,7 +362,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-10T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 16,
@@ -374,7 +389,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-07T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 17,
@@ -399,7 +415,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-07T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 18,
@@ -420,7 +437,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-29T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 19,
@@ -444,7 +462,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-04T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 20,
@@ -469,7 +488,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-18T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 21,
@@ -494,7 +514,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-18T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 22,
@@ -519,7 +540,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-19T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 23,
@@ -543,7 +565,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-12T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 24,
@@ -567,7 +590,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-06T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 25,
@@ -590,7 +614,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-28T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 26,
@@ -615,7 +640,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-14T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 27,
@@ -638,7 +664,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-06T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 28,
@@ -659,7 +686,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-18T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 29,
@@ -681,7 +709,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-18T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 30,
@@ -706,7 +735,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-24T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 31,
@@ -728,7 +758,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-13T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 32,
@@ -754,7 +785,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-21T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 33,
@@ -779,7 +811,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-02T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 34,
@@ -803,7 +836,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-29T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 35,
@@ -829,7 +863,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-21T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 36,
@@ -852,7 +887,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-17T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 37,
@@ -874,7 +910,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-19T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 38,
@@ -897,7 +934,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-03T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 39,
@@ -921,7 +959,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-04T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 40,
@@ -942,7 +981,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-05T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 41,
@@ -966,7 +1006,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-12T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 42,
@@ -990,7 +1031,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-11T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 43,
@@ -1015,7 +1057,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-16T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 44,
@@ -1040,7 +1083,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-28T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 45,
@@ -1066,7 +1110,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-12T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 46,
@@ -1090,7 +1135,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-04T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 47,
@@ -1111,7 +1157,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-02T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 48,
@@ -1135,7 +1182,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-07T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 49,
@@ -1160,7 +1208,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-18T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 50,
@@ -1185,7 +1234,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-06T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 51,
@@ -1206,7 +1256,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-28T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 52,
@@ -1228,7 +1279,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-25T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 53,
@@ -1253,7 +1305,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-30T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 54,
@@ -1279,7 +1332,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-03T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 55,
@@ -1303,7 +1357,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-30T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 56,
@@ -1326,7 +1381,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-02T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 57,
@@ -1350,7 +1406,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-27T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 58,
@@ -1371,7 +1428,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-11T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 59,
@@ -1397,7 +1455,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-10T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 60,
@@ -1421,7 +1480,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-03T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 61,
@@ -1445,7 +1505,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-18T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 62,
@@ -1471,7 +1532,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-20T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 63,
@@ -1497,7 +1559,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-03T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 64,
@@ -1519,7 +1582,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-02T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 65,
@@ -1541,7 +1605,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-22T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 66,
@@ -1566,7 +1631,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-22T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 67,
@@ -1587,7 +1653,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-05T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 68,
@@ -1608,7 +1675,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-31T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 69,
@@ -1631,7 +1699,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-22T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 70,
@@ -1652,7 +1721,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-12T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 71,
@@ -1677,7 +1747,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-21T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 72,
@@ -1702,7 +1773,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-03T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 73,
@@ -1727,7 +1799,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-24T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 74,
@@ -1750,7 +1823,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-24T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 75,
@@ -1771,7 +1845,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-19T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 76,
@@ -1794,7 +1869,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-31T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 77,
@@ -1818,7 +1894,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-14T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 78,
@@ -1843,7 +1920,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-04T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 79,
@@ -1864,7 +1942,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-20T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 80,
@@ -1890,7 +1969,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-11T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 81,
@@ -1916,7 +1996,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-19T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 82,
@@ -1939,7 +2020,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-30T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 83,
@@ -1964,7 +2046,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-19T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 84,
@@ -1988,7 +2071,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-13T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 85,
@@ -2013,7 +2097,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-13T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 86,
@@ -2034,7 +2119,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-03T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 87,
@@ -2057,7 +2143,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-17T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 88,
@@ -2078,7 +2165,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-10T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 89,
@@ -2103,7 +2191,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-30T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 90,
@@ -2126,7 +2215,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-27T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 91,
@@ -2150,7 +2240,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-21T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 92,
@@ -2175,7 +2266,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-07T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 93,
@@ -2196,7 +2288,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-01T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 94,
@@ -2220,7 +2313,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-18T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 95,
@@ -2243,7 +2337,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-27T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 96,
@@ -2268,7 +2363,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-23T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 97,
@@ -2291,7 +2387,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-12T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 98,
@@ -2313,7 +2410,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-15T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 99,
@@ -2337,7 +2435,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-07T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 100,
@@ -2359,7 +2458,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-20T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 101,
@@ -2385,7 +2485,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-12T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 102,
@@ -2410,7 +2511,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-08T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 103,
@@ -2432,7 +2534,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-22T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 104,
@@ -2456,7 +2559,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-23T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 105,
@@ -2480,7 +2584,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-19T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 106,
@@ -2506,7 +2611,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-09T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 107,
@@ -2532,7 +2638,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-09T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 108,
@@ -2555,7 +2662,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-29T17:46:12.536Z",
-      "updatedAt": "2026-04-08T17:46:12.536Z"
+      "updatedAt": "2026-04-08T17:46:12.536Z",
+      "priceUsd": 0
     },
     {
       "id": 109,
@@ -2581,7 +2689,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-21T17:46:12.537Z",
-      "updatedAt": "2026-04-08T17:46:12.537Z"
+      "updatedAt": "2026-04-08T17:46:12.537Z",
+      "priceUsd": 0
     },
     {
       "id": 110,
@@ -2603,7 +2712,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-22T17:46:12.537Z",
-      "updatedAt": "2026-04-08T17:46:12.537Z"
+      "updatedAt": "2026-04-08T17:46:12.537Z",
+      "priceUsd": 0
     },
     {
       "id": 111,
@@ -2627,7 +2737,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-01T17:46:12.537Z",
-      "updatedAt": "2026-04-08T17:46:12.537Z"
+      "updatedAt": "2026-04-08T17:46:12.537Z",
+      "priceUsd": 0
     },
     {
       "id": 112,
@@ -2651,7 +2762,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-05T17:46:12.537Z",
-      "updatedAt": "2026-04-08T17:46:12.537Z"
+      "updatedAt": "2026-04-08T17:46:12.537Z",
+      "priceUsd": 0
     },
     {
       "id": 113,
@@ -2674,7 +2786,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-05T17:46:12.537Z",
-      "updatedAt": "2026-04-08T17:46:12.537Z"
+      "updatedAt": "2026-04-08T17:46:12.537Z",
+      "priceUsd": 0
     },
     {
       "id": 114,
@@ -2696,7 +2809,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-05T17:46:12.537Z",
-      "updatedAt": "2026-04-08T17:46:12.537Z"
+      "updatedAt": "2026-04-08T17:46:12.537Z",
+      "priceUsd": 0
     },
     {
       "id": 115,
@@ -2721,7 +2835,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-27T17:46:12.537Z",
-      "updatedAt": "2026-04-08T17:46:12.537Z"
+      "updatedAt": "2026-04-08T17:46:12.537Z",
+      "priceUsd": 0
     },
     {
       "id": 116,
@@ -2744,7 +2859,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-19T17:46:12.537Z",
-      "updatedAt": "2026-04-08T17:46:12.537Z"
+      "updatedAt": "2026-04-08T17:46:12.537Z",
+      "priceUsd": 0
     },
     {
       "id": 117,
@@ -2770,7 +2886,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-28T17:46:12.537Z",
-      "updatedAt": "2026-04-08T17:46:12.537Z"
+      "updatedAt": "2026-04-08T17:46:12.537Z",
+      "priceUsd": 0
     },
     {
       "id": 118,
@@ -2794,7 +2911,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-03-22T17:46:12.537Z",
-      "updatedAt": "2026-04-08T17:46:12.537Z"
+      "updatedAt": "2026-04-08T17:46:12.537Z",
+      "priceUsd": 0
     },
     {
       "id": 119,
@@ -2820,7 +2938,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-06T17:46:12.537Z",
-      "updatedAt": "2026-04-08T17:46:12.537Z"
+      "updatedAt": "2026-04-08T17:46:12.537Z",
+      "priceUsd": 0
     },
     {
       "id": 120,
@@ -2843,7 +2962,8 @@
       "composition": "",
       "care": "",
       "createdAt": "2026-04-08T17:46:12.537Z",
-      "updatedAt": "2026-04-08T17:46:12.537Z"
+      "updatedAt": "2026-04-08T17:46:12.537Z",
+      "priceUsd": 0
     }
   ],
   "inventoryLogs": [

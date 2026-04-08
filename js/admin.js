@@ -96,6 +96,7 @@
         "<td>" + saleLabel + "</td>" +
         "<td>" + (p.oldPrice > 0 ? fmt(p.oldPrice) : "—") + "</td>" +
         "<td>" + fmt(p.price) + "</td>" +
+        "<td>" + (p.priceUsd > 0 ? "$" + Number(p.priceUsd).toLocaleString("en-US") : "—") + "</td>" +
         "<td" + (p.stock <= 5 ? ' style="color:var(--color-sale)"' : "") + ">" + p.stock + "</td>" +
         '<td class="actions">' +
           '<button class="btn btn--outline" style="padding:4px 10px;font-size:0.75rem;color:var(--color-sale)" onclick="deleteProduct(' + p.id + ')">✕</button>' +
@@ -343,6 +344,13 @@
     renderBreakdown("payment-breakdown", (a.byPayment || []).map(function (x) { return { label: x.method, value: x.count }; }));
     renderCategoryBreakdown(a.byCategory || []);
     renderLowStock(a.lowStockProducts || []);
+
+    var rateEl = document.getElementById("kpi-exchange-rate");
+    if (rateEl) {
+      fetch("/api/exchange-rate").then(function (r) { return r.json(); }).then(function (d) {
+        rateEl.textContent = d.rate ? d.rate.toFixed(2) + " ₽/$ " + (d.fromCache ? "(кэш)" : "(ЦБ РФ)") : "—";
+      }).catch(function () { rateEl.textContent = "—"; });
+    }
 
     var topQtyEl = document.getElementById("top-qty");
     if (topQtyEl) {

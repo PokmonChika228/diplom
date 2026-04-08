@@ -40,6 +40,11 @@
     return { name, price, onSale, isNew, cats };
   }
 
+  var _allProducts = [];
+
+  function fp(rub, usd) { return typeof window.formatPrice === "function" ? window.formatPrice(rub, usd) : Math.round(rub).toLocaleString("ru-RU") + "\u00a0₽"; }
+  function fop(rub, usd) { return typeof window.formatOldPrice === "function" ? window.formatOldPrice(rub, usd) : Math.round(rub).toLocaleString("ru-RU") + "\u00a0₽"; }
+
   function makeCard(product) {
     const category = String(product.category || "other").toLowerCase();
     const categoryTokens =
@@ -48,6 +53,7 @@
     const isNew = false;
     const price = Number(product.price || 0);
     const oldPrice = Number(product.oldPrice || 0);
+    const priceUsd = Number(product.priceUsd || 0);
     const hasOldPrice = oldPrice > price;
     const img = product.image || "https://placehold.co/800x600?text=Product";
     const id = product.id;
@@ -58,7 +64,12 @@
     article.setAttribute("data-sale", String(isSale));
     article.setAttribute("data-name", product.name || "");
     article.setAttribute("data-price", String(price));
+    article.setAttribute("data-price-usd", String(priceUsd));
+    article.setAttribute("data-old-price", String(oldPrice));
     article.setAttribute("data-new", String(isNew));
+    const priceHtml = hasOldPrice
+      ? `<del>${fop(oldPrice, 0)}</del> <strong>${fp(price, priceUsd)}</strong>`
+      : fp(price, priceUsd);
     article.innerHTML = `
       <div class="product-card__top">
         ${isSale ? '<div class="product-card__badges"><span class="badge badge--sale">Sale</span></div>' : ""}
@@ -68,17 +79,27 @@
       </div>
       <div class="product-card__body">
         <h3 class="product-card__name">${product.name || "Без названия"}</h3>
-        <p class="product-card__price">${
-          hasOldPrice
-            ? `<del>${oldPrice.toLocaleString("ru-RU")} ₽</del> <strong>${price.toLocaleString("ru-RU")} ₽</strong>`
-            : `${price.toLocaleString("ru-RU")} ₽`
-        }</p>
+        <p class="product-card__price">${priceHtml}</p>
       </div>
       <a href="product.html?id=${encodeURIComponent(id)}" class="product-card__stretched-link">
         <span class="visually-hidden">${product.name || "Товар"} — карточка товара</span>
       </a>
     `;
     return article;
+  }
+
+  function refreshCardPrices() {
+    grid.querySelectorAll(".product-card").forEach(function (card) {
+      const price = parseFloat(card.getAttribute("data-price")) || 0;
+      const priceUsd = parseFloat(card.getAttribute("data-price-usd")) || 0;
+      const oldPrice = parseFloat(card.getAttribute("data-old-price")) || 0;
+      const priceEl = card.querySelector(".product-card__price");
+      if (!priceEl) return;
+      const hasOldPrice = oldPrice > price;
+      priceEl.innerHTML = hasOldPrice
+        ? `<del>${fop(oldPrice, 0)}</del> <strong>${fp(price, priceUsd)}</strong>`
+        : fp(price, priceUsd);
+    });
   }
 
   function renderPagination(totalPages) {
@@ -194,4 +215,6 @@
   });
 
   bootstrapFromApi().finally(apply);
+
+  window.addEventListener("currencychange", refreshCardPrices);
 })();

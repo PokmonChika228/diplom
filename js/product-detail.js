@@ -35,13 +35,24 @@
       .replace(/\B(?=(\d{3})+(?!\d))/g, " ")} ₽`;
   }
 
+  function fp(rub, usd) { return typeof window.formatPrice === "function" ? window.formatPrice(rub, usd) : formatRub(rub); }
+
+  let _currentProduct = null;
+
   function productPriceHtml(product) {
     const current = Number(product.price || 0);
     const old = Number(product.oldPrice || 0);
+    const usd = Number(product.priceUsd || 0);
     if (old > current) {
-      return `<del>${formatRub(old)}</del> <strong>${formatRub(current)}</strong>`;
+      return `<del>${fp(old, 0)}</del> <strong>${fp(current, usd)}</strong>`;
     }
-    return formatRub(current);
+    return fp(current, usd);
+  }
+
+  function refreshProductPrice() {
+    if (!_currentProduct) return;
+    const priceEl = document.querySelector("[data-pdp-price]");
+    if (priceEl) priceEl.innerHTML = productPriceHtml(_currentProduct);
   }
 
   function selectedSize() {
@@ -166,6 +177,7 @@
       if (!productRes.ok) throw new Error("Товар не найден");
       const product = await productRes.json();
       const allProducts = allRes.ok ? await allRes.json() : [];
+      _currentProduct = product;
 
       document.title = `${product.name} — ZHUCHY club`;
       const bc = document.querySelector("[data-pdp-breadcrumb]");
@@ -207,4 +219,5 @@
   }
 
   init();
+  window.addEventListener("currencychange", refreshProductPrice);
 })();

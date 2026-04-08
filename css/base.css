@@ -220,6 +220,28 @@ button {
   position: relative;
 }
 
+.cur-toggle-btn {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  width: auto;
+  padding: 0 10px;
+  gap: 2px;
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-md);
+  background: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.cur-toggle-btn:hover {
+  border-color: var(--color-accent);
+}
+.cur-sep { opacity: 0.4; margin: 0 1px; }
+.cur-rub, .cur-usd { opacity: 0.45; transition: opacity 0.2s; }
+.cur-rub.is-active-cur, .cur-usd.is-active-cur { opacity: 1; color: var(--color-accent); }
+
 .cart-badge[hidden] {
   display: none;
 }
