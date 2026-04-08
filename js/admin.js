@@ -6,6 +6,7 @@ const API = {
   promos: "/api/promocodes",
   analytics: "/api/analytics",
   cleanup: "/api/admin/cleanup",
+  uploadImageSign: "/api/upload-image-sign",
 };
 
 const fmtRub = (n) =>
@@ -285,15 +286,26 @@ function bindForms() {
   imageFileInput?.addEventListener("change", async () => {
     const file = imageFileInput.files?.[0];
     if (!file) return;
-    const fd = new FormData();
-    fd.append("image", file);
-    const res = await fetch("/api/upload-image", { method: "POST", body: fd });
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok) {
-      alert(data.error || "Не удалось загрузить фото");
-      return;
+    try {
+      const sign = await jsonFetch(API.uploadImageSign, { method: "POST" });
+      const fd = new FormData();
+      fd.append("file", file);
+      fd.append("api_key", sign.apiKey);
+      fd.append("timestamp", String(sign.timestamp));
+      fd.append("signature", sign.signature);
+      fd.append("folder", sign.folder);
+      const uploadRes = await fetch(
+        `https://api.cloudinary.com/v1_1/${encodeURIComponent(sign.cloudName)}/image/upload`,
+        { method: "POST", body: fd }
+      );
+      const uploadData = await uploadRes.json().catch(() => ({}));
+      if (!uploadRes.ok) {
+        throw new Error(uploadData.error?.message || "Не удалось загрузить фото");
+      }
+      productForm.image.value = uploadData.secure_url || "";
+    } catch (err) {
+      alert(err.message || "Не удалось загрузить фото");
     }
-    productForm.image.value = data.url;
   });
 
   productForm.addEventListener("submit", async (e) => {
