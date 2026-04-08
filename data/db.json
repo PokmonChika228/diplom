@@ -146,7 +146,7 @@
       "sale": false,
       "price": 29900,
       "oldPrice": 0,
-      "stock": 26,
+      "stock": 22,
       "sizes": [
         "XS",
         "S",
@@ -1093,7 +1093,7 @@
       "sale": false,
       "price": 10000,
       "oldPrice": 0,
-      "stock": 20,
+      "stock": 18,
       "sizes": [
         "XS",
         "S",
@@ -3012,10 +3012,10 @@
   "uiSettings": {
     "ticker": {
       "enabled": true,
-      "text": "DADSADASDSADASDSA"
+      "text": "ПРОМОКОД DARK15 НА 15% СКИДКУ"
     },
     "heroImage": {
-      "src": ""
+      "src": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScjwCw3_Xstqc5LWd4rwknM1OeVMILrT1LnA&s"
     }
   }
 }

@@ -104,7 +104,7 @@
 
     try {
       const order = await submitOrder();
-      sessionStorage.removeItem("brandCartLines");
+      if (typeof window.saveCartLines === "function") window.saveCartLines([]);
       sessionStorage.removeItem("brandPromoCode");
       _orderSuccess = true;
       if (typeof window.syncCartBadges === "function") window.syncCartBadges();

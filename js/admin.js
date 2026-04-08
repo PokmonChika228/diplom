@@ -96,7 +96,6 @@
         "<td>" + saleLabel + "</td>" +
         "<td>" + (p.oldPrice > 0 ? fmt(p.oldPrice) : "—") + "</td>" +
         "<td>" + fmt(p.price) + "</td>" +
-        "<td>" + (p.priceUsd > 0 ? "$" + Number(p.priceUsd).toLocaleString("en-US") : "—") + "</td>" +
         "<td" + (p.stock <= 5 ? ' style="color:var(--color-sale)"' : "") + ">" + p.stock + "</td>" +
         '<td class="actions" style="white-space:nowrap">' +
           '<button class="btn btn--outline" style="padding:4px 10px;font-size:0.75rem;margin-right:4px" onclick="editProduct(' + p.id + ')">✎ Изменить</button>' +
@@ -121,7 +120,6 @@
     document.getElementById("pm-category").value = isNew ? "other" : (product.category || "other");
     document.getElementById("pm-price").value = isNew ? "" : (product.price || 0);
     document.getElementById("pm-old-price").value = isNew ? "" : (product.oldPrice || 0);
-    document.getElementById("pm-price-usd").value = isNew ? "" : (product.priceUsd || 0);
     document.getElementById("pm-stock").value = isNew ? "" : (product.stock || 0);
     document.getElementById("pm-sale").checked = isNew ? false : !!product.sale;
     document.getElementById("pm-image").value = isNew ? "" : (product.image || "");
@@ -166,7 +164,6 @@
         category: document.getElementById("pm-category").value,
         price: parseFloat(document.getElementById("pm-price").value) || 0,
         oldPrice: parseFloat(document.getElementById("pm-old-price").value) || 0,
-        priceUsd: parseFloat(document.getElementById("pm-price-usd").value) || 0,
         stock: parseInt(document.getElementById("pm-stock").value, 10) || 0,
         sale: document.getElementById("pm-sale").checked,
         image: document.getElementById("pm-image").value.trim(),
@@ -450,19 +447,6 @@
     renderCategoryBreakdown(a.byCategory || []);
     renderLowStock(a.lowStockProducts || []);
 
-    var rateEl = document.getElementById("kpi-exchange-rate");
-    if (rateEl) {
-      fetch("/api/exchange-rate").then(function (r) { return r.json(); }).then(function (d) {
-        var rate = d.usdToRub || d.rate || 0;
-        if (rate) {
-          _cachedRate = rate;
-          rateEl.textContent = rate.toFixed(2) + " ₽/$";
-        } else {
-          rateEl.textContent = "—";
-        }
-      }).catch(function () { rateEl.textContent = "—"; });
-    }
-
     var topQtyEl = document.getElementById("top-qty");
     if (topQtyEl) {
       topQtyEl.innerHTML = (a.topByQty || []).map(function (x) { return "<li>" + esc(x.productName) + " — <strong>" + x.qty + " шт.</strong></li>"; }).join("") || "<li>Нет данных</li>";
@@ -509,8 +493,6 @@
     }).join("");
   }
 
-  /* ===================== EXCHANGE RATE CACHE ===================== */
-  var _cachedRate = 90;
 
   /* ===================== CHART ===================== */
   var rawByDay = [];
@@ -914,11 +896,6 @@
   var _pollInitialized = false;
 
   function initOrderPolling() {
-    fetch("/api/exchange-rate").then(function (r) { return r.json(); }).then(function (d) {
-      var rate = d.usdToRub || d.rate || 0;
-      if (rate) _cachedRate = rate;
-    }).catch(function () {});
-
     authFetch("/api/admin/orders/latest-id").then(function (r) {
       if (!r.ok) return;
       return r.json().then(function (d) {

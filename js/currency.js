@@ -6,7 +6,12 @@
     .then(function (r) { return r.json(); })
     .then(function (d) {
       var rate = d.usdToRub || 0;
-      if (rate > 0) window.EXCHANGE_RATE = rate;
+      if (rate > 0) {
+        window.EXCHANGE_RATE = rate;
+        if (window.CURRENCY === "USD") {
+          window.dispatchEvent(new CustomEvent("currencychange", { detail: { currency: "USD" } }));
+        }
+      }
     })
     .catch(function () {});
 

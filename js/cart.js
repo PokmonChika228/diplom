@@ -159,7 +159,7 @@
         const totalEl = row.querySelector("[data-line-total]");
         if (totalEl && product) {
           const rubTotal = Number(product.price || 0) * q;
-          const usdUnit = Number(product.priceUsd || 0) > 0 ? Number(product.priceUsd) : Math.round(Number(product.price || 0) / 90);
+          const usdUnit = Number(product.priceUsd || 0) > 0 ? Number(product.priceUsd) : Math.round(Number(product.price || 0) / (window.EXCHANGE_RATE || 90));
           const usdTotal = usdUnit * q;
           totalEl.setAttribute("data-rub", rubTotal);
           totalEl.setAttribute("data-usd", usdTotal);
