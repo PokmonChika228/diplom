@@ -38,40 +38,5 @@ window.SITE_CONTENT = window.SITE_CONTENT || {
       { id: "sale", label: "Sale", href: "catalog.html#sale", highlight: true },
     ],
   },
-  /** DYNAMIC: карточки с API — здесь только для прототипа */
-  productsNew: [
-    {
-      id: "p1",
-      name: "Пальто оверсайз, шерсть",
-      price: "42 900 ₽",
-      image:
-        "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=600&q=80&auto=format&fit=crop",
-      badges: ["new"],
-    },
-    {
-      id: "p2",
-      name: "Кашемировый свитер",
-      price: "18 500 ₽",
-      image:
-        "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&q=80&auto=format&fit=crop",
-      badges: [],
-    },
-    {
-      id: "p3",
-      name: "Брюки с защипами",
-      price: "12 900 ₽",
-      salePrice: "9 900 ₽",
-      image:
-        "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&q=80&auto=format&fit=crop",
-      badges: ["sale"],
-    },
-    {
-      id: "p4",
-      name: "Кожаная сумка",
-      price: "24 000 ₽",
-      image:
-        "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80&auto=format&fit=crop",
-      badges: ["new"],
-    },
-  ],
+  productsNew: [],
 };

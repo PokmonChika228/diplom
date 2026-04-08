@@ -5,6 +5,7 @@ const API = {
   orders: "/api/orders",
   promos: "/api/promocodes",
   analytics: "/api/analytics",
+  dashboard: "/api/admin/dashboard",
   cleanup: "/api/admin/cleanup",
   uploadImageSign: "/api/upload-image-sign",
 };
@@ -90,8 +91,7 @@ function drawSalesChart(canvas, data) {
   });
 }
 
-async function loadProducts() {
-  const products = await jsonFetch(API.products);
+function renderProducts(products) {
   const tbody = document.querySelector("#products-table tbody");
   const deliverySelect = document.querySelector('#delivery-form select[name="productId"]');
   tbody.innerHTML = "";
@@ -131,8 +131,7 @@ async function loadProducts() {
   });
 }
 
-async function loadInventory() {
-  const data = await jsonFetch(API.inventory);
+function renderInventory(data) {
   const stockBody = document.querySelector("#inventory-table tbody");
   const logBody = document.querySelector("#logs-table tbody");
   stockBody.innerHTML = "";
@@ -156,8 +155,7 @@ async function loadInventory() {
   });
 }
 
-async function loadOrders(filterOrderId = "") {
-  const orders = await jsonFetch(API.orders);
+function renderOrders(orders, filterOrderId = "") {
   const tbody = document.querySelector("#orders-table tbody");
   tbody.innerHTML = "";
 
@@ -211,8 +209,7 @@ async function loadOrders(filterOrderId = "") {
   }
 }
 
-async function loadPromos() {
-  const promos = await jsonFetch(API.promos);
+function renderPromos(promos) {
   const tbody = document.querySelector("#promos-table tbody");
   if (!tbody) return;
   tbody.innerHTML = "";
@@ -229,14 +226,13 @@ async function loadPromos() {
     tr.querySelector('[data-act="delete-promo"]').addEventListener("click", async () => {
       if (!confirm(`Удалить промокод ${p.code}?`)) return;
       await jsonFetch(`${API.promos}/${p.id}`, { method: "DELETE" });
-      await loadPromos();
+      await refreshAll();
     });
     tbody.appendChild(tr);
   });
 }
 
-async function loadAnalytics() {
-  const data = await jsonFetch(API.analytics);
+function renderAnalytics(data) {
   document.getElementById("kpi-orders").textContent = data.totalOrders;
   document.getElementById("kpi-products").textContent = data.totalProducts;
   document.getElementById("kpi-revenue").textContent = fmtRub(data.totalRevenue);
@@ -260,14 +256,20 @@ async function loadAnalytics() {
   drawSalesChart(document.getElementById("sales-chart"), data.byDay);
 }
 
-async function refreshAll() {
-  await Promise.all([
-    loadProducts(),
-    loadInventory(),
-    loadOrders(),
-    loadPromos(),
-    loadAnalytics(),
-  ]);
+async function refreshAll(filterOrderId = "") {
+  const dashboard = await jsonFetch(API.dashboard);
+  renderProducts(Array.isArray(dashboard.products) ? dashboard.products : []);
+  renderInventory(dashboard.inventory || { products: [], logs: [] });
+  renderOrders(Array.isArray(dashboard.orders) ? dashboard.orders : [], filterOrderId);
+  renderPromos(Array.isArray(dashboard.promos) ? dashboard.promos : []);
+  renderAnalytics(dashboard.analytics || {
+    totalOrders: 0,
+    totalProducts: 0,
+    totalRevenue: 0,
+    byDay: [],
+    topByQty: [],
+    topByRevenue: [],
+  });
 }
 
 function bindForms() {
@@ -361,13 +363,13 @@ function bindForms() {
       body: JSON.stringify(payload),
     });
     promoForm.reset();
-    await loadPromos();
+    await refreshAll();
   });
 
   orderSearchForm?.addEventListener("submit", async (e) => {
     e.preventDefault();
     const val = new FormData(orderSearchForm).get("orderId");
-    await loadOrders(String(val || "").trim());
+    await refreshAll(String(val || "").trim());
   });
 
   cleanupButtons.forEach((btn) => {

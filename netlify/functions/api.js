@@ -232,6 +232,54 @@ function resetCounter(db, key, collectionName) {
   db.counters[key] = maxId + 1;
 }
 
+function buildAnalytics(db) {
+  const byDayMap = new Map();
+  const salesByProduct = new Map();
+  db.orders.forEach((o) => {
+    const day = String(o.createdAt || "").slice(0, 10);
+    let orderRevenue = toNum(o.total, 0);
+    if (!orderRevenue) {
+      orderRevenue = o.items.reduce((sum, it) => sum + toNum(it.qty) * toNum(it.price), 0);
+    }
+    o.items.forEach((it) => {
+      const qty = toNum(it.qty, 0);
+      const revenue = qty * toNum(it.price, 0);
+      orderRevenue += revenue;
+      const prev = salesByProduct.get(it.productId) || {
+        productId: it.productId,
+        productName: it.productName,
+        qty: 0,
+        revenue: 0,
+      };
+      prev.qty += qty;
+      prev.revenue += revenue;
+      salesByProduct.set(it.productId, prev);
+    });
+    byDayMap.set(day, (byDayMap.get(day) || 0) + orderRevenue);
+  });
+  const byDay = Array.from(byDayMap.entries())
+    .map(([date, revenue]) => ({ date, revenue }))
+    .sort((a, b) => (a.date > b.date ? 1 : -1));
+  const topByQty = Array.from(salesByProduct.values())
+    .sort((a, b) => b.qty - a.qty)
+    .slice(0, 10);
+  const topByRevenue = Array.from(salesByProduct.values())
+    .sort((a, b) => b.revenue - a.revenue)
+    .slice(0, 10);
+  return {
+    totalOrders: db.orders.length,
+    totalProducts: db.products.length,
+    totalRevenue: db.orders.reduce((sum, o) => {
+      const total = toNum(o.total, 0);
+      if (total) return sum + total;
+      return sum + o.items.reduce((s, it) => s + toNum(it.qty) * toNum(it.price), 0);
+    }, 0),
+    byDay,
+    topByQty,
+    topByRevenue,
+  };
+}
+
 function parseBody(event) {
   if (!event.body) return {};
   if (event.isBase64Encoded) {
@@ -427,6 +475,36 @@ exports.handler = async (event) => {
       });
     }
 
+    if (route === "/api/admin/dashboard" && method === "GET") {
+      if (!adminAuthed(event)) return json(401, { error: "Unauthorized" });
+      const db = await readDb();
+      const orders = db.orders
+        .slice()
+        .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
+        .map((o) => {
+          const subtotal = o.items.reduce((sum, it) => sum + toNum(it.qty) * toNum(it.price), 0);
+          const discount = toNum(o.discountAmount, 0);
+          const total = Math.max(0, subtotal - discount);
+          return { ...o, subtotal, discount, total };
+        });
+      return json(200, {
+        products: db.products,
+        inventory: {
+          products: db.products.map((p) => ({
+            id: p.id,
+            name: p.name,
+            stock: p.stock,
+            category: p.category,
+            sale: !!p.sale,
+          })),
+          logs: db.inventoryLogs.slice().sort((a, b) => b.id - a.id).slice(0, 50),
+        },
+        orders,
+        promos: db.promoCodes || [],
+        analytics: buildAnalytics(db),
+      });
+    }
+
     if (route === "/api/inventory/delivery" && method === "POST") {
       if (!adminAuthed(event)) return json(401, { error: "Unauthorized" });
       const db = await readDb();
@@ -572,51 +650,7 @@ exports.handler = async (event) => {
     if (route === "/api/analytics" && method === "GET") {
       if (!adminAuthed(event)) return json(401, { error: "Unauthorized" });
       const db = await readDb();
-      const byDayMap = new Map();
-      const salesByProduct = new Map();
-      db.orders.forEach((o) => {
-        const day = String(o.createdAt || "").slice(0, 10);
-        let orderRevenue = toNum(o.total, 0);
-        if (!orderRevenue) {
-          orderRevenue = o.items.reduce((sum, it) => sum + toNum(it.qty) * toNum(it.price), 0);
-        }
-        o.items.forEach((it) => {
-          const qty = toNum(it.qty, 0);
-          const revenue = qty * toNum(it.price, 0);
-          orderRevenue += revenue;
-          const prev = salesByProduct.get(it.productId) || {
-            productId: it.productId,
-            productName: it.productName,
-            qty: 0,
-            revenue: 0,
-          };
-          prev.qty += qty;
-          prev.revenue += revenue;
-          salesByProduct.set(it.productId, prev);
-        });
-        byDayMap.set(day, (byDayMap.get(day) || 0) + orderRevenue);
-      });
-      const byDay = Array.from(byDayMap.entries())
-        .map(([date, revenue]) => ({ date, revenue }))
-        .sort((a, b) => (a.date > b.date ? 1 : -1));
-      const topByQty = Array.from(salesByProduct.values())
-        .sort((a, b) => b.qty - a.qty)
-        .slice(0, 10);
-      const topByRevenue = Array.from(salesByProduct.values())
-        .sort((a, b) => b.revenue - a.revenue)
-        .slice(0, 10);
-      return json(200, {
-        totalOrders: db.orders.length,
-        totalProducts: db.products.length,
-        totalRevenue: db.orders.reduce((sum, o) => {
-          const total = toNum(o.total, 0);
-          if (total) return sum + total;
-          return sum + o.items.reduce((s, it) => s + toNum(it.qty) * toNum(it.price), 0);
-        }, 0),
-        byDay,
-        topByQty,
-        topByRevenue,
-      });
+      return json(200, buildAnalytics(db));
     }
 
     if (route === "/api/admin/cleanup" && method === "POST") {
