@@ -476,9 +476,9 @@
 }
 
 .size-btn.is-selected {
-  background: var(--color-text);
+  background: #555;
   color: #fff;
-  border-color: var(--color-text);
+  border-color: #555;
 }
 
 .size-btn:disabled {

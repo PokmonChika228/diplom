@@ -550,10 +550,8 @@
     if (!canvas) return;
     var ctx = canvas.getContext("2d");
     var dpr = window.devicePixelRatio || 1;
-    canvas.style.width = "";
-    canvas.style.height = "";
-    var cssW = canvas.offsetWidth || parseInt(canvas.getAttribute("width"), 10) || 600;
-    var cssH = parseInt(canvas.getAttribute("height"), 10) || 260;
+    var cssW = canvas.offsetWidth || 600;
+    var cssH = 260;
     canvas.width = cssW * dpr;
     canvas.height = cssH * dpr;
     canvas.style.width = cssW + "px";
