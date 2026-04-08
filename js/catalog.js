@@ -7,7 +7,7 @@
   if (!grid) return;
   const sortSelect = document.querySelector("[data-sort]");
   const pagination = document.querySelector(".pagination");
-  const PAGE_SIZE = 6;
+  const PAGE_SIZE = 24;
   let currentPage = 1;
   let bootstrapped = false;
 

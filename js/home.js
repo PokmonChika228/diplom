@@ -79,7 +79,7 @@
       const products = await res.json();
       const saleProducts = (Array.isArray(products) ? products : [])
         .filter((p) => !!p.sale)
-        .slice(0, 6);
+        .slice(0, 12);
       renderSaleCards(saleProducts);
       if (saleEmpty) saleEmpty.hidden = saleProducts.length > 0;
     } catch {
