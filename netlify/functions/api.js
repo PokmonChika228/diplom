@@ -91,16 +91,27 @@ async function readDb() {
     }
   }
 
-  const dbPath = effectiveDbPath();
-  const dir = path.dirname(dbPath);
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  if (!fs.existsSync(dbPath)) {
-    fs.writeFileSync(dbPath, JSON.stringify(INITIAL_DB, null, 2));
-    return { ...INITIAL_DB };
+  const primaryPath = effectiveDbPath();
+  const fallbackPath = TMP_DB_PATH;
+  const candidates = [primaryPath, fallbackPath].filter((v, i, a) => v && a.indexOf(v) === i);
+
+  for (const dbPath of candidates) {
+    try {
+      const dir = path.dirname(dbPath);
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+      if (!fs.existsSync(dbPath)) {
+        fs.writeFileSync(dbPath, JSON.stringify(INITIAL_DB, null, 2));
+        return { ...INITIAL_DB };
+      }
+      const db = normalizeDb(JSON.parse(fs.readFileSync(dbPath, "utf-8")));
+      fs.writeFileSync(dbPath, JSON.stringify(db, null, 2));
+      return db;
+    } catch {
+      // try next candidate path
+    }
   }
-  const db = normalizeDb(JSON.parse(fs.readFileSync(dbPath, "utf-8")));
-  fs.writeFileSync(dbPath, JSON.stringify(db, null, 2));
-  return db;
+
+  throw new Error("No writable storage path available");
 }
 
 async function writeDb(db) {
@@ -114,10 +125,22 @@ async function writeDb(db) {
       // Blobs might be unavailable in current environment; fallback to local writable path.
     }
   }
-  const dbPath = effectiveDbPath();
-  const dir = path.dirname(dbPath);
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(dbPath, JSON.stringify(normalized, null, 2));
+  const primaryPath = effectiveDbPath();
+  const fallbackPath = TMP_DB_PATH;
+  const candidates = [primaryPath, fallbackPath].filter((v, i, a) => v && a.indexOf(v) === i);
+
+  for (const dbPath of candidates) {
+    try {
+      const dir = path.dirname(dbPath);
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+      fs.writeFileSync(dbPath, JSON.stringify(normalized, null, 2));
+      return;
+    } catch {
+      // try next candidate path
+    }
+  }
+
+  throw new Error("No writable storage path available");
 }
 
 function parseCookies(cookieHeader) {
