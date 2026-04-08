@@ -707,6 +707,10 @@ app.get("/api/admin/dashboard", requireAdminApi, (_req, res) => {
 // Парсер vitrine.market
 app.post("/api/admin/parse-vitrine", requireAdminApi, async (req, res) => {
   const db = readDb();
+  const body = req.body || {};
+  const requestCount = Math.min(50, Math.max(1, toNum(body.count, 10)));
+  const forceAdd = body.force === true || body.force === "true";
+
   const existingNames = new Set(db.products.map((p) => String(p.name).toLowerCase().trim()));
 
   function detectCategory(name, desc) {
@@ -721,6 +725,82 @@ app.post("/api/admin/parse-vitrine", requireAdminApi, async (req, res) => {
     return "other";
   }
 
+  function catImage(cat, label) {
+    const BG = { mens: "141414", womens: "1a1214", unisex: "12141a", accessories: "141a14", other: "1a1a1a" };
+    const bg = BG[cat] || "1a1a1a";
+    const enc = encodeURIComponent(label.slice(0, 24));
+    return `https://placehold.co/800x1067/${bg}/555555?text=${enc}`;
+  }
+
+  function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  // Большой демо-каталог — 50 позиций
+  const DEMO_CATALOG = [
+    { name: "Рубашка оверсайз хлопок", price: 5900, category: "mens", sizes: ["S","M","L","XL"], colors: ["Белый","Черный"], description: "Свободная рубашка из плотного хлопка.", composition: "100% хлопок", care: "Стирка при 40°C" },
+    { name: "Куртка бомбер тёмная", price: 14500, oldPrice: 18000, category: "mens", sale: true, sizes: ["S","M","L"], colors: ["Черный"], description: "Классический бомбер с рибом-манжетами.", composition: "100% нейлон", care: "Химчистка" },
+    { name: "Свитер объёмный шерсть", price: 9800, category: "mens", sizes: ["S","M","L","XL"], colors: ["Серый","Черный"], description: "Вязаный свитер крупной вязки.", composition: "100% шерсть", care: "Ручная стирка" },
+    { name: "Брюки со складками и стрелками", price: 8400, category: "womens", sizes: ["XS","S","M","L"], colors: ["Черный","Серый"], description: "Классические брюки со стрелками.", composition: "65% полиэстер, 35% вискоза", care: "Химчистка" },
+    { name: "Кардиган длинный вязаный", price: 7600, category: "unisex", sizes: ["S","M","L","XL"], colors: ["Бежевый","Черный","Серый"], description: "Длинный кардиган rib-вязки.", composition: "50% шерсть, 50% акрил", care: "Ручная стирка" },
+    { name: "Шорты-бермуды технические", price: 5800, category: "mens", sizes: ["S","M","L","XL"], colors: ["Черный","Оливковый"], description: "Шорты длиной до колена с карманами.", composition: "100% полиэстер", care: "Стирка при 30°C" },
+    { name: "Платье-рубашка midi", price: 11500, category: "womens", sizes: ["XS","S","M","L"], colors: ["Черный","Белый"], description: "Платье-рубашка свободного кроя.", composition: "100% хлопок", care: "Стирка при 30°C" },
+    { name: "Снуд-труба шерстяной", price: 3200, category: "accessories", sizes: ["ONE SIZE"], colors: ["Черный","Серый"], description: "Шерстяной снуд двойной вязки.", composition: "100% мериносовая шерсть", care: "Ручная стирка" },
+    { name: "Жилет стёганый утеплённый", price: 7200, category: "unisex", sizes: ["XS","S","M","L","XL"], colors: ["Черный","Тёмно-зелёный"], description: "Лёгкий утеплённый жилет.", composition: "Нейлон / полиэстер", care: "Стирка при 30°C" },
+    { name: "Пальто-кейп без рукавов", price: 22000, oldPrice: 28000, category: "womens", sale: true, sizes: ["XS","S","M"], colors: ["Черный"], description: "Пальто-кейп прямого силуэта.", composition: "80% шерсть, 20% полиэстер", care: "Химчистка" },
+    { name: "Топ-бандо из бархата", price: 4200, category: "womens", sizes: ["XS","S","M"], colors: ["Черный","Бордо"], description: "Облегающий топ-бандо с бархатной текстурой.", composition: "90% полиэстер, 10% эластан", care: "Стирка при 30°C" },
+    { name: "Лонгслив технический zip", price: 6500, category: "mens", sizes: ["S","M","L","XL"], colors: ["Черный"], description: "Технический лонгслив с молнией на груди.", composition: "92% полиэстер, 8% эластан", care: "Стирка при 30°C" },
+    { name: "Мини-юбка кожаная", price: 9200, oldPrice: 11500, category: "womens", sale: true, sizes: ["XS","S","M","L"], colors: ["Черный"], description: "Мини-юбка из экокожи с боковой молнией.", composition: "100% полиуретан", care: "Протирать влажной тряпкой" },
+    { name: "Парка тактическая тёмная", price: 19800, category: "mens", sizes: ["S","M","L","XL","XXL"], colors: ["Черный","Тёмно-оливковый"], description: "Парка с множеством карманов и регулируемым капюшоном.", composition: "100% нейлон", care: "Стирка при 30°C" },
+    { name: "Туника асимметричная льняная", price: 7800, category: "womens", sizes: ["XS","S","M","L"], colors: ["Черный","Белый"], description: "Льняная туника с асимметричным краем.", composition: "100% лён", care: "Стирка при 40°C" },
+    { name: "Борсетка кожаная матовая", price: 5600, category: "accessories", sizes: ["ONE SIZE"], colors: ["Черный"], description: "Борсетка из матовой кожи с магнитной застёжкой.", composition: "Натуральная кожа", care: "Протирать влажной тряпкой" },
+    { name: "Кепка 6-панельная", price: 2400, category: "accessories", sizes: ["ONE SIZE"], colors: ["Черный","Серый"], description: "Структурированная кепка с плоским козырьком.", composition: "100% хлопок", care: "Протирать влажной тряпкой" },
+    { name: "Носки утеплённые рёберные", price: 1200, category: "accessories", sizes: ["36-38","39-41","42-44"], colors: ["Черный","Серый","Белый"], description: "Плотные носки из мерино-вязки с рёберной текстурой.", composition: "70% шерсть, 30% нейлон", care: "Ручная стирка" },
+    { name: "Джоггеры карго широкие", price: 8900, category: "unisex", sizes: ["XS","S","M","L","XL"], colors: ["Черный","Графит"], description: "Широкие джоггеры с накладными карманами.", composition: "60% хлопок, 40% полиэстер", care: "Стирка при 40°C" },
+    { name: "Ветровка оверсайз лёгкая", price: 6400, category: "unisex", sizes: ["S","M","L","XL"], colors: ["Черный","Тёмно-синий"], description: "Лёгкая ветровка с упаковочным чехлом.", composition: "100% нейлон", care: "Стирка при 30°C" },
+    { name: "Пиджак двубортный тёмный", price: 23500, category: "mens", sizes: ["S","M","L","XL"], colors: ["Черный","Тёмно-серый"], description: "Строгий двубортный пиджак с острыми плечами.", composition: "55% шерсть, 45% полиэстер", care: "Химчистка" },
+    { name: "Корсет на шнуровке", price: 8700, oldPrice: 10800, category: "womens", sale: true, sizes: ["XS","S","M","L"], colors: ["Черный"], description: "Жёсткий корсет с задней шнуровкой.", composition: "100% полиэстер", care: "Химчистка" },
+    { name: "Шарф-палантин твиловый", price: 4500, category: "accessories", sizes: ["ONE SIZE"], colors: ["Черный","Белый","Клетка"], description: "Лёгкий шарф-палантин из вискозного твила.", composition: "100% вискоза", care: "Химчистка" },
+    { name: "Майка-сетка базовая", price: 2800, category: "unisex", sizes: ["XS","S","M","L","XL"], colors: ["Черный","Белый"], description: "Базовая майка-сетка крупного плетения.", composition: "100% полиэстер", care: "Стирка при 30°C" },
+    { name: "Дождевик нейлоновый капсула", price: 5200, category: "unisex", sizes: ["S","M","L","XL"], colors: ["Черный","Тёмно-зелёный"], description: "Складной дождевик с проклеенными швами.", composition: "100% нейлон", care: "Стирка при 30°C" },
+    { name: "Брюки из экокожи прямые", price: 12800, category: "womens", sizes: ["XS","S","M","L"], colors: ["Черный"], description: "Прямые брюки из матовой экокожи.", composition: "100% полиуретан", care: "Протирать влажной тряпкой" },
+    { name: "Трикотажная водолазка тонкая", price: 4800, category: "unisex", sizes: ["XS","S","M","L","XL"], colors: ["Черный","Белый","Серый"], description: "Тонкая водолазка из трикотажа для layering.", composition: "80% вискоза, 20% нейлон", care: "Стирка при 30°C" },
+    { name: "Укороченная куртка-косуха", price: 21000, category: "womens", sizes: ["XS","S","M"], colors: ["Черный"], description: "Укороченная куртка-косуха из плотной экокожи.", composition: "100% полиуретан", care: "Протирать влажной тряпкой" },
+    { name: "Флисовая кофта полар", price: 6200, category: "unisex", sizes: ["S","M","L","XL","XXL"], colors: ["Черный","Серый","Тёмно-синий"], description: "Тёплая флисовая кофта с высоким воротником.", composition: "100% полиэстер", care: "Стирка при 40°C" },
+    { name: "Клатч цепочка вечерний", price: 7100, category: "accessories", sizes: ["ONE SIZE"], colors: ["Черный","Серебро"], description: "Металлический клатч на цепочке для вечерних выходов.", composition: "Металл / экокожа", care: "Протирать влажной тряпкой" },
+    { name: "Широкий галстук тёмный", price: 2100, category: "accessories", sizes: ["ONE SIZE"], colors: ["Черный","Тёмно-бордо"], description: "Широкий галстук из матовой ткани.", composition: "100% полиэстер", care: "Химчистка" },
+    { name: "Рубашка льняная тёмная", price: 6800, category: "mens", sizes: ["S","M","L","XL"], colors: ["Тёмно-серый","Черный"], description: "Лёгкая льняная рубашка с кармашком.", composition: "100% лён", care: "Стирка при 40°C" },
+    { name: "Платье миди с разрезом", price: 13500, category: "womens", sizes: ["XS","S","M","L"], colors: ["Черный"], description: "Платье миди из джерси с боковым разрезом.", composition: "95% вискоза, 5% эластан", care: "Стирка при 30°C" },
+    { name: "Шорты спортивные двойные", price: 4200, category: "unisex", sizes: ["XS","S","M","L","XL"], colors: ["Черный"], description: "Шорты с внутренними тайтсами.", composition: "88% полиэстер, 12% эластан", care: "Стирка при 40°C" },
+    { name: "Сарафан многоярусный", price: 9600, category: "womens", sizes: ["XS","S","M","L"], colors: ["Черный","Тёмно-синий"], description: "Многоярусный сарафан из лёгкой ткани.", composition: "100% вискоза", care: "Ручная стирка" },
+    { name: "Тёплые леггинсы зимние", price: 3400, category: "womens", sizes: ["XS","S","M","L","XL"], colors: ["Черный","Тёмно-серый"], description: "Флисовые леггинсы с высокой талией.", composition: "80% полиэстер, 20% эластан", care: "Стирка при 40°C" },
+    { name: "Куртка пуховик сити", price: 28500, category: "unisex", sizes: ["S","M","L","XL"], colors: ["Черный"], description: "Лёгкий городской пуховик с воротником-стойкой.", composition: "Нейлон / утеплитель 80%пух 20%перо", care: "Химчистка" },
+    { name: "Двойная косуха с поясом", price: 32000, oldPrice: 40000, category: "womens", sale: true, sizes: ["XS","S","M"], colors: ["Черный"], description: "Байкерская куртка с двойными молниями.", composition: "Натуральная кожа", care: "Химчистка" },
+    { name: "Рюкзак городской минимал", price: 11200, category: "accessories", sizes: ["ONE SIZE"], colors: ["Черный"], description: "Компактный рюкзак с отделом для ноутбука.", composition: "Нейлон 600D", care: "Протирать влажной тряпкой" },
+    { name: "Поло плотное пике", price: 5400, category: "mens", sizes: ["S","M","L","XL","XXL"], colors: ["Черный","Белый","Серый"], description: "Классическое поло из плотного хлопка пике.", composition: "100% хлопок", care: "Стирка при 40°C" },
+    { name: "Боди-бра без косточек", price: 3900, category: "womens", sizes: ["XS","S","M","L"], colors: ["Черный","Телесный"], description: "Боди-бра из плотного микрофибры.", composition: "80% полиамид, 20% эластан", care: "Ручная стирка" },
+    { name: "Перчатки кожаные тонкие", price: 4100, category: "accessories", sizes: ["S","M","L"], colors: ["Черный","Тёмно-коричневый"], description: "Тонкие кожаные перчатки без подкладки.", composition: "Натуральная кожа", care: "Протирать влажной тряпкой" },
+    { name: "Трикотажный костюм двойка", price: 16800, oldPrice: 21000, category: "unisex", sale: true, sizes: ["XS","S","M","L","XL"], colors: ["Черный","Серый"], description: "Мягкий трикотажный костюм из хлопкового джерси.", composition: "95% хлопок, 5% эластан", care: "Стирка при 30°C" },
+    { name: "Мюли кожаные блочный каблук", price: 9800, category: "womens", sizes: ["36","37","38","39","40"], colors: ["Черный"], description: "Мюли с блочным каблуком и открытым носком.", composition: "Натуральная кожа", care: "Протирать влажной тряпкой" },
+    { name: "Рукавички-митенки вязаные", price: 1800, category: "accessories", sizes: ["ONE SIZE"], colors: ["Черный","Серый","Бежевый"], description: "Вязаные митенки из шерстяной пряжи.", composition: "100% шерсть", care: "Ручная стирка" },
+    { name: "Жакет с пэчворком тёмный", price: 18500, category: "unisex", sizes: ["S","M","L","XL"], colors: ["Черный/Тёмно-серый"], description: "Жакет с вставками из разных текстур.", composition: "Смесовые ткани", care: "Химчистка" },
+    { name: "Трикотажный топ бюстье", price: 3700, category: "womens", sizes: ["XS","S","M","L"], colors: ["Черный","Белый"], description: "Трикотажный топ в форме бюстье с широкими бретелями.", composition: "90% хлопок, 10% эластан", care: "Стирка при 30°C" },
+    { name: "Плиссированная юбка миди", price: 7900, category: "womens", sizes: ["XS","S","M","L"], colors: ["Черный","Тёмно-серый"], description: "Плиссированная юбка миди с эластичным поясом.", composition: "100% полиэстер", care: "Стирка при 30°C" },
+    { name: "Бейзбольная куртка на кнопках", price: 15600, category: "mens", sizes: ["S","M","L","XL"], colors: ["Черный","Черный/Белый"], description: "Бейсбольная куртка с рибом на манжетах.", composition: "65% шерсть, 35% полиэстер", care: "Химчистка" },
+    { name: "Чокер кожаный со шипами", price: 2200, category: "accessories", sizes: ["ONE SIZE"], colors: ["Черный"], description: "Чокер из натуральной кожи с металлическими шипами.", composition: "Натуральная кожа / металл", care: "Протирать влажной тряпкой" },
+    { name: "Тренч оверсайз тёмный", price: 26000, oldPrice: 32000, category: "unisex", sale: true, sizes: ["S","M","L","XL"], colors: ["Черный","Тёмно-оливковый"], description: "Удлинённый тренч оверсайз с двубортной застёжкой.", composition: "60% хлопок, 40% полиэстер", care: "Химчистка" },
+  ];
+
+  let parsed = [];
+  let source = "demo";
+
   // Пробуем получить данные с vitrine.market
   const https = require("https");
   const http = require("http");
@@ -729,42 +809,21 @@ app.post("/api/admin/parse-vitrine", requireAdminApi, async (req, res) => {
     return new Promise((resolve, reject) => {
       const proto = url.startsWith("https") ? https : http;
       const req = proto.get(url, {
-        headers: {
-          "User-Agent": "Mozilla/5.0 (compatible; ZhuchyBot/1.0)",
-          "Accept": "text/html,application/json,*/*",
-        },
-        timeout: 8000,
+        headers: { "User-Agent": "Mozilla/5.0 (compatible; ZhuchyBot/1.0)", "Accept": "text/html,application/json,*/*" },
+        timeout: 6000,
       }, (r) => {
         let data = "";
         r.on("data", (chunk) => { data += chunk; });
-        r.on("end", () => resolve({ status: r.statusCode, body: data, headers: r.headers }));
+        r.on("end", () => resolve({ status: r.statusCode, body: data }));
       });
       req.on("error", reject);
       req.on("timeout", () => { req.destroy(); reject(new Error("Timeout")); });
     });
   }
 
-  // Fallback-каталог, если сайт недоступен
-  const FALLBACK_PRODUCTS = [
-    { name: "Рубашка оверсайз хлопок", price: 5900, category: "mens", sizes: ["S","M","L","XL"], colors: ["Белый","Черный"], description: "Свободная рубашка из плотного хлопка.", composition: "100% хлопок", care: "Стирка при 40°C" },
-    { name: "Куртка бомбер тёмная", price: 14500, oldPrice: 18000, category: "mens", sale: true, sizes: ["S","M","L"], colors: ["Черный"], description: "Классический бомбер с рибом-манжетами.", composition: "100% нейлон", care: "Химчистка" },
-    { name: "Свитер объёмный шерсть", price: 9800, category: "mens", sizes: ["S","M","L","XL"], colors: ["Серый","Черный"], description: "Вязаный свитер крупной вязки.", composition: "100% шерсть", care: "Ручная стирка" },
-    { name: "Жилет стёганый утеплённый", price: 7200, category: "unisex", sizes: ["XS","S","M","L","XL"], colors: ["Черный","Тёмно-зелёный"], description: "Лёгкий утеплённый жилет.", composition: "Нейлон / полиэстер", care: "Стирка при 30°C" },
-    { name: "Пальто-кейп без рукавов", price: 22000, oldPrice: 28000, category: "womens", sale: true, sizes: ["XS","S","M"], colors: ["Черный"], description: "Пальто-кейп прямого силуэта.", composition: "80% шерсть, 20% полиэстер", care: "Химчистка" },
-    { name: "Брюки со складками и стрелками", price: 8400, category: "womens", sizes: ["XS","S","M","L"], colors: ["Черный","Серый"], description: "Классические брюки со стрелками.", composition: "65% полиэстер, 35% вискоза", care: "Химчистка" },
-    { name: "Кардиган длинный вязаный", price: 7600, category: "unisex", sizes: ["S","M","L","XL"], colors: ["Бежевый","Черный","Серый"], description: "Длинный кардиган rib-вязки.", composition: "50% шерсть, 50% акрил", care: "Ручная стирка" },
-    { name: "Шорты-бермуды технические", price: 5800, category: "mens", sizes: ["S","M","L","XL"], colors: ["Черный","Оливковый"], description: "Шорты длиной до колена с карманами.", composition: "100% полиэстер", care: "Стирка при 30°C" },
-    { name: "Платье-рубашка midi", price: 11500, category: "womens", sizes: ["XS","S","M","L"], colors: ["Черный","Белый"], description: "Платье-рубашка свободного кроя.", composition: "100% хлопок", care: "Стирка при 30°C" },
-    { name: "Снуд-труба шерстяной", price: 3200, category: "accessories", sizes: ["ONE SIZE"], colors: ["Черный","Серый"], description: "Шерстяной снуд двойной вязки.", composition: "100% мериносовая шерсть", care: "Ручная стирка" },
-  ];
-
-  let parsed = [];
-  let source = "fallback";
-
   try {
     const result = await fetchUrl("https://vitrine.market/catalog/odezhda");
     if (result.status === 200 && result.body.length > 500) {
-      // Ищем JSON-данные в HTML (embedded JSON schema)
       const jsonMatches = result.body.match(/application\/ld\+json[^>]*>([\s\S]*?)<\/script>/gi) || [];
       for (const m of jsonMatches) {
         try {
@@ -773,15 +832,22 @@ app.post("/api/admin/parse-vitrine", requireAdminApi, async (req, res) => {
           const items = Array.isArray(data) ? data : (data["@graph"] ? data["@graph"] : [data]);
           for (const item of items) {
             if (item["@type"] === "Product" && item.name) {
+              const cat = detectCategory(item.name, item.description || "");
+              // Попытка получить изображение из разных полей schema.org
+              let img = "";
+              if (item.image) {
+                img = Array.isArray(item.image) ? item.image[0] : String(item.image);
+                if (img && !img.startsWith("http")) img = "";
+              }
+              if (!img) img = catImage(cat, item.name);
               parsed.push({
                 name: String(item.name).slice(0, 120),
                 price: Math.round(toNum(item.offers?.price || item.price, 0)),
                 description: String(item.description || "").slice(0, 500),
-                image: String(item.image || ""),
-                category: detectCategory(item.name, item.description || ""),
+                image: img,
+                category: cat,
                 sizes: ["S", "M", "L"],
                 colors: ["Черный"],
-                stock: 10,
                 composition: "",
                 care: "",
               });
@@ -789,61 +855,55 @@ app.post("/api/admin/parse-vitrine", requireAdminApi, async (req, res) => {
           }
         } catch (_) {}
       }
-
-      // Ищем product listings в HTML
-      if (parsed.length === 0) {
-        const nameMatches = result.body.match(/"name"\s*:\s*"([^"]{5,120})"/g) || [];
-        const priceMatches = result.body.match(/"price"\s*:\s*"?(\d+(?:\.\d+)?)"?/g) || [];
-        for (let i = 0; i < Math.min(nameMatches.length, priceMatches.length, 20); i++) {
-          const name = nameMatches[i].match(/"name"\s*:\s*"([^"]+)"/)?.[1] || "";
-          const priceStr = priceMatches[i].match(/(\d+(?:\.\d+)?)/)?.[1] || "0";
-          const price = Math.round(parseFloat(priceStr));
-          if (name && price > 0) {
-            parsed.push({
-              name,
-              price,
-              description: "",
-              image: "",
-              category: detectCategory(name, ""),
-              sizes: ["S", "M", "L"],
-              colors: ["Черный"],
-              stock: 10,
-              composition: "",
-              care: "",
-            });
-          }
-        }
-      }
       if (parsed.length > 0) source = "vitrine.market";
     }
   } catch (_) {}
 
+  // Если с vitrine.market не пришло ничего — используем демо-каталог
   if (parsed.length === 0) {
-    parsed = FALLBACK_PRODUCTS;
+    parsed = shuffle(DEMO_CATALOG);
     source = "demo";
   }
 
-  // Добавляем без дублей (по имени)
+  // Добавляем товары
   const added = [];
   const skipped = [];
+  let addedCount = 0;
+
   for (const item of parsed) {
-    const nameKey = String(item.name || "").toLowerCase().trim();
-    if (!nameKey || existingNames.has(nameKey)) {
+    if (addedCount >= requestCount) break;
+    let nameKey = String(item.name || "").toLowerCase().trim();
+    if (!nameKey) continue;
+
+    // Если имя занято и не форсируем — пропускаем
+    if (existingNames.has(nameKey) && !forceAdd) {
       skipped.push(item.name);
       continue;
     }
+
+    // При форсе добавляем с уникальным суффиксом
+    let finalName = String(item.name).trim();
+    if (existingNames.has(nameKey) && forceAdd) {
+      const suffix = ` (${new Date().toLocaleTimeString("ru-RU").slice(0,5)}·${randInt(10,99)})`;
+      finalName = finalName + suffix;
+      nameKey = finalName.toLowerCase();
+    }
+
     existingNames.add(nameKey);
+    const cat = item.category || detectCategory(item.name, item.description || "");
+    const image = item.image && item.image.startsWith("http") ? item.image : catImage(cat, finalName);
+
     const product = {
       id: db.counters.product++,
-      name: String(item.name).trim(),
-      category: item.category || "other",
+      name: finalName,
+      category: cat,
       sale: !!item.sale,
       price: Math.max(0, toNum(item.price, 0)),
       oldPrice: Math.max(0, toNum(item.oldPrice, 0)),
-      stock: Math.max(1, toNum(item.stock, 10)),
+      stock: randInt(5, 40),
       sizes: Array.isArray(item.sizes) ? item.sizes : ["S", "M", "L"],
       colors: Array.isArray(item.colors) ? item.colors : ["Черный"],
-      image: String(item.image || ""),
+      image,
       description: String(item.description || "").slice(0, 500),
       composition: String(item.composition || ""),
       care: String(item.care || ""),
@@ -852,10 +912,106 @@ app.post("/api/admin/parse-vitrine", requireAdminApi, async (req, res) => {
     };
     db.products.push(product);
     added.push(product);
+    addedCount++;
   }
 
   writeDb(db);
   res.json({ ok: true, added: added.length, skipped: skipped.length, source });
+});
+
+// Генерация случайных заказов
+app.post("/api/admin/generate-orders", requireAdminApi, (req, res) => {
+  const db = readDb();
+  const body = req.body || {};
+  const count = Math.min(100, Math.max(1, toNum(body.count, 5)));
+
+  const products = db.products.filter((p) => toNum(p.stock, 0) > 0);
+  if (!products.length) return res.status(400).json({ error: "Нет товаров в каталоге" });
+
+  const NAMES = ["Алексей Морозов","Мария Соколова","Дмитрий Волков","Елена Кузнецова","Иван Петров","Ольга Смирнова","Тимур Ахметов","Анна Лебедева","Сергей Попов","Наталья Козлова","Кирилл Новиков","Юлия Зайцева","Максим Орлов","Вера Белова","Андрей Чернов","Светлана Фёдорова","Павел Матвеев","Ксения Захарова","Роман Сидоров","Тамара Баранова","Илья Виноградов","Алина Логинова"];
+  const CITIES = ["Москва","Санкт-Петербург","Казань","Краснодар","Уфа","Новосибирск","Екатеринбург","Ростов-на-Дону","Омск","Самара","Челябинск","Воронеж","Пермь","Волгоград","Красноярск"];
+  const STREETS = ["ул. Ленина","ул. Мира","пр. Победы","ул. Советская","пр. Кирова","ул. Садовая","пр. Гагарина","ул. Пушкина","ул. Горького","пр. Дружбы"];
+  const DELIVERIES = [
+    { key: "pickup", label: "Самовывоз", cost: 0 },
+    { key: "courier", label: "Курьер", cost: 500 },
+    { key: "cdek", label: "СДЭК / ПВЗ", cost: 350 },
+  ];
+  const PAYMENTS = [
+    { key: "card", label: "Картой онлайн" },
+    { key: "sbp", label: "СБП" },
+    { key: "receipt", label: "При получении" },
+  ];
+  const STATUSES = ["new","new","processing","shipped","done","done","cancelled"];
+  const PROMOS = (db.promoCodes || []).filter((p) => p.active);
+
+  function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+  function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+  const generated = [];
+  for (let i = 0; i < count; i++) {
+    const numItems = randInt(1, 3);
+    const shuffled = products.slice().sort(() => Math.random() - 0.5);
+    const orderItems = [];
+    let subtotal = 0;
+    for (let j = 0; j < Math.min(numItems, shuffled.length); j++) {
+      const p = shuffled[j];
+      const qty = randInt(1, 2);
+      orderItems.push({ productId: p.id, productName: p.name, qty, price: p.price });
+      subtotal += qty * p.price;
+    }
+    if (!orderItems.length) continue;
+
+    const del = pick(DELIVERIES);
+    const pay = pick(PAYMENTS);
+    const status = pick(STATUSES);
+
+    let promoApplied = null;
+    let discountAmount = 0;
+    const usePromo = PROMOS.length > 0 && Math.random() < 0.35;
+    if (usePromo) {
+      const promo = pick(PROMOS);
+      if (promo.type === "percent") {
+        discountAmount = Math.round((subtotal * Math.min(100, promo.value)) / 100);
+      } else {
+        discountAmount = Math.min(subtotal, promo.value);
+      }
+      promoApplied = { id: promo.id, code: promo.code, type: promo.type, value: promo.value };
+    }
+
+    const city = pick(CITIES);
+    const street = pick(STREETS);
+    const houseNum = randInt(1, 200);
+    const apt = randInt(1, 150);
+    const daysAgo = randInt(0, 90);
+    const orderDate = new Date(Date.now() - daysAgo * 86400000);
+
+    const order = {
+      id: db.counters.order++,
+      customerName: pick(NAMES),
+      phone: `+7 (${randInt(900,999)}) ${randInt(100,999)}-${randInt(10,99)}-${randInt(10,99)}`,
+      email: `user${randInt(100,9999)}@example.com`,
+      address: `${city}, ${street}, ${houseNum}, кв. ${apt}`,
+      comment: "",
+      status,
+      delivery: del.key,
+      deliveryLabel: del.label,
+      deliveryCost: del.cost,
+      payment: pay.key,
+      paymentLabel: pay.label,
+      items: orderItems,
+      promoCode: promoApplied ? promoApplied.code : "",
+      promoApplied,
+      subtotal,
+      discountAmount,
+      total: Math.max(0, subtotal - discountAmount) + del.cost,
+      createdAt: orderDate.toISOString(),
+    };
+    db.orders.push(order);
+    generated.push(order);
+  }
+
+  writeDb(db);
+  res.json({ ok: true, generated: generated.length });
 });
 
 app.post("/api/admin/cleanup", requireAdminApi, (req, res) => {

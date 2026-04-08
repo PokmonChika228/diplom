@@ -464,6 +464,1249 @@
       "care": "Протирать влажной тряпкой",
       "createdAt": "2026-02-24T10:00:00.000Z",
       "updatedAt": "2026-02-24T10:00:00.000Z"
+    },
+    {
+      "id": 20,
+      "name": "Рубашка оверсайз хлопок",
+      "category": "mens",
+      "sale": false,
+      "price": 5900,
+      "oldPrice": 0,
+      "stock": 10,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Белый",
+        "Черный"
+      ],
+      "image": "",
+      "description": "Свободная рубашка из плотного хлопка.",
+      "composition": "100% хлопок",
+      "care": "Стирка при 40°C",
+      "createdAt": "2026-04-08T16:16:11.683Z",
+      "updatedAt": "2026-04-08T16:16:11.683Z"
+    },
+    {
+      "id": 21,
+      "name": "Куртка бомбер тёмная",
+      "category": "mens",
+      "sale": true,
+      "price": 14500,
+      "oldPrice": 18000,
+      "stock": 10,
+      "sizes": [
+        "S",
+        "M",
+        "L"
+      ],
+      "colors": [
+        "Черный"
+      ],
+      "image": "",
+      "description": "Классический бомбер с рибом-манжетами.",
+      "composition": "100% нейлон",
+      "care": "Химчистка",
+      "createdAt": "2026-04-08T16:16:11.683Z",
+      "updatedAt": "2026-04-08T16:16:11.683Z"
+    },
+    {
+      "id": 22,
+      "name": "Свитер объёмный шерсть",
+      "category": "mens",
+      "sale": false,
+      "price": 9800,
+      "oldPrice": 0,
+      "stock": 10,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Серый",
+        "Черный"
+      ],
+      "image": "",
+      "description": "Вязаный свитер крупной вязки.",
+      "composition": "100% шерсть",
+      "care": "Ручная стирка",
+      "createdAt": "2026-04-08T16:16:11.683Z",
+      "updatedAt": "2026-04-08T16:16:11.683Z"
+    },
+    {
+      "id": 23,
+      "name": "Жилет стёганый утеплённый",
+      "category": "unisex",
+      "sale": false,
+      "price": 7200,
+      "oldPrice": 0,
+      "stock": 10,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Черный",
+        "Тёмно-зелёный"
+      ],
+      "image": "",
+      "description": "Лёгкий утеплённый жилет.",
+      "composition": "Нейлон / полиэстер",
+      "care": "Стирка при 30°C",
+      "createdAt": "2026-04-08T16:16:11.683Z",
+      "updatedAt": "2026-04-08T16:16:11.683Z"
+    },
+    {
+      "id": 24,
+      "name": "Пальто-кейп без рукавов",
+      "category": "womens",
+      "sale": true,
+      "price": 22000,
+      "oldPrice": 28000,
+      "stock": 10,
+      "sizes": [
+        "XS",
+        "S",
+        "M"
+      ],
+      "colors": [
+        "Черный"
+      ],
+      "image": "",
+      "description": "Пальто-кейп прямого силуэта.",
+      "composition": "80% шерсть, 20% полиэстер",
+      "care": "Химчистка",
+      "createdAt": "2026-04-08T16:16:11.683Z",
+      "updatedAt": "2026-04-08T16:16:11.683Z"
+    },
+    {
+      "id": 25,
+      "name": "Брюки со складками и стрелками",
+      "category": "womens",
+      "sale": false,
+      "price": 8400,
+      "oldPrice": 0,
+      "stock": 10,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ],
+      "colors": [
+        "Черный",
+        "Серый"
+      ],
+      "image": "",
+      "description": "Классические брюки со стрелками.",
+      "composition": "65% полиэстер, 35% вискоза",
+      "care": "Химчистка",
+      "createdAt": "2026-04-08T16:16:11.683Z",
+      "updatedAt": "2026-04-08T16:16:11.683Z"
+    },
+    {
+      "id": 26,
+      "name": "Кардиган длинный вязаный",
+      "category": "unisex",
+      "sale": false,
+      "price": 7600,
+      "oldPrice": 0,
+      "stock": 10,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Бежевый",
+        "Черный",
+        "Серый"
+      ],
+      "image": "",
+      "description": "Длинный кардиган rib-вязки.",
+      "composition": "50% шерсть, 50% акрил",
+      "care": "Ручная стирка",
+      "createdAt": "2026-04-08T16:16:11.683Z",
+      "updatedAt": "2026-04-08T16:16:11.683Z"
+    },
+    {
+      "id": 27,
+      "name": "Шорты-бермуды технические",
+      "category": "mens",
+      "sale": false,
+      "price": 5800,
+      "oldPrice": 0,
+      "stock": 10,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Черный",
+        "Оливковый"
+      ],
+      "image": "",
+      "description": "Шорты длиной до колена с карманами.",
+      "composition": "100% полиэстер",
+      "care": "Стирка при 30°C",
+      "createdAt": "2026-04-08T16:16:11.683Z",
+      "updatedAt": "2026-04-08T16:16:11.683Z"
+    },
+    {
+      "id": 28,
+      "name": "Платье-рубашка midi",
+      "category": "womens",
+      "sale": false,
+      "price": 11500,
+      "oldPrice": 0,
+      "stock": 10,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ],
+      "colors": [
+        "Черный",
+        "Белый"
+      ],
+      "image": "",
+      "description": "Платье-рубашка свободного кроя.",
+      "composition": "100% хлопок",
+      "care": "Стирка при 30°C",
+      "createdAt": "2026-04-08T16:16:11.683Z",
+      "updatedAt": "2026-04-08T16:16:11.683Z"
+    },
+    {
+      "id": 29,
+      "name": "Снуд-труба шерстяной",
+      "category": "accessories",
+      "sale": false,
+      "price": 3200,
+      "oldPrice": 0,
+      "stock": 10,
+      "sizes": [
+        "ONE SIZE"
+      ],
+      "colors": [
+        "Черный",
+        "Серый"
+      ],
+      "image": "",
+      "description": "Шерстяной снуд двойной вязки.",
+      "composition": "100% мериносовая шерсть",
+      "care": "Ручная стирка",
+      "createdAt": "2026-04-08T16:16:11.683Z",
+      "updatedAt": "2026-04-08T16:16:11.683Z"
+    },
+    {
+      "id": 30,
+      "name": "Сарафан многоярусный",
+      "category": "womens",
+      "sale": false,
+      "price": 9600,
+      "oldPrice": 0,
+      "stock": 39,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ],
+      "colors": [
+        "Черный",
+        "Тёмно-синий"
+      ],
+      "image": "https://placehold.co/800x1067/1a1214/555555?text=%D0%A1%D0%B0%D1%80%D0%B0%D1%84%D0%B0%D0%BD%20%D0%BC%D0%BD%D0%BE%D0%B3%D0%BE%D1%8F%D1%80%D1%83%D1%81%D0%BD%D1%8B%D0%B9",
+      "description": "Многоярусный сарафан из лёгкой ткани.",
+      "composition": "100% вискоза",
+      "care": "Ручная стирка",
+      "createdAt": "2026-04-08T16:25:30.838Z",
+      "updatedAt": "2026-04-08T16:25:30.838Z"
+    },
+    {
+      "id": 31,
+      "name": "Двойная косуха с поясом",
+      "category": "womens",
+      "sale": true,
+      "price": 32000,
+      "oldPrice": 40000,
+      "stock": 24,
+      "sizes": [
+        "XS",
+        "S",
+        "M"
+      ],
+      "colors": [
+        "Черный"
+      ],
+      "image": "https://placehold.co/800x1067/1a1214/555555?text=%D0%94%D0%B2%D0%BE%D0%B9%D0%BD%D0%B0%D1%8F%20%D0%BA%D0%BE%D1%81%D1%83%D1%85%D0%B0%20%D1%81%20%D0%BF%D0%BE%D1%8F%D1%81%D0%BE%D0%BC",
+      "description": "Байкерская куртка с двойными молниями.",
+      "composition": "Натуральная кожа",
+      "care": "Химчистка",
+      "createdAt": "2026-04-08T16:25:30.838Z",
+      "updatedAt": "2026-04-08T16:25:30.838Z"
+    },
+    {
+      "id": 32,
+      "name": "Шорты спортивные двойные",
+      "category": "unisex",
+      "sale": false,
+      "price": 4200,
+      "oldPrice": 0,
+      "stock": 12,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Черный"
+      ],
+      "image": "https://placehold.co/800x1067/12141a/555555?text=%D0%A8%D0%BE%D1%80%D1%82%D1%8B%20%D1%81%D0%BF%D0%BE%D1%80%D1%82%D0%B8%D0%B2%D0%BD%D1%8B%D0%B5%20%D0%B4%D0%B2%D0%BE%D0%B9%D0%BD%D1%8B%D0%B5",
+      "description": "Шорты с внутренними тайтсами.",
+      "composition": "88% полиэстер, 12% эластан",
+      "care": "Стирка при 40°C",
+      "createdAt": "2026-04-08T16:25:30.838Z",
+      "updatedAt": "2026-04-08T16:25:30.838Z"
+    },
+    {
+      "id": 33,
+      "name": "Лонгслив технический zip",
+      "category": "mens",
+      "sale": false,
+      "price": 6500,
+      "oldPrice": 0,
+      "stock": 26,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Черный"
+      ],
+      "image": "https://placehold.co/800x1067/141414/555555?text=%D0%9B%D0%BE%D0%BD%D0%B3%D1%81%D0%BB%D0%B8%D0%B2%20%D1%82%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20zip",
+      "description": "Технический лонгслив с молнией на груди.",
+      "composition": "92% полиэстер, 8% эластан",
+      "care": "Стирка при 30°C",
+      "createdAt": "2026-04-08T16:25:30.838Z",
+      "updatedAt": "2026-04-08T16:25:30.838Z"
+    },
+    {
+      "id": 34,
+      "name": "Жакет с пэчворком тёмный",
+      "category": "unisex",
+      "sale": false,
+      "price": 18500,
+      "oldPrice": 0,
+      "stock": 8,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Черный/Тёмно-серый"
+      ],
+      "image": "https://placehold.co/800x1067/12141a/555555?text=%D0%96%D0%B0%D0%BA%D0%B5%D1%82%20%D1%81%20%D0%BF%D1%8D%D1%87%D0%B2%D0%BE%D1%80%D0%BA%D0%BE%D0%BC%20%D1%82%D1%91%D0%BC%D0%BD%D1%8B%D0%B9",
+      "description": "Жакет с вставками из разных текстур.",
+      "composition": "Смесовые ткани",
+      "care": "Химчистка",
+      "createdAt": "2026-04-08T16:25:30.838Z",
+      "updatedAt": "2026-04-08T16:25:30.838Z"
+    },
+    {
+      "id": 35,
+      "name": "Рюкзак городской минимал",
+      "category": "accessories",
+      "sale": false,
+      "price": 11200,
+      "oldPrice": 0,
+      "stock": 20,
+      "sizes": [
+        "ONE SIZE"
+      ],
+      "colors": [
+        "Черный"
+      ],
+      "image": "https://placehold.co/800x1067/141a14/555555?text=%D0%A0%D1%8E%D0%BA%D0%B7%D0%B0%D0%BA%20%D0%B3%D0%BE%D1%80%D0%BE%D0%B4%D1%81%D0%BA%D0%BE%D0%B9%20%D0%BC%D0%B8%D0%BD%D0%B8%D0%BC%D0%B0%D0%BB",
+      "description": "Компактный рюкзак с отделом для ноутбука.",
+      "composition": "Нейлон 600D",
+      "care": "Протирать влажной тряпкой",
+      "createdAt": "2026-04-08T16:25:30.838Z",
+      "updatedAt": "2026-04-08T16:25:30.838Z"
+    },
+    {
+      "id": 36,
+      "name": "Парка тактическая тёмная",
+      "category": "mens",
+      "sale": false,
+      "price": 19800,
+      "oldPrice": 0,
+      "stock": 13,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "colors": [
+        "Черный",
+        "Тёмно-оливковый"
+      ],
+      "image": "https://placehold.co/800x1067/141414/555555?text=%D0%9F%D0%B0%D1%80%D0%BA%D0%B0%20%D1%82%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%20%D1%82%D1%91%D0%BC%D0%BD%D0%B0%D1%8F",
+      "description": "Парка с множеством карманов и регулируемым капюшоном.",
+      "composition": "100% нейлон",
+      "care": "Стирка при 30°C",
+      "createdAt": "2026-04-08T16:25:30.838Z",
+      "updatedAt": "2026-04-08T16:25:30.838Z"
+    },
+    {
+      "id": 37,
+      "name": "Трикотажный топ бюстье",
+      "category": "womens",
+      "sale": false,
+      "price": 3700,
+      "oldPrice": 0,
+      "stock": 37,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ],
+      "colors": [
+        "Черный",
+        "Белый"
+      ],
+      "image": "https://placehold.co/800x1067/1a1214/555555?text=%D0%A2%D1%80%D0%B8%D0%BA%D0%BE%D1%82%D0%B0%D0%B6%D0%BD%D1%8B%D0%B9%20%D1%82%D0%BE%D0%BF%20%D0%B1%D1%8E%D1%81%D1%82%D1%8C%D0%B5",
+      "description": "Трикотажный топ в форме бюстье с широкими бретелями.",
+      "composition": "90% хлопок, 10% эластан",
+      "care": "Стирка при 30°C",
+      "createdAt": "2026-04-08T16:25:30.838Z",
+      "updatedAt": "2026-04-08T16:25:30.838Z"
+    },
+    {
+      "id": 38,
+      "name": "Пиджак двубортный тёмный",
+      "category": "mens",
+      "sale": false,
+      "price": 23500,
+      "oldPrice": 0,
+      "stock": 34,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Черный",
+        "Тёмно-серый"
+      ],
+      "image": "https://placehold.co/800x1067/141414/555555?text=%D0%9F%D0%B8%D0%B4%D0%B6%D0%B0%D0%BA%20%D0%B4%D0%B2%D1%83%D0%B1%D0%BE%D1%80%D1%82%D0%BD%D1%8B%D0%B9%20%D1%82%D1%91%D0%BC%D0%BD%D1%8B%D0%B9",
+      "description": "Строгий двубортный пиджак с острыми плечами.",
+      "composition": "55% шерсть, 45% полиэстер",
+      "care": "Химчистка",
+      "createdAt": "2026-04-08T16:25:30.838Z",
+      "updatedAt": "2026-04-08T16:25:30.838Z"
+    },
+    {
+      "id": 39,
+      "name": "Майка-сетка базовая",
+      "category": "unisex",
+      "sale": false,
+      "price": 2800,
+      "oldPrice": 0,
+      "stock": 30,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Черный",
+        "Белый"
+      ],
+      "image": "https://placehold.co/800x1067/12141a/555555?text=%D0%9C%D0%B0%D0%B9%D0%BA%D0%B0-%D1%81%D0%B5%D1%82%D0%BA%D0%B0%20%D0%B1%D0%B0%D0%B7%D0%BE%D0%B2%D0%B0%D1%8F",
+      "description": "Базовая майка-сетка крупного плетения.",
+      "composition": "100% полиэстер",
+      "care": "Стирка при 30°C",
+      "createdAt": "2026-04-08T16:25:30.838Z",
+      "updatedAt": "2026-04-08T16:25:30.838Z"
+    },
+    {
+      "id": 40,
+      "name": "Тёплые леггинсы зимние",
+      "category": "womens",
+      "sale": false,
+      "price": 3400,
+      "oldPrice": 0,
+      "stock": 21,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Черный",
+        "Тёмно-серый"
+      ],
+      "image": "https://placehold.co/800x1067/1a1214/555555?text=%D0%A2%D1%91%D0%BF%D0%BB%D1%8B%D0%B5%20%D0%BB%D0%B5%D0%B3%D0%B3%D0%B8%D0%BD%D1%81%D1%8B%20%D0%B7%D0%B8%D0%BC%D0%BD%D0%B8%D0%B5",
+      "description": "Флисовые леггинсы с высокой талией.",
+      "composition": "80% полиэстер, 20% эластан",
+      "care": "Стирка при 40°C",
+      "createdAt": "2026-04-08T16:25:32.259Z",
+      "updatedAt": "2026-04-08T16:25:32.259Z"
+    },
+    {
+      "id": 41,
+      "name": "Корсет на шнуровке",
+      "category": "womens",
+      "sale": true,
+      "price": 8700,
+      "oldPrice": 10800,
+      "stock": 17,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ],
+      "colors": [
+        "Черный"
+      ],
+      "image": "https://placehold.co/800x1067/1a1214/555555?text=%D0%9A%D0%BE%D1%80%D1%81%D0%B5%D1%82%20%D0%BD%D0%B0%20%D1%88%D0%BD%D1%83%D1%80%D0%BE%D0%B2%D0%BA%D0%B5",
+      "description": "Жёсткий корсет с задней шнуровкой.",
+      "composition": "100% полиэстер",
+      "care": "Химчистка",
+      "createdAt": "2026-04-08T16:25:32.259Z",
+      "updatedAt": "2026-04-08T16:25:32.259Z"
+    },
+    {
+      "id": 42,
+      "name": "Широкий галстук тёмный",
+      "category": "accessories",
+      "sale": false,
+      "price": 2100,
+      "oldPrice": 0,
+      "stock": 36,
+      "sizes": [
+        "ONE SIZE"
+      ],
+      "colors": [
+        "Черный",
+        "Тёмно-бордо"
+      ],
+      "image": "https://placehold.co/800x1067/141a14/555555?text=%D0%A8%D0%B8%D1%80%D0%BE%D0%BA%D0%B8%D0%B9%20%D0%B3%D0%B0%D0%BB%D1%81%D1%82%D1%83%D0%BA%20%D1%82%D1%91%D0%BC%D0%BD%D1%8B%D0%B9",
+      "description": "Широкий галстук из матовой ткани.",
+      "composition": "100% полиэстер",
+      "care": "Химчистка",
+      "createdAt": "2026-04-08T16:25:32.259Z",
+      "updatedAt": "2026-04-08T16:25:32.259Z"
+    },
+    {
+      "id": 43,
+      "name": "Трикотажный костюм двойка",
+      "category": "unisex",
+      "sale": true,
+      "price": 16800,
+      "oldPrice": 21000,
+      "stock": 32,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Черный",
+        "Серый"
+      ],
+      "image": "https://placehold.co/800x1067/12141a/555555?text=%D0%A2%D1%80%D0%B8%D0%BA%D0%BE%D1%82%D0%B0%D0%B6%D0%BD%D1%8B%D0%B9%20%D0%BA%D0%BE%D1%81%D1%82%D1%8E%D0%BC%20%D0%B4%D0%B2%D0%BE%D0%B9%D0%BA",
+      "description": "Мягкий трикотажный костюм из хлопкового джерси.",
+      "composition": "95% хлопок, 5% эластан",
+      "care": "Стирка при 30°C",
+      "createdAt": "2026-04-08T16:25:32.259Z",
+      "updatedAt": "2026-04-08T16:25:32.259Z"
+    },
+    {
+      "id": 44,
+      "name": "Плиссированная юбка миди",
+      "category": "womens",
+      "sale": false,
+      "price": 7900,
+      "oldPrice": 0,
+      "stock": 24,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ],
+      "colors": [
+        "Черный",
+        "Тёмно-серый"
+      ],
+      "image": "https://placehold.co/800x1067/1a1214/555555?text=%D0%9F%D0%BB%D0%B8%D1%81%D1%81%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%8E%D0%B1%D0%BA%D0%B0%20%D0%BC%D0%B8%D0%B4%D0%B8",
+      "description": "Плиссированная юбка миди с эластичным поясом.",
+      "composition": "100% полиэстер",
+      "care": "Стирка при 30°C",
+      "createdAt": "2026-04-08T16:25:32.259Z",
+      "updatedAt": "2026-04-08T16:25:32.259Z"
+    },
+    {
+      "id": 45,
+      "name": "Ветровка оверсайз лёгкая",
+      "category": "unisex",
+      "sale": false,
+      "price": 6400,
+      "oldPrice": 0,
+      "stock": 38,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Черный",
+        "Тёмно-синий"
+      ],
+      "image": "https://placehold.co/800x1067/12141a/555555?text=%D0%92%D0%B5%D1%82%D1%80%D0%BE%D0%B2%D0%BA%D0%B0%20%D0%BE%D0%B2%D0%B5%D1%80%D1%81%D0%B0%D0%B9%D0%B7%20%D0%BB%D1%91%D0%B3%D0%BA%D0%B0%D1%8F",
+      "description": "Лёгкая ветровка с упаковочным чехлом.",
+      "composition": "100% нейлон",
+      "care": "Стирка при 30°C",
+      "createdAt": "2026-04-08T16:25:32.259Z",
+      "updatedAt": "2026-04-08T16:25:32.259Z"
+    },
+    {
+      "id": 46,
+      "name": "Перчатки кожаные тонкие",
+      "category": "accessories",
+      "sale": false,
+      "price": 4100,
+      "oldPrice": 0,
+      "stock": 37,
+      "sizes": [
+        "S",
+        "M",
+        "L"
+      ],
+      "colors": [
+        "Черный",
+        "Тёмно-коричневый"
+      ],
+      "image": "https://placehold.co/800x1067/141a14/555555?text=%D0%9F%D0%B5%D1%80%D1%87%D0%B0%D1%82%D0%BA%D0%B8%20%D0%BA%D0%BE%D0%B6%D0%B0%D0%BD%D1%8B%D0%B5%20%D1%82%D0%BE%D0%BD%D0%BA%D0%B8%D0%B5",
+      "description": "Тонкие кожаные перчатки без подкладки.",
+      "composition": "Натуральная кожа",
+      "care": "Протирать влажной тряпкой",
+      "createdAt": "2026-04-08T16:25:32.259Z",
+      "updatedAt": "2026-04-08T16:25:32.259Z"
+    },
+    {
+      "id": 47,
+      "name": "Брюки из экокожи прямые",
+      "category": "womens",
+      "sale": false,
+      "price": 12800,
+      "oldPrice": 0,
+      "stock": 10,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ],
+      "colors": [
+        "Черный"
+      ],
+      "image": "https://placehold.co/800x1067/1a1214/555555?text=%D0%91%D1%80%D1%8E%D0%BA%D0%B8%20%D0%B8%D0%B7%20%D1%8D%D0%BA%D0%BE%D0%BA%D0%BE%D0%B6%D0%B8%20%D0%BF%D1%80%D1%8F%D0%BC%D1%8B%D0%B5",
+      "description": "Прямые брюки из матовой экокожи.",
+      "composition": "100% полиуретан",
+      "care": "Протирать влажной тряпкой",
+      "createdAt": "2026-04-08T16:25:32.259Z",
+      "updatedAt": "2026-04-08T16:25:32.259Z"
+    },
+    {
+      "id": 48,
+      "name": "Боди-бра без косточек",
+      "category": "womens",
+      "sale": false,
+      "price": 3900,
+      "oldPrice": 0,
+      "stock": 22,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ],
+      "colors": [
+        "Черный",
+        "Телесный"
+      ],
+      "image": "https://placehold.co/800x1067/1a1214/555555?text=%D0%91%D0%BE%D0%B4%D0%B8-%D0%B1%D1%80%D0%B0%20%D0%B1%D0%B5%D0%B7%20%D0%BA%D0%BE%D1%81%D1%82%D0%BE%D1%87%D0%B5%D0%BA",
+      "description": "Боди-бра из плотного микрофибры.",
+      "composition": "80% полиамид, 20% эластан",
+      "care": "Ручная стирка",
+      "createdAt": "2026-04-08T16:25:32.259Z",
+      "updatedAt": "2026-04-08T16:25:32.259Z"
+    },
+    {
+      "id": 49,
+      "name": "Рукавички-митенки вязаные",
+      "category": "accessories",
+      "sale": false,
+      "price": 1800,
+      "oldPrice": 0,
+      "stock": 26,
+      "sizes": [
+        "ONE SIZE"
+      ],
+      "colors": [
+        "Черный",
+        "Серый",
+        "Бежевый"
+      ],
+      "image": "https://placehold.co/800x1067/141a14/555555?text=%D0%A0%D1%83%D0%BA%D0%B0%D0%B2%D0%B8%D1%87%D0%BA%D0%B8-%D0%BC%D0%B8%D1%82%D0%B5%D0%BD%D0%BA%D0%B8%20%D0%B2%D1%8F%D0%B7%D0%B0%D0%BD%D1%8B",
+      "description": "Вязаные митенки из шерстяной пряжи.",
+      "composition": "100% шерсть",
+      "care": "Ручная стирка",
+      "createdAt": "2026-04-08T16:25:32.259Z",
+      "updatedAt": "2026-04-08T16:25:32.259Z"
+    },
+    {
+      "id": 50,
+      "name": "Мини-юбка кожаная",
+      "category": "womens",
+      "sale": true,
+      "price": 9200,
+      "oldPrice": 11500,
+      "stock": 28,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ],
+      "colors": [
+        "Черный"
+      ],
+      "image": "https://placehold.co/800x1067/1a1214/555555?text=%D0%9C%D0%B8%D0%BD%D0%B8-%D1%8E%D0%B1%D0%BA%D0%B0%20%D0%BA%D0%BE%D0%B6%D0%B0%D0%BD%D0%B0%D1%8F",
+      "description": "Мини-юбка из экокожи с боковой молнией.",
+      "composition": "100% полиуретан",
+      "care": "Протирать влажной тряпкой",
+      "createdAt": "2026-04-08T16:25:33.247Z",
+      "updatedAt": "2026-04-08T16:25:33.247Z"
+    },
+    {
+      "id": 51,
+      "name": "Топ-бандо из бархата",
+      "category": "womens",
+      "sale": false,
+      "price": 4200,
+      "oldPrice": 0,
+      "stock": 33,
+      "sizes": [
+        "XS",
+        "S",
+        "M"
+      ],
+      "colors": [
+        "Черный",
+        "Бордо"
+      ],
+      "image": "https://placehold.co/800x1067/1a1214/555555?text=%D0%A2%D0%BE%D0%BF-%D0%B1%D0%B0%D0%BD%D0%B4%D0%BE%20%D0%B8%D0%B7%20%D0%B1%D0%B0%D1%80%D1%85%D0%B0%D1%82%D0%B0",
+      "description": "Облегающий топ-бандо с бархатной текстурой.",
+      "composition": "90% полиэстер, 10% эластан",
+      "care": "Стирка при 30°C",
+      "createdAt": "2026-04-08T16:25:33.247Z",
+      "updatedAt": "2026-04-08T16:25:33.247Z"
+    },
+    {
+      "id": 52,
+      "name": "Мюли кожаные блочный каблук",
+      "category": "womens",
+      "sale": false,
+      "price": 9800,
+      "oldPrice": 0,
+      "stock": 30,
+      "sizes": [
+        "36",
+        "37",
+        "38",
+        "39",
+        "40"
+      ],
+      "colors": [
+        "Черный"
+      ],
+      "image": "https://placehold.co/800x1067/1a1214/555555?text=%D0%9C%D1%8E%D0%BB%D0%B8%20%D0%BA%D0%BE%D0%B6%D0%B0%D0%BD%D1%8B%D0%B5%20%D0%B1%D0%BB%D0%BE%D1%87%D0%BD%D1%8B%D0%B9%20%D0%BA%D0%B0%D0%B1",
+      "description": "Мюли с блочным каблуком и открытым носком.",
+      "composition": "Натуральная кожа",
+      "care": "Протирать влажной тряпкой",
+      "createdAt": "2026-04-08T16:25:33.247Z",
+      "updatedAt": "2026-04-08T16:25:33.247Z"
+    },
+    {
+      "id": 53,
+      "name": "Платье миди с разрезом",
+      "category": "womens",
+      "sale": false,
+      "price": 13500,
+      "oldPrice": 0,
+      "stock": 14,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ],
+      "colors": [
+        "Черный"
+      ],
+      "image": "https://placehold.co/800x1067/1a1214/555555?text=%D0%9F%D0%BB%D0%B0%D1%82%D1%8C%D0%B5%20%D0%BC%D0%B8%D0%B4%D0%B8%20%D1%81%20%D1%80%D0%B0%D0%B7%D1%80%D0%B5%D0%B7%D0%BE%D0%BC",
+      "description": "Платье миди из джерси с боковым разрезом.",
+      "composition": "95% вискоза, 5% эластан",
+      "care": "Стирка при 30°C",
+      "createdAt": "2026-04-08T16:25:33.247Z",
+      "updatedAt": "2026-04-08T16:25:33.247Z"
+    },
+    {
+      "id": 54,
+      "name": "Дождевик нейлоновый капсула",
+      "category": "unisex",
+      "sale": false,
+      "price": 5200,
+      "oldPrice": 0,
+      "stock": 13,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Черный",
+        "Тёмно-зелёный"
+      ],
+      "image": "https://placehold.co/800x1067/12141a/555555?text=%D0%94%D0%BE%D0%B6%D0%B4%D0%B5%D0%B2%D0%B8%D0%BA%20%D0%BD%D0%B5%D0%B9%D0%BB%D0%BE%D0%BD%D0%BE%D0%B2%D1%8B%D0%B9%20%D0%BA%D0%B0%D0%BF%D1%81",
+      "description": "Складной дождевик с проклеенными швами.",
+      "composition": "100% нейлон",
+      "care": "Стирка при 30°C",
+      "createdAt": "2026-04-08T16:25:33.247Z",
+      "updatedAt": "2026-04-08T16:25:33.247Z"
+    },
+    {
+      "id": 55,
+      "name": "Поло плотное пике",
+      "category": "mens",
+      "sale": false,
+      "price": 5400,
+      "oldPrice": 0,
+      "stock": 6,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "colors": [
+        "Черный",
+        "Белый",
+        "Серый"
+      ],
+      "image": "https://placehold.co/800x1067/141414/555555?text=%D0%9F%D0%BE%D0%BB%D0%BE%20%D0%BF%D0%BB%D0%BE%D1%82%D0%BD%D0%BE%D0%B5%20%D0%BF%D0%B8%D0%BA%D0%B5",
+      "description": "Классическое поло из плотного хлопка пике.",
+      "composition": "100% хлопок",
+      "care": "Стирка при 40°C",
+      "createdAt": "2026-04-08T16:25:33.247Z",
+      "updatedAt": "2026-04-08T16:25:33.247Z"
+    },
+    {
+      "id": 56,
+      "name": "Трикотажная водолазка тонкая",
+      "category": "unisex",
+      "sale": false,
+      "price": 4800,
+      "oldPrice": 0,
+      "stock": 38,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Черный",
+        "Белый",
+        "Серый"
+      ],
+      "image": "https://placehold.co/800x1067/12141a/555555?text=%D0%A2%D1%80%D0%B8%D0%BA%D0%BE%D1%82%D0%B0%D0%B6%D0%BD%D0%B0%D1%8F%20%D0%B2%D0%BE%D0%B4%D0%BE%D0%BB%D0%B0%D0%B7%D0%BA%D0%B0%20%D1%82%D0%BE",
+      "description": "Тонкая водолазка из трикотажа для layering.",
+      "composition": "80% вискоза, 20% нейлон",
+      "care": "Стирка при 30°C",
+      "createdAt": "2026-04-08T16:25:33.247Z",
+      "updatedAt": "2026-04-08T16:25:33.247Z"
+    },
+    {
+      "id": 57,
+      "name": "Тренч оверсайз тёмный",
+      "category": "unisex",
+      "sale": true,
+      "price": 26000,
+      "oldPrice": 32000,
+      "stock": 14,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Черный",
+        "Тёмно-оливковый"
+      ],
+      "image": "https://placehold.co/800x1067/12141a/555555?text=%D0%A2%D1%80%D0%B5%D0%BD%D1%87%20%D0%BE%D0%B2%D0%B5%D1%80%D1%81%D0%B0%D0%B9%D0%B7%20%D1%82%D1%91%D0%BC%D0%BD%D1%8B%D0%B9",
+      "description": "Удлинённый тренч оверсайз с двубортной застёжкой.",
+      "composition": "60% хлопок, 40% полиэстер",
+      "care": "Химчистка",
+      "createdAt": "2026-04-08T16:25:33.247Z",
+      "updatedAt": "2026-04-08T16:25:33.247Z"
+    },
+    {
+      "id": 58,
+      "name": "Борсетка кожаная матовая",
+      "category": "accessories",
+      "sale": false,
+      "price": 5600,
+      "oldPrice": 0,
+      "stock": 40,
+      "sizes": [
+        "ONE SIZE"
+      ],
+      "colors": [
+        "Черный"
+      ],
+      "image": "https://placehold.co/800x1067/141a14/555555?text=%D0%91%D0%BE%D1%80%D1%81%D0%B5%D1%82%D0%BA%D0%B0%20%D0%BA%D0%BE%D0%B6%D0%B0%D0%BD%D0%B0%D1%8F%20%D0%BC%D0%B0%D1%82%D0%BE%D0%B2%D0%B0%D1%8F",
+      "description": "Борсетка из матовой кожи с магнитной застёжкой.",
+      "composition": "Натуральная кожа",
+      "care": "Протирать влажной тряпкой",
+      "createdAt": "2026-04-08T16:25:33.247Z",
+      "updatedAt": "2026-04-08T16:25:33.247Z"
+    },
+    {
+      "id": 59,
+      "name": "Носки утеплённые рёберные",
+      "category": "accessories",
+      "sale": false,
+      "price": 1200,
+      "oldPrice": 0,
+      "stock": 18,
+      "sizes": [
+        "36-38",
+        "39-41",
+        "42-44"
+      ],
+      "colors": [
+        "Черный",
+        "Серый",
+        "Белый"
+      ],
+      "image": "https://placehold.co/800x1067/141a14/555555?text=%D0%9D%D0%BE%D1%81%D0%BA%D0%B8%20%D1%83%D1%82%D0%B5%D0%BF%D0%BB%D1%91%D0%BD%D0%BD%D1%8B%D0%B5%20%D1%80%D1%91%D0%B1%D0%B5%D1%80%D0%BD%D1%8B",
+      "description": "Плотные носки из мерино-вязки с рёберной текстурой.",
+      "composition": "70% шерсть, 30% нейлон",
+      "care": "Ручная стирка",
+      "createdAt": "2026-04-08T16:25:33.247Z",
+      "updatedAt": "2026-04-08T16:25:33.247Z"
+    },
+    {
+      "id": 60,
+      "name": "Шарф-палантин твиловый",
+      "category": "accessories",
+      "sale": false,
+      "price": 4500,
+      "oldPrice": 0,
+      "stock": 17,
+      "sizes": [
+        "ONE SIZE"
+      ],
+      "colors": [
+        "Черный",
+        "Белый",
+        "Клетка"
+      ],
+      "image": "https://placehold.co/800x1067/141a14/555555?text=%D0%A8%D0%B0%D1%80%D1%84-%D0%BF%D0%B0%D0%BB%D0%B0%D0%BD%D1%82%D0%B8%D0%BD%20%D1%82%D0%B2%D0%B8%D0%BB%D0%BE%D0%B2%D1%8B%D0%B9",
+      "description": "Лёгкий шарф-палантин из вискозного твила.",
+      "composition": "100% вискоза",
+      "care": "Химчистка",
+      "createdAt": "2026-04-08T16:25:34.193Z",
+      "updatedAt": "2026-04-08T16:25:34.193Z"
+    },
+    {
+      "id": 61,
+      "name": "Чокер кожаный со шипами",
+      "category": "accessories",
+      "sale": false,
+      "price": 2200,
+      "oldPrice": 0,
+      "stock": 27,
+      "sizes": [
+        "ONE SIZE"
+      ],
+      "colors": [
+        "Черный"
+      ],
+      "image": "https://placehold.co/800x1067/141a14/555555?text=%D0%A7%D0%BE%D0%BA%D0%B5%D1%80%20%D0%BA%D0%BE%D0%B6%D0%B0%D0%BD%D1%8B%D0%B9%20%D1%81%D0%BE%20%D1%88%D0%B8%D0%BF%D0%B0%D0%BC%D0%B8",
+      "description": "Чокер из натуральной кожи с металлическими шипами.",
+      "composition": "Натуральная кожа / металл",
+      "care": "Протирать влажной тряпкой",
+      "createdAt": "2026-04-08T16:25:34.193Z",
+      "updatedAt": "2026-04-08T16:25:34.193Z"
+    },
+    {
+      "id": 62,
+      "name": "Рубашка льняная тёмная",
+      "category": "mens",
+      "sale": false,
+      "price": 6800,
+      "oldPrice": 0,
+      "stock": 36,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Тёмно-серый",
+        "Черный"
+      ],
+      "image": "https://placehold.co/800x1067/141414/555555?text=%D0%A0%D1%83%D0%B1%D0%B0%D1%88%D0%BA%D0%B0%20%D0%BB%D1%8C%D0%BD%D1%8F%D0%BD%D0%B0%D1%8F%20%D1%82%D1%91%D0%BC%D0%BD%D0%B0%D1%8F",
+      "description": "Лёгкая льняная рубашка с кармашком.",
+      "composition": "100% лён",
+      "care": "Стирка при 40°C",
+      "createdAt": "2026-04-08T16:25:34.193Z",
+      "updatedAt": "2026-04-08T16:25:34.193Z"
+    },
+    {
+      "id": 63,
+      "name": "Флисовая кофта полар",
+      "category": "unisex",
+      "sale": false,
+      "price": 6200,
+      "oldPrice": 0,
+      "stock": 16,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "colors": [
+        "Черный",
+        "Серый",
+        "Тёмно-синий"
+      ],
+      "image": "https://placehold.co/800x1067/12141a/555555?text=%D0%A4%D0%BB%D0%B8%D1%81%D0%BE%D0%B2%D0%B0%D1%8F%20%D0%BA%D0%BE%D1%84%D1%82%D0%B0%20%D0%BF%D0%BE%D0%BB%D0%B0%D1%80",
+      "description": "Тёплая флисовая кофта с высоким воротником.",
+      "composition": "100% полиэстер",
+      "care": "Стирка при 40°C",
+      "createdAt": "2026-04-08T16:25:34.193Z",
+      "updatedAt": "2026-04-08T16:25:34.193Z"
+    },
+    {
+      "id": 64,
+      "name": "Куртка пуховик сити",
+      "category": "unisex",
+      "sale": false,
+      "price": 28500,
+      "oldPrice": 0,
+      "stock": 12,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Черный"
+      ],
+      "image": "https://placehold.co/800x1067/12141a/555555?text=%D0%9A%D1%83%D1%80%D1%82%D0%BA%D0%B0%20%D0%BF%D1%83%D1%85%D0%BE%D0%B2%D0%B8%D0%BA%20%D1%81%D0%B8%D1%82%D0%B8",
+      "description": "Лёгкий городской пуховик с воротником-стойкой.",
+      "composition": "Нейлон / утеплитель 80%пух 20%перо",
+      "care": "Химчистка",
+      "createdAt": "2026-04-08T16:25:34.193Z",
+      "updatedAt": "2026-04-08T16:25:34.193Z"
+    },
+    {
+      "id": 65,
+      "name": "Джоггеры карго широкие",
+      "category": "unisex",
+      "sale": false,
+      "price": 8900,
+      "oldPrice": 0,
+      "stock": 5,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Черный",
+        "Графит"
+      ],
+      "image": "https://placehold.co/800x1067/12141a/555555?text=%D0%94%D0%B6%D0%BE%D0%B3%D0%B3%D0%B5%D1%80%D1%8B%20%D0%BA%D0%B0%D1%80%D0%B3%D0%BE%20%D1%88%D0%B8%D1%80%D0%BE%D0%BA%D0%B8%D0%B5",
+      "description": "Широкие джоггеры с накладными карманами.",
+      "composition": "60% хлопок, 40% полиэстер",
+      "care": "Стирка при 40°C",
+      "createdAt": "2026-04-08T16:25:34.193Z",
+      "updatedAt": "2026-04-08T16:25:34.193Z"
+    },
+    {
+      "id": 66,
+      "name": "Клатч цепочка вечерний",
+      "category": "accessories",
+      "sale": false,
+      "price": 7100,
+      "oldPrice": 0,
+      "stock": 36,
+      "sizes": [
+        "ONE SIZE"
+      ],
+      "colors": [
+        "Черный",
+        "Серебро"
+      ],
+      "image": "https://placehold.co/800x1067/141a14/555555?text=%D0%9A%D0%BB%D0%B0%D1%82%D1%87%20%D1%86%D0%B5%D0%BF%D0%BE%D1%87%D0%BA%D0%B0%20%D0%B2%D0%B5%D1%87%D0%B5%D1%80%D0%BD%D0%B8%D0%B9",
+      "description": "Металлический клатч на цепочке для вечерних выходов.",
+      "composition": "Металл / экокожа",
+      "care": "Протирать влажной тряпкой",
+      "createdAt": "2026-04-08T16:25:34.193Z",
+      "updatedAt": "2026-04-08T16:25:34.193Z"
+    },
+    {
+      "id": 67,
+      "name": "Туника асимметричная льняная",
+      "category": "womens",
+      "sale": false,
+      "price": 7800,
+      "oldPrice": 0,
+      "stock": 29,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ],
+      "colors": [
+        "Черный",
+        "Белый"
+      ],
+      "image": "https://placehold.co/800x1067/1a1214/555555?text=%D0%A2%D1%83%D0%BD%D0%B8%D0%BA%D0%B0%20%D0%B0%D1%81%D0%B8%D0%BC%D0%BC%D0%B5%D1%82%D1%80%D0%B8%D1%87%D0%BD%D0%B0%D1%8F%20%D0%BB%D1%8C%D0%BD",
+      "description": "Льняная туника с асимметричным краем.",
+      "composition": "100% лён",
+      "care": "Стирка при 40°C",
+      "createdAt": "2026-04-08T16:25:34.193Z",
+      "updatedAt": "2026-04-08T16:25:34.193Z"
+    },
+    {
+      "id": 68,
+      "name": "Укороченная куртка-косуха",
+      "category": "womens",
+      "sale": false,
+      "price": 21000,
+      "oldPrice": 0,
+      "stock": 17,
+      "sizes": [
+        "XS",
+        "S",
+        "M"
+      ],
+      "colors": [
+        "Черный"
+      ],
+      "image": "https://placehold.co/800x1067/1a1214/555555?text=%D0%A3%D0%BA%D0%BE%D1%80%D0%BE%D1%87%D0%B5%D0%BD%D0%BD%D0%B0%D1%8F%20%D0%BA%D1%83%D1%80%D1%82%D0%BA%D0%B0-%D0%BA%D0%BE%D1%81%D1%83%D1%85",
+      "description": "Укороченная куртка-косуха из плотной экокожи.",
+      "composition": "100% полиуретан",
+      "care": "Протирать влажной тряпкой",
+      "createdAt": "2026-04-08T16:25:34.193Z",
+      "updatedAt": "2026-04-08T16:25:34.193Z"
+    },
+    {
+      "id": 69,
+      "name": "Кепка 6-панельная",
+      "category": "accessories",
+      "sale": false,
+      "price": 2400,
+      "oldPrice": 0,
+      "stock": 38,
+      "sizes": [
+        "ONE SIZE"
+      ],
+      "colors": [
+        "Черный",
+        "Серый"
+      ],
+      "image": "https://placehold.co/800x1067/141a14/555555?text=%D0%9A%D0%B5%D0%BF%D0%BA%D0%B0%206-%D0%BF%D0%B0%D0%BD%D0%B5%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F",
+      "description": "Структурированная кепка с плоским козырьком.",
+      "composition": "100% хлопок",
+      "care": "Протирать влажной тряпкой",
+      "createdAt": "2026-04-08T16:25:34.193Z",
+      "updatedAt": "2026-04-08T16:25:34.193Z"
+    },
+    {
+      "id": 70,
+      "name": "Бейзбольная куртка на кнопках",
+      "category": "mens",
+      "sale": false,
+      "price": 15600,
+      "oldPrice": 0,
+      "stock": 16,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Черный",
+        "Черный/Белый"
+      ],
+      "image": "https://placehold.co/800x1067/141414/555555?text=%D0%91%D0%B5%D0%B9%D0%B7%D0%B1%D0%BE%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F%20%D0%BA%D1%83%D1%80%D1%82%D0%BA%D0%B0%20%D0%BD%D0%B0%20%D0%BA%D0%BD",
+      "description": "Бейсбольная куртка с рибом на манжетах.",
+      "composition": "65% шерсть, 35% полиэстер",
+      "care": "Химчистка",
+      "createdAt": "2026-04-08T16:25:35.023Z",
+      "updatedAt": "2026-04-08T16:25:35.023Z"
     }
   ],
   "inventoryLogs": [
@@ -749,6 +1992,3618 @@
       "discountAmount": 2736,
       "total": 15504,
       "createdAt": "2026-04-01T10:00:00.000Z"
+    },
+    {
+      "id": 8,
+      "customerName": "Ксения Захарова",
+      "phone": "+7 (953) 195-61-69",
+      "email": "user2318@example.com",
+      "address": "Челябинск, ул. Мира, 177, кв. 111",
+      "comment": "",
+      "status": "processing",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 32,
+          "productName": "Шорты спортивные двойные",
+          "qty": 1,
+          "price": 4200
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 4200,
+      "discountAmount": 0,
+      "total": 4200,
+      "createdAt": "2026-03-05T16:25:55.168Z"
+    },
+    {
+      "id": 9,
+      "customerName": "Роман Сидоров",
+      "phone": "+7 (967) 730-55-20",
+      "email": "user685@example.com",
+      "address": "Волгоград, ул. Ленина, 166, кв. 68",
+      "comment": "",
+      "status": "new",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 48,
+          "productName": "Боди-бра без косточек",
+          "qty": 2,
+          "price": 3900
+        },
+        {
+          "productId": 38,
+          "productName": "Пиджак двубортный тёмный",
+          "qty": 1,
+          "price": 23500
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 31300,
+      "discountAmount": 0,
+      "total": 31300,
+      "createdAt": "2026-03-06T16:25:55.168Z"
+    },
+    {
+      "id": 10,
+      "customerName": "Максим Орлов",
+      "phone": "+7 (914) 357-96-39",
+      "email": "user3935@example.com",
+      "address": "Красноярск, пр. Гагарина, 70, кв. 73",
+      "comment": "",
+      "status": "done",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 48,
+          "productName": "Боди-бра без косточек",
+          "qty": 1,
+          "price": 3900
+        },
+        {
+          "productId": 51,
+          "productName": "Топ-бандо из бархата",
+          "qty": 2,
+          "price": 4200
+        },
+        {
+          "productId": 3,
+          "productName": "Жакет асимметричный деконструктивный",
+          "qty": 1,
+          "price": 19600
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 31900,
+      "discountAmount": 0,
+      "total": 31900,
+      "createdAt": "2026-02-04T16:25:55.168Z"
+    },
+    {
+      "id": 11,
+      "customerName": "Илья Виноградов",
+      "phone": "+7 (983) 160-59-68",
+      "email": "user8240@example.com",
+      "address": "Пермь, пр. Гагарина, 34, кв. 147",
+      "comment": "",
+      "status": "cancelled",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 25,
+          "productName": "Брюки со складками и стрелками",
+          "qty": 2,
+          "price": 8400
+        },
+        {
+          "productId": 36,
+          "productName": "Парка тактическая тёмная",
+          "qty": 2,
+          "price": 19800
+        },
+        {
+          "productId": 41,
+          "productName": "Корсет на шнуровке",
+          "qty": 2,
+          "price": 8700
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 73800,
+      "discountAmount": 11070,
+      "total": 62730,
+      "createdAt": "2026-03-13T16:25:55.168Z"
+    },
+    {
+      "id": 12,
+      "customerName": "Иван Петров",
+      "phone": "+7 (924) 475-90-95",
+      "email": "user4324@example.com",
+      "address": "Волгоград, ул. Советская, 185, кв. 53",
+      "comment": "",
+      "status": "shipped",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 46,
+          "productName": "Перчатки кожаные тонкие",
+          "qty": 2,
+          "price": 4100
+        },
+        {
+          "productId": 15,
+          "productName": "Жилет утилитарный тёмный",
+          "qty": 2,
+          "price": 11000
+        },
+        {
+          "productId": 47,
+          "productName": "Брюки из экокожи прямые",
+          "qty": 1,
+          "price": 12800
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 43000,
+      "discountAmount": 0,
+      "total": 43000,
+      "createdAt": "2026-03-09T16:25:55.168Z"
+    },
+    {
+      "id": 13,
+      "customerName": "Наталья Козлова",
+      "phone": "+7 (922) 609-20-74",
+      "email": "user8951@example.com",
+      "address": "Ростов-на-Дону, ул. Советская, 5, кв. 9",
+      "comment": "",
+      "status": "shipped",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 41,
+          "productName": "Корсет на шнуровке",
+          "qty": 1,
+          "price": 8700
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 8700,
+      "discountAmount": 0,
+      "total": 9050,
+      "createdAt": "2026-04-03T16:25:55.168Z"
+    },
+    {
+      "id": 14,
+      "customerName": "Тамара Баранова",
+      "phone": "+7 (986) 561-37-72",
+      "email": "user1387@example.com",
+      "address": "Екатеринбург, ул. Садовая, 100, кв. 146",
+      "comment": "",
+      "status": "shipped",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 38,
+          "productName": "Пиджак двубортный тёмный",
+          "qty": 2,
+          "price": 23500
+        },
+        {
+          "productId": 26,
+          "productName": "Кардиган длинный вязаный",
+          "qty": 2,
+          "price": 7600
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 62200,
+      "discountAmount": 0,
+      "total": 62700,
+      "createdAt": "2026-03-08T16:25:55.168Z"
+    },
+    {
+      "id": 15,
+      "customerName": "Максим Орлов",
+      "phone": "+7 (967) 134-18-46",
+      "email": "user9533@example.com",
+      "address": "Уфа, ул. Садовая, 95, кв. 149",
+      "comment": "",
+      "status": "new",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 24,
+          "productName": "Пальто-кейп без рукавов",
+          "qty": 2,
+          "price": 22000
+        },
+        {
+          "productId": 50,
+          "productName": "Мини-юбка кожаная",
+          "qty": 1,
+          "price": 9200
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 53200,
+      "discountAmount": 0,
+      "total": 53550,
+      "createdAt": "2026-02-02T16:25:55.168Z"
+    },
+    {
+      "id": 16,
+      "customerName": "Алина Логинова",
+      "phone": "+7 (975) 107-44-61",
+      "email": "user8881@example.com",
+      "address": "Волгоград, пр. Победы, 195, кв. 31",
+      "comment": "",
+      "status": "new",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 30,
+          "productName": "Сарафан многоярусный",
+          "qty": 1,
+          "price": 9600
+        },
+        {
+          "productId": 37,
+          "productName": "Трикотажный топ бюстье",
+          "qty": 1,
+          "price": 3700
+        },
+        {
+          "productId": 1,
+          "productName": "Пальто Oversized из шерсти",
+          "qty": 2,
+          "price": 18900
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 51100,
+      "discountAmount": 0,
+      "total": 51600,
+      "createdAt": "2026-03-22T16:25:55.168Z"
+    },
+    {
+      "id": 17,
+      "customerName": "Вера Белова",
+      "phone": "+7 (997) 229-28-72",
+      "email": "user5433@example.com",
+      "address": "Красноярск, ул. Советская, 55, кв. 53",
+      "comment": "",
+      "status": "new",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 28,
+          "productName": "Платье-рубашка midi",
+          "qty": 1,
+          "price": 11500
+        },
+        {
+          "productId": 38,
+          "productName": "Пиджак двубортный тёмный",
+          "qty": 2,
+          "price": 23500
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 58500,
+      "discountAmount": 0,
+      "total": 58500,
+      "createdAt": "2026-04-03T16:25:55.168Z"
+    },
+    {
+      "id": 18,
+      "customerName": "Алексей Морозов",
+      "phone": "+7 (950) 977-68-13",
+      "email": "user2220@example.com",
+      "address": "Новосибирск, ул. Горького, 109, кв. 42",
+      "comment": "",
+      "status": "new",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 46,
+          "productName": "Перчатки кожаные тонкие",
+          "qty": 2,
+          "price": 4100
+        },
+        {
+          "productId": 3,
+          "productName": "Жакет асимметричный деконструктивный",
+          "qty": 1,
+          "price": 19600
+        },
+        {
+          "productId": 39,
+          "productName": "Майка-сетка базовая",
+          "qty": 1,
+          "price": 2800
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 30600,
+      "discountAmount": 0,
+      "total": 31100,
+      "createdAt": "2026-04-06T16:25:55.168Z"
+    },
+    {
+      "id": 19,
+      "customerName": "Мария Соколова",
+      "phone": "+7 (915) 792-38-52",
+      "email": "user9407@example.com",
+      "address": "Краснодар, ул. Ленина, 36, кв. 107",
+      "comment": "",
+      "status": "processing",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 7,
+          "productName": "Пальто структурированное с поясом",
+          "qty": 2,
+          "price": 20800
+        },
+        {
+          "productId": 61,
+          "productName": "Чокер кожаный со шипами",
+          "qty": 2,
+          "price": 2200
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 46000,
+      "discountAmount": 0,
+      "total": 46500,
+      "createdAt": "2026-02-19T16:25:55.168Z"
+    },
+    {
+      "id": 20,
+      "customerName": "Мария Соколова",
+      "phone": "+7 (974) 330-65-35",
+      "email": "user4639@example.com",
+      "address": "Красноярск, ул. Мира, 145, кв. 6",
+      "comment": "",
+      "status": "new",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 14,
+          "productName": "Свитшот технический с молнией",
+          "qty": 1,
+          "price": 6240
+        },
+        {
+          "productId": 69,
+          "productName": "Кепка 6-панельная",
+          "qty": 2,
+          "price": 2400
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 11040,
+      "discountAmount": 1656,
+      "total": 9734,
+      "createdAt": "2026-01-11T16:25:55.168Z"
+    },
+    {
+      "id": 21,
+      "customerName": "Алексей Морозов",
+      "phone": "+7 (921) 751-77-85",
+      "email": "user5365@example.com",
+      "address": "Новосибирск, ул. Советская, 122, кв. 125",
+      "comment": "",
+      "status": "processing",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 12,
+          "productName": "Худи тяжёлый хлопок унисекс",
+          "qty": 1,
+          "price": 6800
+        },
+        {
+          "productId": 36,
+          "productName": "Парка тактическая тёмная",
+          "qty": 1,
+          "price": 19800
+        },
+        {
+          "productId": 16,
+          "productName": "Сумка-тоут структурированная",
+          "qty": 2,
+          "price": 12000
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 50600,
+      "discountAmount": 0,
+      "total": 50950,
+      "createdAt": "2026-02-25T16:25:55.168Z"
+    },
+    {
+      "id": 22,
+      "customerName": "Ольга Смирнова",
+      "phone": "+7 (965) 827-52-45",
+      "email": "user9198@example.com",
+      "address": "Казань, пр. Победы, 29, кв. 91",
+      "comment": "",
+      "status": "new",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 53,
+          "productName": "Платье миди с разрезом",
+          "qty": 1,
+          "price": 13500
+        },
+        {
+          "productId": 37,
+          "productName": "Трикотажный топ бюстье",
+          "qty": 1,
+          "price": 3700
+        },
+        {
+          "productId": 29,
+          "productName": "Снуд-труба шерстяной",
+          "qty": 1,
+          "price": 3200
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 20400,
+      "discountAmount": 3060,
+      "total": 17340,
+      "createdAt": "2026-03-13T16:25:55.168Z"
+    },
+    {
+      "id": 23,
+      "customerName": "Дмитрий Волков",
+      "phone": "+7 (974) 179-12-84",
+      "email": "user8936@example.com",
+      "address": "Краснодар, ул. Мира, 80, кв. 10",
+      "comment": "",
+      "status": "new",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 39,
+          "productName": "Майка-сетка базовая",
+          "qty": 1,
+          "price": 2800
+        },
+        {
+          "productId": 37,
+          "productName": "Трикотажный топ бюстье",
+          "qty": 1,
+          "price": 3700
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 6500,
+      "discountAmount": 0,
+      "total": 6850,
+      "createdAt": "2026-01-31T16:25:55.168Z"
+    },
+    {
+      "id": 24,
+      "customerName": "Илья Виноградов",
+      "phone": "+7 (906) 637-37-49",
+      "email": "user5250@example.com",
+      "address": "Пермь, ул. Пушкина, 138, кв. 75",
+      "comment": "",
+      "status": "done",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 54,
+          "productName": "Дождевик нейлоновый капсула",
+          "qty": 1,
+          "price": 5200
+        },
+        {
+          "productId": 42,
+          "productName": "Широкий галстук тёмный",
+          "qty": 2,
+          "price": 2100
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 9400,
+      "discountAmount": 1410,
+      "total": 8490,
+      "createdAt": "2026-01-19T16:25:55.168Z"
+    },
+    {
+      "id": 25,
+      "customerName": "Анна Лебедева",
+      "phone": "+7 (971) 914-65-12",
+      "email": "user2157@example.com",
+      "address": "Воронеж, пр. Гагарина, 29, кв. 76",
+      "comment": "",
+      "status": "cancelled",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 23,
+          "productName": "Жилет стёганый утеплённый",
+          "qty": 1,
+          "price": 7200
+        },
+        {
+          "productId": 40,
+          "productName": "Тёплые леггинсы зимние",
+          "qty": 2,
+          "price": 3400
+        },
+        {
+          "productId": 38,
+          "productName": "Пиджак двубортный тёмный",
+          "qty": 1,
+          "price": 23500
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 37500,
+      "discountAmount": 0,
+      "total": 38000,
+      "createdAt": "2026-04-04T16:25:55.168Z"
+    },
+    {
+      "id": 26,
+      "customerName": "Наталья Козлова",
+      "phone": "+7 (984) 754-73-22",
+      "email": "user270@example.com",
+      "address": "Екатеринбург, пр. Гагарина, 171, кв. 6",
+      "comment": "",
+      "status": "processing",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 50,
+          "productName": "Мини-юбка кожаная",
+          "qty": 1,
+          "price": 9200
+        },
+        {
+          "productId": 21,
+          "productName": "Куртка бомбер тёмная",
+          "qty": 2,
+          "price": 14500
+        },
+        {
+          "productId": 39,
+          "productName": "Майка-сетка базовая",
+          "qty": 2,
+          "price": 2800
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 43800,
+      "discountAmount": 6570,
+      "total": 37230,
+      "createdAt": "2026-02-20T16:25:55.168Z"
+    },
+    {
+      "id": 27,
+      "customerName": "Светлана Фёдорова",
+      "phone": "+7 (935) 149-58-14",
+      "email": "user2002@example.com",
+      "address": "Краснодар, пр. Гагарина, 133, кв. 69",
+      "comment": "",
+      "status": "done",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 68,
+          "productName": "Укороченная куртка-косуха",
+          "qty": 2,
+          "price": 21000
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 42000,
+      "discountAmount": 6300,
+      "total": 35700,
+      "createdAt": "2026-01-10T16:25:55.168Z"
+    },
+    {
+      "id": 28,
+      "customerName": "Тамара Баранова",
+      "phone": "+7 (927) 265-80-88",
+      "email": "user1194@example.com",
+      "address": "Ростов-на-Дону, пр. Победы, 96, кв. 125",
+      "comment": "",
+      "status": "processing",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 27,
+          "productName": "Шорты-бермуды технические",
+          "qty": 1,
+          "price": 5800
+        },
+        {
+          "productId": 32,
+          "productName": "Шорты спортивные двойные",
+          "qty": 2,
+          "price": 4200
+        },
+        {
+          "productId": 39,
+          "productName": "Майка-сетка базовая",
+          "qty": 1,
+          "price": 2800
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 17000,
+      "discountAmount": 2550,
+      "total": 14950,
+      "createdAt": "2026-02-08T16:25:55.168Z"
+    },
+    {
+      "id": 29,
+      "customerName": "Илья Виноградов",
+      "phone": "+7 (965) 841-84-18",
+      "email": "user8250@example.com",
+      "address": "Санкт-Петербург, ул. Мира, 25, кв. 144",
+      "comment": "",
+      "status": "done",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 9,
+          "productName": "Блуза объёмная с асимметрией",
+          "qty": 2,
+          "price": 5760
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 11520,
+      "discountAmount": 0,
+      "total": 11520,
+      "createdAt": "2026-03-30T16:25:55.168Z"
+    },
+    {
+      "id": 30,
+      "customerName": "Юлия Зайцева",
+      "phone": "+7 (929) 215-13-41",
+      "email": "user1660@example.com",
+      "address": "Москва, пр. Победы, 133, кв. 77",
+      "comment": "",
+      "status": "done",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 51,
+          "productName": "Топ-бандо из бархата",
+          "qty": 1,
+          "price": 4200
+        },
+        {
+          "productId": 11,
+          "productName": "Жакет raw-hem оверсайз",
+          "qty": 2,
+          "price": 16800
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 37800,
+      "discountAmount": 5670,
+      "total": 32130,
+      "createdAt": "2026-03-25T16:25:55.168Z"
+    },
+    {
+      "id": 31,
+      "customerName": "Роман Сидоров",
+      "phone": "+7 (925) 758-87-18",
+      "email": "user6325@example.com",
+      "address": "Ростов-на-Дону, пр. Гагарина, 168, кв. 149",
+      "comment": "",
+      "status": "done",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 67,
+          "productName": "Туника асимметричная льняная",
+          "qty": 2,
+          "price": 7800
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 15600,
+      "discountAmount": 0,
+      "total": 15950,
+      "createdAt": "2026-01-20T16:25:55.168Z"
+    },
+    {
+      "id": 32,
+      "customerName": "Светлана Фёдорова",
+      "phone": "+7 (936) 490-91-58",
+      "email": "user6321@example.com",
+      "address": "Воронеж, ул. Горького, 150, кв. 149",
+      "comment": "",
+      "status": "done",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 43,
+          "productName": "Трикотажный костюм двойка",
+          "qty": 1,
+          "price": 16800
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 16800,
+      "discountAmount": 0,
+      "total": 17150,
+      "createdAt": "2026-02-27T16:25:55.168Z"
+    },
+    {
+      "id": 33,
+      "customerName": "Наталья Козлова",
+      "phone": "+7 (920) 369-14-29",
+      "email": "user1536@example.com",
+      "address": "Краснодар, ул. Ленина, 164, кв. 50",
+      "comment": "",
+      "status": "processing",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 23,
+          "productName": "Жилет стёганый утеплённый",
+          "qty": 2,
+          "price": 7200
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 14400,
+      "discountAmount": 0,
+      "total": 14900,
+      "createdAt": "2026-01-17T16:25:55.169Z"
+    },
+    {
+      "id": 34,
+      "customerName": "Илья Виноградов",
+      "phone": "+7 (941) 862-27-13",
+      "email": "user7905@example.com",
+      "address": "Уфа, ул. Советская, 114, кв. 128",
+      "comment": "",
+      "status": "done",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 27,
+          "productName": "Шорты-бермуды технические",
+          "qty": 2,
+          "price": 5800
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 11600,
+      "discountAmount": 0,
+      "total": 12100,
+      "createdAt": "2026-01-24T16:25:55.169Z"
+    },
+    {
+      "id": 35,
+      "customerName": "Вера Белова",
+      "phone": "+7 (935) 801-98-51",
+      "email": "user9951@example.com",
+      "address": "Санкт-Петербург, пр. Кирова, 100, кв. 89",
+      "comment": "",
+      "status": "done",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 61,
+          "productName": "Чокер кожаный со шипами",
+          "qty": 2,
+          "price": 2200
+        },
+        {
+          "productId": 2,
+          "productName": "Карго-брюки технические",
+          "qty": 2,
+          "price": 7600
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 19600,
+      "discountAmount": 2940,
+      "total": 17160,
+      "createdAt": "2026-02-27T16:25:55.169Z"
+    },
+    {
+      "id": 36,
+      "customerName": "Ксения Захарова",
+      "phone": "+7 (941) 887-48-25",
+      "email": "user2001@example.com",
+      "address": "Новосибирск, ул. Советская, 73, кв. 150",
+      "comment": "",
+      "status": "new",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 43,
+          "productName": "Трикотажный костюм двойка",
+          "qty": 1,
+          "price": 16800
+        },
+        {
+          "productId": 8,
+          "productName": "Брюки pallazo высокая посадка",
+          "qty": 1,
+          "price": 8900
+        },
+        {
+          "productId": 39,
+          "productName": "Майка-сетка базовая",
+          "qty": 1,
+          "price": 2800
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 28500,
+      "discountAmount": 0,
+      "total": 29000,
+      "createdAt": "2026-01-09T16:25:55.169Z"
+    },
+    {
+      "id": 37,
+      "customerName": "Тимур Ахметов",
+      "phone": "+7 (993) 251-88-76",
+      "email": "user445@example.com",
+      "address": "Волгоград, ул. Мира, 49, кв. 106",
+      "comment": "",
+      "status": "done",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 16,
+          "productName": "Сумка-тоут структурированная",
+          "qty": 1,
+          "price": 12000
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 12000,
+      "discountAmount": 0,
+      "total": 12350,
+      "createdAt": "2026-02-24T16:25:55.169Z"
+    },
+    {
+      "id": 38,
+      "customerName": "Тамара Баранова",
+      "phone": "+7 (929) 229-40-94",
+      "email": "user9373@example.com",
+      "address": "Омск, ул. Советская, 67, кв. 94",
+      "comment": "",
+      "status": "done",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 3,
+          "productName": "Жакет асимметричный деконструктивный",
+          "qty": 2,
+          "price": 19600
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 39200,
+      "discountAmount": 0,
+      "total": 39200,
+      "createdAt": "2026-02-17T16:25:55.169Z"
+    },
+    {
+      "id": 39,
+      "customerName": "Кирилл Новиков",
+      "phone": "+7 (957) 150-81-30",
+      "email": "user5499@example.com",
+      "address": "Омск, пр. Дружбы, 189, кв. 132",
+      "comment": "",
+      "status": "new",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 11,
+          "productName": "Жакет raw-hem оверсайз",
+          "qty": 1,
+          "price": 16800
+        },
+        {
+          "productId": 40,
+          "productName": "Тёплые леггинсы зимние",
+          "qty": 1,
+          "price": 3400
+        },
+        {
+          "productId": 36,
+          "productName": "Парка тактическая тёмная",
+          "qty": 2,
+          "price": 19800
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 59800,
+      "discountAmount": 8970,
+      "total": 51330,
+      "createdAt": "2026-03-21T16:25:55.169Z"
+    },
+    {
+      "id": 40,
+      "customerName": "Вера Белова",
+      "phone": "+7 (994) 394-22-37",
+      "email": "user6482@example.com",
+      "address": "Уфа, пр. Гагарина, 82, кв. 115",
+      "comment": "",
+      "status": "shipped",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 38,
+          "productName": "Пиджак двубортный тёмный",
+          "qty": 1,
+          "price": 23500
+        },
+        {
+          "productId": 63,
+          "productName": "Флисовая кофта полар",
+          "qty": 2,
+          "price": 6200
+        },
+        {
+          "productId": 69,
+          "productName": "Кепка 6-панельная",
+          "qty": 1,
+          "price": 2400
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 38300,
+      "discountAmount": 5745,
+      "total": 32905,
+      "createdAt": "2026-01-15T16:25:55.169Z"
+    },
+    {
+      "id": 41,
+      "customerName": "Павел Матвеев",
+      "phone": "+7 (943) 946-77-26",
+      "email": "user1983@example.com",
+      "address": "Пермь, ул. Горького, 85, кв. 18",
+      "comment": "",
+      "status": "done",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 52,
+          "productName": "Мюли кожаные блочный каблук",
+          "qty": 2,
+          "price": 9800
+        },
+        {
+          "productId": 46,
+          "productName": "Перчатки кожаные тонкие",
+          "qty": 2,
+          "price": 4100
+        },
+        {
+          "productId": 51,
+          "productName": "Топ-бандо из бархата",
+          "qty": 2,
+          "price": 4200
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 36200,
+      "discountAmount": 5430,
+      "total": 31270,
+      "createdAt": "2026-03-22T16:25:55.169Z"
+    },
+    {
+      "id": 42,
+      "customerName": "Ольга Смирнова",
+      "phone": "+7 (916) 291-84-70",
+      "email": "user8144@example.com",
+      "address": "Красноярск, пр. Победы, 92, кв. 117",
+      "comment": "",
+      "status": "shipped",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 51,
+          "productName": "Топ-бандо из бархата",
+          "qty": 1,
+          "price": 4200
+        },
+        {
+          "productId": 39,
+          "productName": "Майка-сетка базовая",
+          "qty": 1,
+          "price": 2800
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 7000,
+      "discountAmount": 0,
+      "total": 7500,
+      "createdAt": "2026-01-27T16:25:55.169Z"
+    },
+    {
+      "id": 43,
+      "customerName": "Анна Лебедева",
+      "phone": "+7 (949) 654-41-32",
+      "email": "user8068@example.com",
+      "address": "Санкт-Петербург, ул. Советская, 108, кв. 8",
+      "comment": "",
+      "status": "done",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 1,
+          "productName": "Пальто Oversized из шерсти",
+          "qty": 2,
+          "price": 18900
+        },
+        {
+          "productId": 69,
+          "productName": "Кепка 6-панельная",
+          "qty": 1,
+          "price": 2400
+        },
+        {
+          "productId": 40,
+          "productName": "Тёплые леггинсы зимние",
+          "qty": 2,
+          "price": 3400
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 47000,
+      "discountAmount": 0,
+      "total": 47500,
+      "createdAt": "2026-03-06T16:25:55.169Z"
+    },
+    {
+      "id": 44,
+      "customerName": "Алина Логинова",
+      "phone": "+7 (905) 280-43-16",
+      "email": "user9504@example.com",
+      "address": "Санкт-Петербург, ул. Ленина, 27, кв. 57",
+      "comment": "",
+      "status": "done",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 49,
+          "productName": "Рукавички-митенки вязаные",
+          "qty": 2,
+          "price": 1800
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 3600,
+      "discountAmount": 540,
+      "total": 3410,
+      "createdAt": "2026-02-05T16:25:55.169Z"
+    },
+    {
+      "id": 45,
+      "customerName": "Дмитрий Волков",
+      "phone": "+7 (993) 887-96-53",
+      "email": "user6638@example.com",
+      "address": "Екатеринбург, пр. Кирова, 185, кв. 23",
+      "comment": "",
+      "status": "done",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 7,
+          "productName": "Пальто структурированное с поясом",
+          "qty": 1,
+          "price": 20800
+        },
+        {
+          "productId": 26,
+          "productName": "Кардиган длинный вязаный",
+          "qty": 1,
+          "price": 7600
+        },
+        {
+          "productId": 33,
+          "productName": "Лонгслив технический zip",
+          "qty": 2,
+          "price": 6500
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 41400,
+      "discountAmount": 0,
+      "total": 41750,
+      "createdAt": "2026-01-28T16:25:55.169Z"
+    },
+    {
+      "id": 46,
+      "customerName": "Алина Логинова",
+      "phone": "+7 (915) 932-29-48",
+      "email": "user4728@example.com",
+      "address": "Санкт-Петербург, пр. Дружбы, 93, кв. 113",
+      "comment": "",
+      "status": "done",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 69,
+          "productName": "Кепка 6-панельная",
+          "qty": 2,
+          "price": 2400
+        },
+        {
+          "productId": 6,
+          "productName": "Платье-кокон драпированное",
+          "qty": 2,
+          "price": 21500
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 47800,
+      "discountAmount": 0,
+      "total": 47800,
+      "createdAt": "2026-04-08T16:25:55.169Z"
+    },
+    {
+      "id": 47,
+      "customerName": "Светлана Фёдорова",
+      "phone": "+7 (953) 130-67-74",
+      "email": "user3810@example.com",
+      "address": "Челябинск, ул. Советская, 36, кв. 116",
+      "comment": "",
+      "status": "processing",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 12,
+          "productName": "Худи тяжёлый хлопок унисекс",
+          "qty": 2,
+          "price": 6800
+        },
+        {
+          "productId": 39,
+          "productName": "Майка-сетка базовая",
+          "qty": 2,
+          "price": 2800
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 19200,
+      "discountAmount": 2880,
+      "total": 16320,
+      "createdAt": "2026-03-12T16:25:55.169Z"
+    },
+    {
+      "id": 48,
+      "customerName": "Наталья Козлова",
+      "phone": "+7 (915) 978-67-64",
+      "email": "user1887@example.com",
+      "address": "Санкт-Петербург, пр. Кирова, 106, кв. 65",
+      "comment": "",
+      "status": "done",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 29,
+          "productName": "Снуд-труба шерстяной",
+          "qty": 2,
+          "price": 3200
+        },
+        {
+          "productId": 59,
+          "productName": "Носки утеплённые рёберные",
+          "qty": 2,
+          "price": 1200
+        },
+        {
+          "productId": 60,
+          "productName": "Шарф-палантин твиловый",
+          "qty": 1,
+          "price": 4500
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 13300,
+      "discountAmount": 0,
+      "total": 13650,
+      "createdAt": "2026-02-10T16:25:55.169Z"
+    },
+    {
+      "id": 49,
+      "customerName": "Ксения Захарова",
+      "phone": "+7 (970) 710-90-80",
+      "email": "user4545@example.com",
+      "address": "Волгоград, пр. Гагарина, 131, кв. 50",
+      "comment": "",
+      "status": "processing",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 8,
+          "productName": "Брюки pallazo высокая посадка",
+          "qty": 2,
+          "price": 8900
+        },
+        {
+          "productId": 17,
+          "productName": "Ремень широкий кожаный",
+          "qty": 2,
+          "price": 3840
+        },
+        {
+          "productId": 24,
+          "productName": "Пальто-кейп без рукавов",
+          "qty": 1,
+          "price": 22000
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 47480,
+      "discountAmount": 7122,
+      "total": 40858,
+      "createdAt": "2026-03-22T16:25:55.169Z"
+    },
+    {
+      "id": 50,
+      "customerName": "Вера Белова",
+      "phone": "+7 (980) 818-26-27",
+      "email": "user1806@example.com",
+      "address": "Ростов-на-Дону, ул. Садовая, 28, кв. 129",
+      "comment": "",
+      "status": "done",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 11,
+          "productName": "Жакет raw-hem оверсайз",
+          "qty": 1,
+          "price": 16800
+        },
+        {
+          "productId": 31,
+          "productName": "Двойная косуха с поясом",
+          "qty": 2,
+          "price": 32000
+        },
+        {
+          "productId": 3,
+          "productName": "Жакет асимметричный деконструктивный",
+          "qty": 1,
+          "price": 19600
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 100400,
+      "discountAmount": 0,
+      "total": 100750,
+      "createdAt": "2026-01-12T16:25:55.169Z"
+    },
+    {
+      "id": 51,
+      "customerName": "Светлана Фёдорова",
+      "phone": "+7 (901) 991-41-90",
+      "email": "user1718@example.com",
+      "address": "Воронеж, ул. Советская, 138, кв. 38",
+      "comment": "",
+      "status": "done",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 24,
+          "productName": "Пальто-кейп без рукавов",
+          "qty": 1,
+          "price": 22000
+        },
+        {
+          "productId": 42,
+          "productName": "Широкий галстук тёмный",
+          "qty": 1,
+          "price": 2100
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 24100,
+      "discountAmount": 0,
+      "total": 24100,
+      "createdAt": "2026-01-23T16:25:55.169Z"
+    },
+    {
+      "id": 52,
+      "customerName": "Юлия Зайцева",
+      "phone": "+7 (936) 249-45-34",
+      "email": "user8057@example.com",
+      "address": "Самара, ул. Мира, 158, кв. 5",
+      "comment": "",
+      "status": "processing",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 69,
+          "productName": "Кепка 6-панельная",
+          "qty": 1,
+          "price": 2400
+        },
+        {
+          "productId": 20,
+          "productName": "Рубашка оверсайз хлопок",
+          "qty": 2,
+          "price": 5900
+        },
+        {
+          "productId": 36,
+          "productName": "Парка тактическая тёмная",
+          "qty": 2,
+          "price": 19800
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 53800,
+      "discountAmount": 0,
+      "total": 54150,
+      "createdAt": "2026-03-21T16:25:55.169Z"
+    },
+    {
+      "id": 53,
+      "customerName": "Анна Лебедева",
+      "phone": "+7 (983) 726-71-83",
+      "email": "user2719@example.com",
+      "address": "Санкт-Петербург, пр. Победы, 44, кв. 85",
+      "comment": "",
+      "status": "cancelled",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 6,
+          "productName": "Платье-кокон драпированное",
+          "qty": 1,
+          "price": 21500
+        },
+        {
+          "productId": 53,
+          "productName": "Платье миди с разрезом",
+          "qty": 1,
+          "price": 13500
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 35000,
+      "discountAmount": 0,
+      "total": 35500,
+      "createdAt": "2026-03-03T16:25:55.169Z"
+    },
+    {
+      "id": 54,
+      "customerName": "Дмитрий Волков",
+      "phone": "+7 (933) 126-69-87",
+      "email": "user4801@example.com",
+      "address": "Новосибирск, ул. Мира, 73, кв. 120",
+      "comment": "",
+      "status": "new",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 36,
+          "productName": "Парка тактическая тёмная",
+          "qty": 1,
+          "price": 19800
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 19800,
+      "discountAmount": 2970,
+      "total": 17330,
+      "createdAt": "2026-03-26T16:25:55.169Z"
+    },
+    {
+      "id": 55,
+      "customerName": "Наталья Козлова",
+      "phone": "+7 (915) 302-53-34",
+      "email": "user1603@example.com",
+      "address": "Омск, ул. Садовая, 90, кв. 52",
+      "comment": "",
+      "status": "shipped",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 20,
+          "productName": "Рубашка оверсайз хлопок",
+          "qty": 1,
+          "price": 5900
+        },
+        {
+          "productId": 50,
+          "productName": "Мини-юбка кожаная",
+          "qty": 2,
+          "price": 9200
+        },
+        {
+          "productId": 36,
+          "productName": "Парка тактическая тёмная",
+          "qty": 2,
+          "price": 19800
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 63900,
+      "discountAmount": 0,
+      "total": 64400,
+      "createdAt": "2026-03-23T16:25:55.169Z"
+    },
+    {
+      "id": 56,
+      "customerName": "Ольга Смирнова",
+      "phone": "+7 (995) 100-77-96",
+      "email": "user7154@example.com",
+      "address": "Казань, ул. Ленина, 37, кв. 105",
+      "comment": "",
+      "status": "cancelled",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 41,
+          "productName": "Корсет на шнуровке",
+          "qty": 2,
+          "price": 8700
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 17400,
+      "discountAmount": 0,
+      "total": 17400,
+      "createdAt": "2026-03-27T16:25:55.169Z"
+    },
+    {
+      "id": 57,
+      "customerName": "Андрей Чернов",
+      "phone": "+7 (935) 870-96-71",
+      "email": "user5832@example.com",
+      "address": "Волгоград, ул. Мира, 170, кв. 35",
+      "comment": "",
+      "status": "done",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 46,
+          "productName": "Перчатки кожаные тонкие",
+          "qty": 1,
+          "price": 4100
+        },
+        {
+          "productId": 19,
+          "productName": "Кошелёк минималистичный",
+          "qty": 1,
+          "price": 3600
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 7700,
+      "discountAmount": 1155,
+      "total": 6895,
+      "createdAt": "2026-02-03T16:25:55.169Z"
+    },
+    {
+      "id": 58,
+      "customerName": "Ольга Смирнова",
+      "phone": "+7 (901) 229-54-66",
+      "email": "user5450@example.com",
+      "address": "Волгоград, ул. Мира, 180, кв. 70",
+      "comment": "",
+      "status": "done",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 47,
+          "productName": "Брюки из экокожи прямые",
+          "qty": 2,
+          "price": 12800
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 25600,
+      "discountAmount": 0,
+      "total": 26100,
+      "createdAt": "2026-03-24T16:25:55.169Z"
+    },
+    {
+      "id": 59,
+      "customerName": "Илья Виноградов",
+      "phone": "+7 (988) 599-83-68",
+      "email": "user6003@example.com",
+      "address": "Екатеринбург, пр. Победы, 96, кв. 14",
+      "comment": "",
+      "status": "shipped",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 51,
+          "productName": "Топ-бандо из бархата",
+          "qty": 2,
+          "price": 4200
+        },
+        {
+          "productId": 42,
+          "productName": "Широкий галстук тёмный",
+          "qty": 2,
+          "price": 2100
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 12600,
+      "discountAmount": 0,
+      "total": 13100,
+      "createdAt": "2026-01-27T16:25:55.169Z"
+    },
+    {
+      "id": 60,
+      "customerName": "Илья Виноградов",
+      "phone": "+7 (925) 656-90-56",
+      "email": "user8604@example.com",
+      "address": "Красноярск, пр. Кирова, 155, кв. 149",
+      "comment": "",
+      "status": "done",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 47,
+          "productName": "Брюки из экокожи прямые",
+          "qty": 2,
+          "price": 12800
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 25600,
+      "discountAmount": 3840,
+      "total": 21760,
+      "createdAt": "2026-01-31T16:25:55.169Z"
+    },
+    {
+      "id": 61,
+      "customerName": "Максим Орлов",
+      "phone": "+7 (915) 105-96-85",
+      "email": "user895@example.com",
+      "address": "Воронеж, пр. Гагарина, 111, кв. 89",
+      "comment": "",
+      "status": "new",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 48,
+          "productName": "Боди-бра без косточек",
+          "qty": 2,
+          "price": 3900
+        },
+        {
+          "productId": 28,
+          "productName": "Платье-рубашка midi",
+          "qty": 2,
+          "price": 11500
+        },
+        {
+          "productId": 49,
+          "productName": "Рукавички-митенки вязаные",
+          "qty": 2,
+          "price": 1800
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 34400,
+      "discountAmount": 5160,
+      "total": 29240,
+      "createdAt": "2026-01-20T16:25:55.169Z"
+    },
+    {
+      "id": 62,
+      "customerName": "Кирилл Новиков",
+      "phone": "+7 (956) 798-97-30",
+      "email": "user7819@example.com",
+      "address": "Новосибирск, ул. Мира, 69, кв. 5",
+      "comment": "",
+      "status": "new",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 36,
+          "productName": "Парка тактическая тёмная",
+          "qty": 2,
+          "price": 19800
+        },
+        {
+          "productId": 47,
+          "productName": "Брюки из экокожи прямые",
+          "qty": 1,
+          "price": 12800
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 52400,
+      "discountAmount": 0,
+      "total": 52900,
+      "createdAt": "2026-03-19T16:25:55.169Z"
+    },
+    {
+      "id": 63,
+      "customerName": "Иван Петров",
+      "phone": "+7 (958) 620-99-91",
+      "email": "user6150@example.com",
+      "address": "Омск, пр. Дружбы, 67, кв. 26",
+      "comment": "",
+      "status": "shipped",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 1,
+          "productName": "Пальто Oversized из шерсти",
+          "qty": 1,
+          "price": 18900
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 18900,
+      "discountAmount": 0,
+      "total": 18900,
+      "createdAt": "2026-02-13T16:25:55.170Z"
+    },
+    {
+      "id": 64,
+      "customerName": "Ольга Смирнова",
+      "phone": "+7 (945) 834-49-15",
+      "email": "user4508@example.com",
+      "address": "Казань, пр. Победы, 32, кв. 96",
+      "comment": "",
+      "status": "processing",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 45,
+          "productName": "Ветровка оверсайз лёгкая",
+          "qty": 1,
+          "price": 6400
+        },
+        {
+          "productId": 19,
+          "productName": "Кошелёк минималистичный",
+          "qty": 2,
+          "price": 3600
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 13600,
+      "discountAmount": 0,
+      "total": 13600,
+      "createdAt": "2026-01-08T16:25:55.170Z"
+    },
+    {
+      "id": 65,
+      "customerName": "Юлия Зайцева",
+      "phone": "+7 (901) 922-90-98",
+      "email": "user8543@example.com",
+      "address": "Пермь, пр. Дружбы, 37, кв. 12",
+      "comment": "",
+      "status": "cancelled",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 26,
+          "productName": "Кардиган длинный вязаный",
+          "qty": 1,
+          "price": 7600
+        },
+        {
+          "productId": 19,
+          "productName": "Кошелёк минималистичный",
+          "qty": 2,
+          "price": 3600
+        },
+        {
+          "productId": 5,
+          "productName": "Брюки широкие с защипами",
+          "qty": 1,
+          "price": 11200
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 26000,
+      "discountAmount": 3900,
+      "total": 22450,
+      "createdAt": "2026-01-15T16:25:55.170Z"
+    },
+    {
+      "id": 66,
+      "customerName": "Алина Логинова",
+      "phone": "+7 (982) 689-72-16",
+      "email": "user1940@example.com",
+      "address": "Москва, ул. Ленина, 75, кв. 142",
+      "comment": "",
+      "status": "shipped",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 36,
+          "productName": "Парка тактическая тёмная",
+          "qty": 1,
+          "price": 19800
+        },
+        {
+          "productId": 4,
+          "productName": "Водолазка вязаная heavy knit",
+          "qty": 1,
+          "price": 6800
+        },
+        {
+          "productId": 2,
+          "productName": "Карго-брюки технические",
+          "qty": 1,
+          "price": 7600
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 34200,
+      "discountAmount": 0,
+      "total": 34550,
+      "createdAt": "2026-03-28T16:25:55.170Z"
+    },
+    {
+      "id": 67,
+      "customerName": "Максим Орлов",
+      "phone": "+7 (971) 112-12-82",
+      "email": "user3952@example.com",
+      "address": "Омск, пр. Победы, 22, кв. 36",
+      "comment": "",
+      "status": "done",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 70,
+          "productName": "Бейзбольная куртка на кнопках",
+          "qty": 1,
+          "price": 15600
+        },
+        {
+          "productId": 19,
+          "productName": "Кошелёк минималистичный",
+          "qty": 1,
+          "price": 3600
+        },
+        {
+          "productId": 63,
+          "productName": "Флисовая кофта полар",
+          "qty": 2,
+          "price": 6200
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 31600,
+      "discountAmount": 0,
+      "total": 31600,
+      "createdAt": "2026-02-09T16:25:55.170Z"
+    },
+    {
+      "id": 68,
+      "customerName": "Иван Петров",
+      "phone": "+7 (946) 657-78-26",
+      "email": "user3074@example.com",
+      "address": "Волгоград, ул. Мира, 171, кв. 95",
+      "comment": "",
+      "status": "done",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 67,
+          "productName": "Туника асимметричная льняная",
+          "qty": 1,
+          "price": 7800
+        },
+        {
+          "productId": 31,
+          "productName": "Двойная косуха с поясом",
+          "qty": 1,
+          "price": 32000
+        },
+        {
+          "productId": 30,
+          "productName": "Сарафан многоярусный",
+          "qty": 1,
+          "price": 9600
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 49400,
+      "discountAmount": 0,
+      "total": 49900,
+      "createdAt": "2026-02-11T16:25:55.170Z"
+    },
+    {
+      "id": 69,
+      "customerName": "Ольга Смирнова",
+      "phone": "+7 (933) 186-35-99",
+      "email": "user6395@example.com",
+      "address": "Омск, ул. Садовая, 98, кв. 48",
+      "comment": "",
+      "status": "processing",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 60,
+          "productName": "Шарф-палантин твиловый",
+          "qty": 2,
+          "price": 4500
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 9000,
+      "discountAmount": 0,
+      "total": 9350,
+      "createdAt": "2026-02-11T16:25:55.170Z"
+    },
+    {
+      "id": 70,
+      "customerName": "Максим Орлов",
+      "phone": "+7 (921) 348-20-86",
+      "email": "user2496@example.com",
+      "address": "Уфа, ул. Пушкина, 160, кв. 93",
+      "comment": "",
+      "status": "done",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 68,
+          "productName": "Укороченная куртка-косуха",
+          "qty": 2,
+          "price": 21000
+        },
+        {
+          "productId": 30,
+          "productName": "Сарафан многоярусный",
+          "qty": 1,
+          "price": 9600
+        },
+        {
+          "productId": 44,
+          "productName": "Плиссированная юбка миди",
+          "qty": 2,
+          "price": 7900
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 67400,
+      "discountAmount": 0,
+      "total": 67750,
+      "createdAt": "2026-01-14T16:25:55.170Z"
+    },
+    {
+      "id": 71,
+      "customerName": "Павел Матвеев",
+      "phone": "+7 (995) 554-40-18",
+      "email": "user7628@example.com",
+      "address": "Краснодар, пр. Гагарина, 75, кв. 95",
+      "comment": "",
+      "status": "cancelled",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 54,
+          "productName": "Дождевик нейлоновый капсула",
+          "qty": 1,
+          "price": 5200
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 5200,
+      "discountAmount": 0,
+      "total": 5550,
+      "createdAt": "2026-02-26T16:25:55.170Z"
+    },
+    {
+      "id": 72,
+      "customerName": "Мария Соколова",
+      "phone": "+7 (968) 825-19-86",
+      "email": "user6103@example.com",
+      "address": "Уфа, пр. Дружбы, 22, кв. 66",
+      "comment": "",
+      "status": "done",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 13,
+          "productName": "Футболка оверсайз базовая",
+          "qty": 2,
+          "price": 4500
+        },
+        {
+          "productId": 60,
+          "productName": "Шарф-палантин твиловый",
+          "qty": 2,
+          "price": 4500
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 18000,
+      "discountAmount": 2700,
+      "total": 15800,
+      "createdAt": "2026-01-10T16:25:55.170Z"
+    },
+    {
+      "id": 73,
+      "customerName": "Анна Лебедева",
+      "phone": "+7 (919) 602-47-26",
+      "email": "user9397@example.com",
+      "address": "Челябинск, пр. Кирова, 57, кв. 99",
+      "comment": "",
+      "status": "processing",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 34,
+          "productName": "Жакет с пэчворком тёмный",
+          "qty": 2,
+          "price": 18500
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 37000,
+      "discountAmount": 5550,
+      "total": 31800,
+      "createdAt": "2026-04-01T16:25:55.170Z"
+    },
+    {
+      "id": 74,
+      "customerName": "Роман Сидоров",
+      "phone": "+7 (909) 947-25-40",
+      "email": "user7018@example.com",
+      "address": "Санкт-Петербург, ул. Мира, 127, кв. 75",
+      "comment": "",
+      "status": "cancelled",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 63,
+          "productName": "Флисовая кофта полар",
+          "qty": 2,
+          "price": 6200
+        },
+        {
+          "productId": 4,
+          "productName": "Водолазка вязаная heavy knit",
+          "qty": 2,
+          "price": 6800
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 26000,
+      "discountAmount": 0,
+      "total": 26000,
+      "createdAt": "2026-03-25T16:25:55.170Z"
+    },
+    {
+      "id": 75,
+      "customerName": "Илья Виноградов",
+      "phone": "+7 (939) 696-45-83",
+      "email": "user5885@example.com",
+      "address": "Челябинск, пр. Дружбы, 200, кв. 112",
+      "comment": "",
+      "status": "cancelled",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 27,
+          "productName": "Шорты-бермуды технические",
+          "qty": 2,
+          "price": 5800
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 11600,
+      "discountAmount": 0,
+      "total": 11600,
+      "createdAt": "2026-03-21T16:25:55.170Z"
+    },
+    {
+      "id": 76,
+      "customerName": "Тамара Баранова",
+      "phone": "+7 (994) 169-26-90",
+      "email": "user3276@example.com",
+      "address": "Екатеринбург, ул. Горького, 99, кв. 11",
+      "comment": "",
+      "status": "new",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 45,
+          "productName": "Ветровка оверсайз лёгкая",
+          "qty": 2,
+          "price": 6400
+        },
+        {
+          "productId": 10,
+          "productName": "Юбка архитектурная midi",
+          "qty": 1,
+          "price": 12500
+        },
+        {
+          "productId": 18,
+          "productName": "Шапка рёберная вязка",
+          "qty": 2,
+          "price": 2900
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 31100,
+      "discountAmount": 4665,
+      "total": 26785,
+      "createdAt": "2026-01-17T16:25:55.170Z"
+    },
+    {
+      "id": 77,
+      "customerName": "Ксения Захарова",
+      "phone": "+7 (927) 519-47-55",
+      "email": "user6115@example.com",
+      "address": "Ростов-на-Дону, ул. Садовая, 23, кв. 116",
+      "comment": "",
+      "status": "shipped",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 21,
+          "productName": "Куртка бомбер тёмная",
+          "qty": 2,
+          "price": 14500
+        },
+        {
+          "productId": 37,
+          "productName": "Трикотажный топ бюстье",
+          "qty": 1,
+          "price": 3700
+        },
+        {
+          "productId": 39,
+          "productName": "Майка-сетка базовая",
+          "qty": 1,
+          "price": 2800
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 35500,
+      "discountAmount": 5325,
+      "total": 30175,
+      "createdAt": "2026-04-01T16:25:55.170Z"
+    },
+    {
+      "id": 78,
+      "customerName": "Елена Кузнецова",
+      "phone": "+7 (940) 949-71-88",
+      "email": "user854@example.com",
+      "address": "Москва, пр. Дружбы, 164, кв. 81",
+      "comment": "",
+      "status": "shipped",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 23,
+          "productName": "Жилет стёганый утеплённый",
+          "qty": 2,
+          "price": 7200
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 14400,
+      "discountAmount": 0,
+      "total": 14400,
+      "createdAt": "2026-03-31T16:25:55.170Z"
+    },
+    {
+      "id": 79,
+      "customerName": "Андрей Чернов",
+      "phone": "+7 (988) 897-69-54",
+      "email": "user3984@example.com",
+      "address": "Краснодар, пр. Дружбы, 176, кв. 81",
+      "comment": "",
+      "status": "cancelled",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 47,
+          "productName": "Брюки из экокожи прямые",
+          "qty": 2,
+          "price": 12800
+        },
+        {
+          "productId": 12,
+          "productName": "Худи тяжёлый хлопок унисекс",
+          "qty": 1,
+          "price": 6800
+        },
+        {
+          "productId": 4,
+          "productName": "Водолазка вязаная heavy knit",
+          "qty": 1,
+          "price": 6800
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 39200,
+      "discountAmount": 5880,
+      "total": 33320,
+      "createdAt": "2026-01-13T16:25:55.170Z"
+    },
+    {
+      "id": 80,
+      "customerName": "Павел Матвеев",
+      "phone": "+7 (995) 859-21-97",
+      "email": "user8858@example.com",
+      "address": "Пермь, ул. Советская, 173, кв. 142",
+      "comment": "",
+      "status": "new",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 62,
+          "productName": "Рубашка льняная тёмная",
+          "qty": 1,
+          "price": 6800
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 6800,
+      "discountAmount": 0,
+      "total": 7300,
+      "createdAt": "2026-04-06T16:25:55.170Z"
+    },
+    {
+      "id": 81,
+      "customerName": "Тимур Ахметов",
+      "phone": "+7 (968) 270-44-44",
+      "email": "user4634@example.com",
+      "address": "Красноярск, ул. Советская, 20, кв. 120",
+      "comment": "",
+      "status": "done",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 58,
+          "productName": "Борсетка кожаная матовая",
+          "qty": 1,
+          "price": 5600
+        },
+        {
+          "productId": 15,
+          "productName": "Жилет утилитарный тёмный",
+          "qty": 1,
+          "price": 11000
+        },
+        {
+          "productId": 16,
+          "productName": "Сумка-тоут структурированная",
+          "qty": 2,
+          "price": 12000
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 40600,
+      "discountAmount": 6090,
+      "total": 34510,
+      "createdAt": "2026-02-02T16:25:55.170Z"
+    },
+    {
+      "id": 82,
+      "customerName": "Андрей Чернов",
+      "phone": "+7 (981) 189-97-66",
+      "email": "user3831@example.com",
+      "address": "Новосибирск, пр. Дружбы, 149, кв. 149",
+      "comment": "",
+      "status": "done",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 55,
+          "productName": "Поло плотное пике",
+          "qty": 1,
+          "price": 5400
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 5400,
+      "discountAmount": 810,
+      "total": 5090,
+      "createdAt": "2026-03-27T16:25:55.170Z"
+    },
+    {
+      "id": 83,
+      "customerName": "Роман Сидоров",
+      "phone": "+7 (963) 818-15-62",
+      "email": "user5850@example.com",
+      "address": "Екатеринбург, ул. Мира, 170, кв. 50",
+      "comment": "",
+      "status": "shipped",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 42,
+          "productName": "Широкий галстук тёмный",
+          "qty": 2,
+          "price": 2100
+        },
+        {
+          "productId": 34,
+          "productName": "Жакет с пэчворком тёмный",
+          "qty": 1,
+          "price": 18500
+        },
+        {
+          "productId": 7,
+          "productName": "Пальто структурированное с поясом",
+          "qty": 1,
+          "price": 20800
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 43500,
+      "discountAmount": 0,
+      "total": 43500,
+      "createdAt": "2026-01-26T16:25:55.170Z"
+    },
+    {
+      "id": 84,
+      "customerName": "Илья Виноградов",
+      "phone": "+7 (941) 688-92-45",
+      "email": "user4651@example.com",
+      "address": "Москва, ул. Горького, 132, кв. 143",
+      "comment": "",
+      "status": "shipped",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 31,
+          "productName": "Двойная косуха с поясом",
+          "qty": 1,
+          "price": 32000
+        },
+        {
+          "productId": 9,
+          "productName": "Блуза объёмная с асимметрией",
+          "qty": 1,
+          "price": 5760
+        },
+        {
+          "productId": 27,
+          "productName": "Шорты-бермуды технические",
+          "qty": 2,
+          "price": 5800
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 49360,
+      "discountAmount": 0,
+      "total": 49710,
+      "createdAt": "2026-02-27T16:25:55.170Z"
+    },
+    {
+      "id": 85,
+      "customerName": "Роман Сидоров",
+      "phone": "+7 (990) 387-92-70",
+      "email": "user4324@example.com",
+      "address": "Омск, ул. Ленина, 94, кв. 94",
+      "comment": "",
+      "status": "new",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 1,
+          "productName": "Пальто Oversized из шерсти",
+          "qty": 2,
+          "price": 18900
+        },
+        {
+          "productId": 30,
+          "productName": "Сарафан многоярусный",
+          "qty": 2,
+          "price": 9600
+        },
+        {
+          "productId": 34,
+          "productName": "Жакет с пэчворком тёмный",
+          "qty": 1,
+          "price": 18500
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 75500,
+      "discountAmount": 0,
+      "total": 76000,
+      "createdAt": "2026-02-11T16:25:55.170Z"
+    },
+    {
+      "id": 86,
+      "customerName": "Елена Кузнецова",
+      "phone": "+7 (982) 820-39-75",
+      "email": "user7109@example.com",
+      "address": "Красноярск, ул. Мира, 21, кв. 57",
+      "comment": "",
+      "status": "done",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 40,
+          "productName": "Тёплые леггинсы зимние",
+          "qty": 2,
+          "price": 3400
+        },
+        {
+          "productId": 33,
+          "productName": "Лонгслив технический zip",
+          "qty": 2,
+          "price": 6500
+        },
+        {
+          "productId": 31,
+          "productName": "Двойная косуха с поясом",
+          "qty": 1,
+          "price": 32000
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 51800,
+      "discountAmount": 7770,
+      "total": 44380,
+      "createdAt": "2026-02-16T16:25:55.170Z"
+    },
+    {
+      "id": 87,
+      "customerName": "Анна Лебедева",
+      "phone": "+7 (945) 392-75-73",
+      "email": "user1730@example.com",
+      "address": "Красноярск, ул. Горького, 5, кв. 131",
+      "comment": "",
+      "status": "processing",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 5,
+          "productName": "Брюки широкие с защипами",
+          "qty": 2,
+          "price": 11200
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 22400,
+      "discountAmount": 0,
+      "total": 22750,
+      "createdAt": "2026-02-13T16:25:55.170Z"
+    },
+    {
+      "id": 88,
+      "customerName": "Алина Логинова",
+      "phone": "+7 (969) 362-38-66",
+      "email": "user1403@example.com",
+      "address": "Омск, ул. Пушкина, 4, кв. 43",
+      "comment": "",
+      "status": "cancelled",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 47,
+          "productName": "Брюки из экокожи прямые",
+          "qty": 1,
+          "price": 12800
+        },
+        {
+          "productId": 3,
+          "productName": "Жакет асимметричный деконструктивный",
+          "qty": 2,
+          "price": 19600
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 52000,
+      "discountAmount": 0,
+      "total": 52350,
+      "createdAt": "2026-01-17T16:25:55.170Z"
+    },
+    {
+      "id": 89,
+      "customerName": "Алексей Морозов",
+      "phone": "+7 (910) 442-28-86",
+      "email": "user7788@example.com",
+      "address": "Омск, пр. Гагарина, 5, кв. 25",
+      "comment": "",
+      "status": "processing",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 59,
+          "productName": "Носки утеплённые рёберные",
+          "qty": 2,
+          "price": 1200
+        },
+        {
+          "productId": 51,
+          "productName": "Топ-бандо из бархата",
+          "qty": 1,
+          "price": 4200
+        },
+        {
+          "productId": 38,
+          "productName": "Пиджак двубортный тёмный",
+          "qty": 1,
+          "price": 23500
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 30100,
+      "discountAmount": 0,
+      "total": 30600,
+      "createdAt": "2026-04-03T16:25:55.170Z"
+    },
+    {
+      "id": 90,
+      "customerName": "Анна Лебедева",
+      "phone": "+7 (906) 141-44-55",
+      "email": "user897@example.com",
+      "address": "Пермь, ул. Пушкина, 148, кв. 55",
+      "comment": "",
+      "status": "new",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 22,
+          "productName": "Свитер объёмный шерсть",
+          "qty": 1,
+          "price": 9800
+        },
+        {
+          "productId": 13,
+          "productName": "Футболка оверсайз базовая",
+          "qty": 1,
+          "price": 4500
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 14300,
+      "discountAmount": 2145,
+      "total": 12655,
+      "createdAt": "2026-02-14T16:25:55.170Z"
+    },
+    {
+      "id": 91,
+      "customerName": "Андрей Чернов",
+      "phone": "+7 (977) 179-18-73",
+      "email": "user2986@example.com",
+      "address": "Казань, ул. Советская, 179, кв. 97",
+      "comment": "",
+      "status": "shipped",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 48,
+          "productName": "Боди-бра без косточек",
+          "qty": 2,
+          "price": 3900
+        },
+        {
+          "productId": 38,
+          "productName": "Пиджак двубортный тёмный",
+          "qty": 2,
+          "price": 23500
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 54800,
+      "discountAmount": 0,
+      "total": 55150,
+      "createdAt": "2026-01-12T16:25:55.170Z"
+    },
+    {
+      "id": 92,
+      "customerName": "Ксения Захарова",
+      "phone": "+7 (924) 821-41-50",
+      "email": "user9489@example.com",
+      "address": "Краснодар, пр. Победы, 110, кв. 126",
+      "comment": "",
+      "status": "processing",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 50,
+          "productName": "Мини-юбка кожаная",
+          "qty": 1,
+          "price": 9200
+        },
+        {
+          "productId": 57,
+          "productName": "Тренч оверсайз тёмный",
+          "qty": 1,
+          "price": 26000
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 35200,
+      "discountAmount": 0,
+      "total": 35200,
+      "createdAt": "2026-02-11T16:25:55.170Z"
+    },
+    {
+      "id": 93,
+      "customerName": "Мария Соколова",
+      "phone": "+7 (971) 862-45-20",
+      "email": "user3966@example.com",
+      "address": "Санкт-Петербург, ул. Ленина, 20, кв. 81",
+      "comment": "",
+      "status": "shipped",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 59,
+          "productName": "Носки утеплённые рёберные",
+          "qty": 2,
+          "price": 1200
+        },
+        {
+          "productId": 3,
+          "productName": "Жакет асимметричный деконструктивный",
+          "qty": 1,
+          "price": 19600
+        },
+        {
+          "productId": 6,
+          "productName": "Платье-кокон драпированное",
+          "qty": 2,
+          "price": 21500
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 65000,
+      "discountAmount": 0,
+      "total": 65500,
+      "createdAt": "2026-02-18T16:25:55.170Z"
+    },
+    {
+      "id": 94,
+      "customerName": "Елена Кузнецова",
+      "phone": "+7 (975) 438-28-78",
+      "email": "user3448@example.com",
+      "address": "Самара, ул. Пушкина, 128, кв. 140",
+      "comment": "",
+      "status": "shipped",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 64,
+          "productName": "Куртка пуховик сити",
+          "qty": 1,
+          "price": 28500
+        },
+        {
+          "productId": 60,
+          "productName": "Шарф-палантин твиловый",
+          "qty": 2,
+          "price": 4500
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 37500,
+      "discountAmount": 0,
+      "total": 38000,
+      "createdAt": "2026-02-10T16:25:55.170Z"
+    },
+    {
+      "id": 95,
+      "customerName": "Сергей Попов",
+      "phone": "+7 (986) 605-93-23",
+      "email": "user5706@example.com",
+      "address": "Краснодар, ул. Советская, 88, кв. 23",
+      "comment": "",
+      "status": "new",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 69,
+          "productName": "Кепка 6-панельная",
+          "qty": 2,
+          "price": 2400
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 4800,
+      "discountAmount": 720,
+      "total": 4080,
+      "createdAt": "2026-02-15T16:25:55.170Z"
+    },
+    {
+      "id": 96,
+      "customerName": "Вера Белова",
+      "phone": "+7 (957) 270-93-19",
+      "email": "user7349@example.com",
+      "address": "Ростов-на-Дону, ул. Советская, 69, кв. 104",
+      "comment": "",
+      "status": "new",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 52,
+          "productName": "Мюли кожаные блочный каблук",
+          "qty": 2,
+          "price": 9800
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 19600,
+      "discountAmount": 2940,
+      "total": 16660,
+      "createdAt": "2026-03-29T16:25:55.170Z"
+    },
+    {
+      "id": 97,
+      "customerName": "Роман Сидоров",
+      "phone": "+7 (911) 431-55-80",
+      "email": "user9883@example.com",
+      "address": "Казань, ул. Ленина, 140, кв. 83",
+      "comment": "",
+      "status": "processing",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 57,
+          "productName": "Тренч оверсайз тёмный",
+          "qty": 2,
+          "price": 26000
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 52000,
+      "discountAmount": 7800,
+      "total": 44550,
+      "createdAt": "2026-02-12T16:25:55.170Z"
+    },
+    {
+      "id": 98,
+      "customerName": "Сергей Попов",
+      "phone": "+7 (944) 984-91-48",
+      "email": "user5486@example.com",
+      "address": "Воронеж, пр. Дружбы, 25, кв. 66",
+      "comment": "",
+      "status": "cancelled",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 2,
+          "productName": "Карго-брюки технические",
+          "qty": 1,
+          "price": 7600
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 7600,
+      "discountAmount": 0,
+      "total": 7950,
+      "createdAt": "2026-01-27T16:25:55.170Z"
+    },
+    {
+      "id": 99,
+      "customerName": "Наталья Козлова",
+      "phone": "+7 (978) 142-23-21",
+      "email": "user7818@example.com",
+      "address": "Санкт-Петербург, ул. Мира, 181, кв. 130",
+      "comment": "",
+      "status": "done",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 43,
+          "productName": "Трикотажный костюм двойка",
+          "qty": 2,
+          "price": 16800
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 33600,
+      "discountAmount": 0,
+      "total": 33950,
+      "createdAt": "2026-02-07T16:25:55.171Z"
+    },
+    {
+      "id": 100,
+      "customerName": "Дмитрий Волков",
+      "phone": "+7 (907) 929-97-23",
+      "email": "user5848@example.com",
+      "address": "Краснодар, ул. Пушкина, 128, кв. 41",
+      "comment": "",
+      "status": "processing",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 3,
+          "productName": "Жакет асимметричный деконструктивный",
+          "qty": 2,
+          "price": 19600
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 39200,
+      "discountAmount": 0,
+      "total": 39200,
+      "createdAt": "2026-02-28T16:25:55.171Z"
+    },
+    {
+      "id": 101,
+      "customerName": "Алексей Морозов",
+      "phone": "+7 (938) 247-97-62",
+      "email": "user5115@example.com",
+      "address": "Ростов-на-Дону, ул. Пушкина, 53, кв. 40",
+      "comment": "",
+      "status": "new",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 64,
+          "productName": "Куртка пуховик сити",
+          "qty": 2,
+          "price": 28500
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 57000,
+      "discountAmount": 0,
+      "total": 57000,
+      "createdAt": "2026-03-14T16:25:55.171Z"
+    },
+    {
+      "id": 102,
+      "customerName": "Алексей Морозов",
+      "phone": "+7 (922) 525-33-41",
+      "email": "user8294@example.com",
+      "address": "Воронеж, пр. Дружбы, 17, кв. 23",
+      "comment": "",
+      "status": "new",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 49,
+          "productName": "Рукавички-митенки вязаные",
+          "qty": 1,
+          "price": 1800
+        },
+        {
+          "productId": 19,
+          "productName": "Кошелёк минималистичный",
+          "qty": 2,
+          "price": 3600
+        },
+        {
+          "productId": 7,
+          "productName": "Пальто структурированное с поясом",
+          "qty": 2,
+          "price": 20800
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 50600,
+      "discountAmount": 0,
+      "total": 51100,
+      "createdAt": "2026-04-04T16:25:55.171Z"
+    },
+    {
+      "id": 103,
+      "customerName": "Ольга Смирнова",
+      "phone": "+7 (993) 767-46-95",
+      "email": "user8318@example.com",
+      "address": "Пермь, ул. Мира, 15, кв. 144",
+      "comment": "",
+      "status": "shipped",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 67,
+          "productName": "Туника асимметричная льняная",
+          "qty": 1,
+          "price": 7800
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 7800,
+      "discountAmount": 1170,
+      "total": 6980,
+      "createdAt": "2026-01-13T16:25:55.171Z"
+    },
+    {
+      "id": 104,
+      "customerName": "Вера Белова",
+      "phone": "+7 (941) 311-40-50",
+      "email": "user3241@example.com",
+      "address": "Краснодар, ул. Садовая, 170, кв. 99",
+      "comment": "",
+      "status": "new",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 7,
+          "productName": "Пальто структурированное с поясом",
+          "qty": 2,
+          "price": 20800
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 41600,
+      "discountAmount": 6240,
+      "total": 35710,
+      "createdAt": "2026-01-23T16:25:55.171Z"
+    },
+    {
+      "id": 105,
+      "customerName": "Ольга Смирнова",
+      "phone": "+7 (962) 566-14-78",
+      "email": "user2593@example.com",
+      "address": "Новосибирск, ул. Садовая, 126, кв. 115",
+      "comment": "",
+      "status": "new",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 41,
+          "productName": "Корсет на шнуровке",
+          "qty": 2,
+          "price": 8700
+        },
+        {
+          "productId": 52,
+          "productName": "Мюли кожаные блочный каблук",
+          "qty": 1,
+          "price": 9800
+        },
+        {
+          "productId": 57,
+          "productName": "Тренч оверсайз тёмный",
+          "qty": 1,
+          "price": 26000
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 53200,
+      "discountAmount": 0,
+      "total": 53700,
+      "createdAt": "2026-03-31T16:25:55.171Z"
+    },
+    {
+      "id": 106,
+      "customerName": "Иван Петров",
+      "phone": "+7 (936) 522-64-70",
+      "email": "user7271@example.com",
+      "address": "Воронеж, пр. Гагарина, 114, кв. 72",
+      "comment": "",
+      "status": "cancelled",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 39,
+          "productName": "Майка-сетка базовая",
+          "qty": 2,
+          "price": 2800
+        },
+        {
+          "productId": 66,
+          "productName": "Клатч цепочка вечерний",
+          "qty": 1,
+          "price": 7100
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 12700,
+      "discountAmount": 0,
+      "total": 13050,
+      "createdAt": "2026-03-06T16:25:55.171Z"
+    },
+    {
+      "id": 107,
+      "customerName": "Ксения Захарова",
+      "phone": "+7 (982) 811-14-97",
+      "email": "user4103@example.com",
+      "address": "Санкт-Петербург, ул. Советская, 100, кв. 99",
+      "comment": "",
+      "status": "done",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 57,
+          "productName": "Тренч оверсайз тёмный",
+          "qty": 1,
+          "price": 26000
+        },
+        {
+          "productId": 1,
+          "productName": "Пальто Oversized из шерсти",
+          "qty": 1,
+          "price": 18900
+        },
+        {
+          "productId": 60,
+          "productName": "Шарф-палантин твиловый",
+          "qty": 1,
+          "price": 4500
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 49400,
+      "discountAmount": 0,
+      "total": 49750,
+      "createdAt": "2026-02-09T16:25:55.171Z"
     }
   ],
   "promoCodes": [
@@ -762,8 +5617,8 @@
     }
   ],
   "counters": {
-    "product": 20,
-    "order": 8,
+    "product": 71,
+    "order": 108,
     "log": 4,
     "promo": 2
   }

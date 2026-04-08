@@ -556,10 +556,17 @@
     btnParse.addEventListener("click", function () {
       var statusEl = document.getElementById("parse-status");
       var resultEl = document.getElementById("parse-result");
+      var countInput = document.getElementById("parse-count");
+      var forceInput = document.getElementById("parse-force");
+      var count = parseInt((countInput && countInput.value) || "10", 10);
+      var force = !!(forceInput && forceInput.checked);
       btnParse.disabled = true;
       if (statusEl) statusEl.textContent = "Загружаю данные…";
       if (resultEl) resultEl.style.display = "none";
-      authFetch("/api/admin/parse-vitrine", { method: "POST" })
+      authFetch("/api/admin/parse-vitrine", {
+        method: "POST",
+        body: JSON.stringify({ count: count, force: force }),
+      })
         .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, data: d }; }); })
         .then(function (res) {
           if (!res.ok) throw new Error(res.data.error || "Ошибка");
@@ -579,6 +586,44 @@
           if (statusEl) statusEl.textContent = "Ошибка: " + (err.message || "неизвестная");
         })
         .finally(function () { btnParse.disabled = false; });
+    });
+  }
+
+  var btnGenOrders = document.getElementById("btn-gen-orders");
+  if (btnGenOrders) {
+    btnGenOrders.addEventListener("click", function () {
+      var statusEl = document.getElementById("gen-orders-status");
+      var resultEl = document.getElementById("gen-orders-result");
+      var countInput = document.getElementById("gen-orders-count");
+      var count = parseInt((countInput && countInput.value) || "10", 10);
+      btnGenOrders.disabled = true;
+      if (statusEl) statusEl.textContent = "Генерирую заказы…";
+      if (resultEl) resultEl.style.display = "none";
+      authFetch("/api/admin/generate-orders", {
+        method: "POST",
+        body: JSON.stringify({ count: count }),
+      })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, data: d }; }); })
+        .then(function (res) {
+          if (!res.ok) throw new Error(res.data.error || "Ошибка");
+          var data = res.data;
+          var el = function (id) { return document.getElementById(id); };
+          if (el("gen-orders-added")) el("gen-orders-added").textContent = data.generated != null ? data.generated : 0;
+          if (statusEl) statusEl.textContent = "Готово! Создано " + (data.generated || 0) + " заказов.";
+          return authFetch("/api/admin/dashboard").then(function (fr) {
+            if (fr.ok) return fr.json().then(function (d) {
+              DB = d;
+              syncProductSelect();
+              var totalEl = document.getElementById("gen-orders-total");
+              if (totalEl) totalEl.textContent = (d.orders || []).length;
+              if (resultEl) resultEl.style.display = "";
+            });
+          });
+        })
+        .catch(function (err) {
+          if (statusEl) statusEl.textContent = "Ошибка: " + (err.message || "неизвестная");
+        })
+        .finally(function () { btnGenOrders.disabled = false; });
     });
   }
 

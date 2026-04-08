@@ -243,18 +243,28 @@
         <div class="admin-tab" id="tab-simulation" hidden>
           <div class="admin-header">
             <h2>Симуляция и импорт</h2>
-            <p>Инструменты для наполнения каталога товарами из внешних источников.</p>
+            <p>Инструменты для быстрого наполнения каталога и генерации тестовых данных.</p>
           </div>
+
+          <!-- Импорт товаров -->
           <div class="admin-card">
-            <h3>Импорт с vitrine.market</h3>
-            <p style="color:var(--color-text-muted);margin-bottom:16px">
-              Парсер загружает товары с платформы vitrine.market и добавляет их в каталог без повторений.
-              Категории определяются автоматически по названию и описанию товара.
+            <h3>Импорт товаров</h3>
+            <p style="color:var(--color-text-muted);margin-bottom:16px;font-size:0.875rem">
+              Парсит vitrine.market или использует демо-каталог из 50 позиций. Категории определяются автоматически.
+              Изображения генерируются по категории. Остаток назначается случайно (5–40 шт.).
             </p>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px">
+              <label style="display:grid;gap:6px;font-size:0.8125rem">
+                Количество товаров
+                <input class="input" id="parse-count" type="number" min="1" max="50" value="10" style="width:120px" />
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;font-size:0.8125rem;padding-bottom:4px">
+                <input type="checkbox" id="parse-force" />
+                Добавить повторно (не пропускать дубли)
+              </label>
+            </div>
             <div class="row-actions" style="align-items:center;flex-wrap:wrap;gap:12px">
-              <button class="btn btn--secondary" id="btn-parse-vitrine" type="button">
-                Импортировать с vitrine.market
-              </button>
+              <button class="btn btn--secondary" id="btn-parse-vitrine" type="button">Импортировать товары</button>
               <span id="parse-status" style="font-size:0.875rem;color:var(--color-text-muted)"></span>
             </div>
             <div id="parse-result" style="margin-top:16px;display:none">
@@ -265,9 +275,36 @@
               </div>
             </div>
           </div>
+
+          <!-- Генерация заказов -->
           <div class="admin-card">
-            <h3>Подсказки по категоризации</h3>
-            <p style="color:var(--color-text-muted);font-size:0.875rem">Парсер автоматически определяет категорию по ключевым словам в названии и описании:</p>
+            <h3>Генерация случайных заказов</h3>
+            <p style="color:var(--color-text-muted);margin-bottom:16px;font-size:0.875rem">
+              Создаёт реалистичные заказы со случайными клиентами, товарами, способами доставки и оплаты.
+              ~35% заказов будут использовать активные промокоды. Даты распределяются за последние 90 дней.
+            </p>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px">
+              <label style="display:grid;gap:6px;font-size:0.8125rem">
+                Количество заказов
+                <input class="input" id="gen-orders-count" type="number" min="1" max="100" value="10" style="width:120px" />
+              </label>
+            </div>
+            <div class="row-actions" style="align-items:center;flex-wrap:wrap;gap:12px">
+              <button class="btn btn--secondary" id="btn-gen-orders" type="button">Сгенерировать заказы</button>
+              <span id="gen-orders-status" style="font-size:0.875rem;color:var(--color-text-muted)"></span>
+            </div>
+            <div id="gen-orders-result" style="margin-top:16px;display:none">
+              <div class="kpi-grid" style="grid-template-columns:repeat(2,1fr);margin:0">
+                <div class="kpi-card"><span>Создано заказов</span><strong id="gen-orders-added">0</strong></div>
+                <div class="kpi-card"><span>Всего заказов в БД</span><strong id="gen-orders-total">0</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Подсказки -->
+          <div class="admin-card">
+            <h3>Правила автокатегоризации</h3>
+            <p style="color:var(--color-text-muted);font-size:0.875rem">Категория определяется по ключевым словам в названии и описании товара:</p>
             <div class="table-wrap" style="margin-top:12px">
               <table class="admin-table">
                 <thead><tr><th>Категория</th><th>Ключевые слова</th></tr></thead>
