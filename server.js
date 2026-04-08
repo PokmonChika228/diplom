@@ -1215,18 +1215,28 @@ let _rateCache = null;
 let _rateCacheTime = 0;
 async function getUsdRubRate() {
   const now = Date.now();
-  if (_rateCache && now - _rateCacheTime < 3600000) return _rateCache;
-  try {
-    const r = await fetch("https://www.cbr-xml-daily.ru/daily_json.js", { signal: AbortSignal.timeout(5000) });
-    if (!r.ok) throw new Error("CBR API error");
+  if (_rateCache && now - _rateCacheTime < 900000) return _rateCache;
+  const tryFetch = async (url, extract) => {
+    const r = await fetch(url, { signal: AbortSignal.timeout(5000) });
+    if (!r.ok) throw new Error("HTTP " + r.status);
     const data = await r.json();
-    const rate = data?.Valute?.USD?.Value;
-    if (rate && Number.isFinite(rate)) {
+    const rate = extract(data);
+    if (!rate || !Number.isFinite(rate) || rate <= 0) throw new Error("bad rate");
+    return rate;
+  };
+  const sources = [
+    () => tryFetch("https://open.er-api.com/v6/latest/USD", (d) => d?.rates?.RUB),
+    () => tryFetch("https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json", (d) => d?.usd?.rub),
+    () => tryFetch("https://www.cbr-xml-daily.ru/daily_json.js", (d) => d?.Valute?.USD?.Value),
+  ];
+  for (const src of sources) {
+    try {
+      const rate = await src();
       _rateCache = rate;
       _rateCacheTime = now;
       return rate;
-    }
-  } catch {}
+    } catch {}
+  }
   return _rateCache || 90;
 }
 

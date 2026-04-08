@@ -28,6 +28,7 @@
           <a href="catalog.html#sale" class="is-sale">Sale</a>
         </nav>
         <div class="header-actions">
+          <button type="button" class="icon-btn cur-toggle-btn" data-currency-toggle aria-label="Переключить валюту"><span class="cur-rub">₽</span><span class="cur-sep">/</span><span class="cur-usd">$</span></button>
           <a href="cart.html" class="icon-btn cart-btn" aria-label="Корзина">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <path d="M6 6h15l-1.5 9h-12z" stroke-linejoin="round" />
@@ -183,6 +184,13 @@
             </div>
 
             <aside class="order-mini" aria-label="Ваш заказ">
+              <div class="cur-lever-wrap">
+                <span class="cur-lever-label">₽</span>
+                <button type="button" class="cur-lever" data-currency-toggle aria-label="Переключить валюту" aria-pressed="false">
+                  <span class="cur-lever__thumb"></span>
+                </button>
+                <span class="cur-lever-label">$</span>
+              </div>
               <h2>Ваш заказ</h2>
               <div data-checkout-lines></div>
               <div class="cart-summary__row" style="margin-top: var(--space-md)">
@@ -230,6 +238,7 @@
     <script src="js/content.js"></script>
     <script src="js/ui-settings.js"></script>
     <script src="js/site.js"></script>
+    <script src="js/currency.js"></script>
     <script src="js/checkout-order.js"></script>
     <script src="js/checkout-submit.js"></script>
   </body>

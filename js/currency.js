@@ -56,6 +56,14 @@
     document.querySelectorAll("[data-currency-toggle]").forEach(function (btn) {
       btn.querySelector(".cur-rub") && (btn.querySelector(".cur-rub").classList.toggle("is-active-cur", c === "RUB"));
       btn.querySelector(".cur-usd") && (btn.querySelector(".cur-usd").classList.toggle("is-active-cur", c === "USD"));
+      if (btn.classList.contains("cur-lever")) {
+        btn.setAttribute("aria-pressed", c === "USD" ? "true" : "false");
+      }
+    });
+    document.querySelectorAll(".cur-lever-wrap").forEach(function (wrap) {
+      var labels = wrap.querySelectorAll(".cur-lever-label");
+      if (labels[0]) labels[0].classList.toggle("is-active-cur", c === "RUB");
+      if (labels[1]) labels[1].classList.toggle("is-active-cur", c === "USD");
     });
   }
 

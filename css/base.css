@@ -242,6 +242,53 @@ button {
 .cur-rub, .cur-usd { opacity: 0.45; transition: opacity 0.2s; }
 .cur-rub.is-active-cur, .cur-usd.is-active-cur { opacity: 1; color: var(--color-accent); }
 
+.cur-lever-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: var(--space-md);
+}
+.cur-lever-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  opacity: 0.55;
+  letter-spacing: 0.04em;
+  min-width: 12px;
+  text-align: center;
+  transition: opacity 0.2s;
+}
+.cur-lever-label.is-active-cur { opacity: 1; color: var(--color-accent); }
+.cur-lever {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.18);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+.cur-lever[aria-pressed="true"] {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+.cur-lever__thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+.cur-lever[aria-pressed="true"] .cur-lever__thumb {
+  transform: translateX(20px);
+}
+
 .cart-badge[hidden] {
   display: none;
 }

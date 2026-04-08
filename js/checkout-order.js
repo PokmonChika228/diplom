@@ -15,7 +15,13 @@
 
   function formatRub(n) {
     const x = Math.round(Number(n) || 0);
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " ₽";
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + "\u00a0₽";
+  }
+
+  function fp(rub, usd) {
+    return typeof window.formatPrice === "function"
+      ? window.formatPrice(rub, usd)
+      : formatRub(rub);
   }
 
   function escape(s) {
@@ -31,23 +37,22 @@
     return (DELIVERY_OPTIONS[val] || { cost: 0 }).cost;
   }
 
-  async function load() {
-    const lines = window.getCartLines();
-    const [productsRes, promoRes] = await Promise.all([
-      fetch("/api/products"),
-      fetch("/api/promocodes"),
-    ]);
-    const products = productsRes.ok ? (await productsRes.json()) || [] : [];
-    const promoCodes = promoRes.ok ? (await promoRes.json()) || [] : [];
-    const byId = new Map(products.map((p) => [String(p.id), p]));
-    let sum = 0;
+  let _state = null;
+
+  function render() {
+    if (!_state) return;
+    const { lines, byId, sum, discount, deliveryCost } = _state;
+    const total = Math.max(0, sum - discount) + deliveryCost;
+
     root.innerHTML = "";
     lines.forEach((line) => {
       const p = byId.get(String(line.productId));
       if (!p) return;
       const qty = Math.max(1, parseInt(line.qty, 10) || 1);
       const lineSum = Number(p.price || 0) * qty;
-      sum += lineSum;
+      const lineSumUsd = Number(p.priceUsd || 0) > 0
+        ? Number(p.priceUsd) * qty
+        : Math.round(lineSum / (window.EXCHANGE_RATE || 90));
       const row = document.createElement("div");
       row.className = "order-mini__line";
       const thumbSrc = p.image || "https://placehold.co/200x267?text=Product";
@@ -63,9 +68,39 @@
         " · ×" +
         qty +
         '</div><div style="font-weight:600;margin-top:var(--space-xs)">' +
-        formatRub(lineSum) +
+        fp(lineSum, lineSumUsd) +
         "</div></div>";
       root.appendChild(row);
+    });
+
+    if (subEl) subEl.textContent = fp(sum, Math.round(sum / (window.EXCHANGE_RATE || 90)));
+    if (totalEl) totalEl.textContent = fp(total, Math.round(total / (window.EXCHANGE_RATE || 90)));
+    if (discountRow && discountEl) {
+      discountRow.hidden = discount <= 0;
+      discountEl.textContent = "− " + fp(discount, Math.round(discount / (window.EXCHANGE_RATE || 90)));
+    }
+    if (deliveryCostEl) {
+      deliveryCostEl.textContent = deliveryCost === 0
+        ? "Бесплатно"
+        : fp(deliveryCost, Math.round(deliveryCost / (window.EXCHANGE_RATE || 90)));
+    }
+  }
+
+  async function load() {
+    const lines = window.getCartLines();
+    const [productsRes, promoRes] = await Promise.all([
+      fetch("/api/products"),
+      fetch("/api/promocodes"),
+    ]);
+    const products = productsRes.ok ? (await productsRes.json()) || [] : [];
+    const promoCodes = promoRes.ok ? (await promoRes.json()) || [] : [];
+    const byId = new Map(products.map((p) => [String(p.id), p]));
+    let sum = 0;
+    lines.forEach((line) => {
+      const p = byId.get(String(line.productId));
+      if (!p) return;
+      const qty = Math.max(1, parseInt(line.qty, 10) || 1);
+      sum += Number(p.price || 0) * qty;
     });
 
     const promoCode = String(sessionStorage.getItem("brandPromoCode") || "")
@@ -82,22 +117,20 @@
     }
 
     const deliveryCost = getDeliveryCost();
-    const total = Math.max(0, sum - discount) + deliveryCost;
-
-    if (subEl) {
-      subEl.textContent = formatRub(sum);
-      subEl.dataset.value = String(sum);
-    }
-    if (totalEl) totalEl.textContent = formatRub(total);
-    if (discountRow && discountEl) {
-      discountRow.hidden = discount <= 0;
-      discountEl.textContent = `− ${formatRub(discount)}`;
-      discountEl.dataset.value = String(discount);
-    }
-    if (deliveryCostEl) {
-      deliveryCostEl.textContent = deliveryCost === 0 ? "Бесплатно" : formatRub(deliveryCost);
-    }
+    _state = { lines, byId, sum, discount, deliveryCost };
+    render();
   }
+
+  document.querySelector("[data-checkout-form]")?.querySelectorAll('[name="delivery"]').forEach((r) => {
+    r.addEventListener("change", () => {
+      if (_state) {
+        _state.deliveryCost = getDeliveryCost();
+        render();
+      }
+    });
+  });
+
+  window.addEventListener("currencychange", render);
 
   load().catch(() => {
     if (subEl) subEl.textContent = "0 ₽";

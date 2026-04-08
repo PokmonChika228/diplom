@@ -2468,7 +2468,7 @@
       "sale": false,
       "price": 12000,
       "oldPrice": 0,
-      "stock": 21,
+      "stock": 20,
       "sizes": [
         "XS",
         "S",
@@ -2992,7 +2992,36 @@
       "createdAt": "2026-02-10T09:00:00.000Z"
     }
   ],
-  "orders": [],
+  "orders": [
+    {
+      "id": 1,
+      "customerName": "dsad",
+      "phone": "a",
+      "email": "d@gmail.com",
+      "address": "ds",
+      "comment": "",
+      "status": "new",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 101,
+          "productName": "YX BOMBER",
+          "qty": 1,
+          "price": 12000
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 12000,
+      "discountAmount": 0,
+      "total": 12000,
+      "createdAt": "2026-04-08T19:37:07.752Z"
+    }
+  ],
   "promoCodes": [
     {
       "id": 1,
@@ -3005,7 +3034,7 @@
   ],
   "counters": {
     "product": 121,
-    "order": 1,
+    "order": 2,
     "log": 4,
     "promo": 2
   },
@@ -3015,7 +3044,7 @@
       "text": "ПРОМОКОД DARK15 НА 15% СКИДКУ"
     },
     "heroImage": {
-      "src": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScjwCw3_Xstqc5LWd4rwknM1OeVMILrT1LnA&s"
+      "src": "/uploads/1775677187810-870633160.jpg"
     }
   }
 }
