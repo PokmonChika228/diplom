@@ -16,7 +16,7 @@ const DB_PATH = process.env.DB_PATH
 const UPLOADS_DIR = path.join(__dirname, "uploads");
 const IS_PROD = process.env.NODE_ENV === "production";
 const ADMIN_LOGIN = String(process.env.ADMIN_LOGIN || "admin");
-const ADMIN_PASSWORD = String(process.env.ADMIN_PASSWORD || "change_me_please");
+const ADMIN_PASSWORD = String(process.env.ADMIN_PASSWORD || "admin");
 const ADMIN_PASSWORD_HASH = String(process.env.ADMIN_PASSWORD_HASH || "");
 const SESSION_SECRET = String(
   process.env.SESSION_SECRET || "change_this_session_secret_for_production"
