@@ -86,7 +86,7 @@ button {
 /* ——— Header ——— */
 .site-header {
   position: fixed;
-  top: 0;
+  top: var(--ticker-h);
   left: 0;
   right: 0;
   z-index: 100;
@@ -528,15 +528,18 @@ main {
 }
 
 .site-ticker {
+  position: sticky;
+  top: 0;
+  z-index: 200;
   width: 100%;
   background: #ffffff !important;
   color: #000000 !important;
-  font-size: 0.8rem;
+  font-size: 0.875rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   overflow: hidden;
-  height: 44px;
+  height: 56px;
   display: flex;
   align-items: center;
 }

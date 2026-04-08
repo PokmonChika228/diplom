@@ -12,7 +12,12 @@
           t1.textContent = s.ticker.text;
           if (t2) t2.textContent = s.ticker.text;
           ticker.hidden = false;
+          requestAnimationFrame(function () {
+            document.documentElement.style.setProperty("--ticker-h", ticker.offsetHeight + "px");
+          });
         }
+      } else {
+        document.documentElement.style.setProperty("--ticker-h", "0px");
       }
 
       if (s.heroImage && s.heroImage.src) {

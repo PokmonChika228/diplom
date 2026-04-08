@@ -913,6 +913,7 @@
   /* ===================== ORDER NOTIFICATION POLLING ===================== */
   var _lastKnownOrderId = 0;
   var _badgeCount = 0;
+  var _pollInitialized = false;
 
   function initOrderPolling() {
     fetch("/api/exchange-rate").then(function (r) { return r.json(); }).then(function (d) {
@@ -922,7 +923,10 @@
 
     authFetch("/api/admin/orders/latest-id").then(function (r) {
       if (!r.ok) return;
-      return r.json().then(function (d) { _lastKnownOrderId = d.latestId || 0; });
+      return r.json().then(function (d) {
+        _lastKnownOrderId = d.latestId || 0;
+        _pollInitialized = true;
+      });
     }).catch(function () {});
 
     setInterval(function () {
@@ -930,7 +934,7 @@
         if (!r.ok) return;
         return r.json().then(function (d) {
           var newId = d.latestId || 0;
-          if (_lastKnownOrderId > 0 && newId > _lastKnownOrderId) {
+          if (_pollInitialized && newId > _lastKnownOrderId) {
             var newCount = newId - _lastKnownOrderId;
             _badgeCount += newCount;
             var badge = document.getElementById("orders-badge");
