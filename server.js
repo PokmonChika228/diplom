@@ -418,6 +418,22 @@ app.post("/api/orders", (req, res) => {
     return res.status(400).json({ error: "customerName, address, items are required" });
   }
 
+  const DELIVERY_OPTIONS = {
+    pickup: { label: "Самовывоз", cost: 0 },
+    courier: { label: "Курьер", cost: 500 },
+    cdek: { label: "СДЭК / ПВЗ", cost: 350 },
+  };
+  const PAYMENT_OPTIONS = {
+    card: "Картой онлайн",
+    sbp: "СБП",
+    receipt: "При получении",
+  };
+
+  const deliveryKey = String(body.delivery || "pickup");
+  const deliveryInfo = DELIVERY_OPTIONS[deliveryKey] || DELIVERY_OPTIONS.pickup;
+  const paymentKey = String(body.payment || "card");
+  const paymentLabel = PAYMENT_OPTIONS[paymentKey] || paymentKey;
+
   const normalizedItems = [];
   let subtotal = 0;
   for (const item of body.items) {
@@ -461,19 +477,27 @@ app.post("/api/orders", (req, res) => {
     };
   }
 
+  const deliveryCost = toNum(body.deliveryCost, deliveryInfo.cost);
+
   const order = {
     id: db.counters.order++,
     customerName: String(body.customerName),
     phone: String(body.phone || ""),
     email: String(body.email || ""),
     address: String(body.address),
+    comment: String(body.comment || ""),
     status: "new",
+    delivery: deliveryKey,
+    deliveryLabel: String(body.deliveryLabel || deliveryInfo.label),
+    deliveryCost,
+    payment: paymentKey,
+    paymentLabel,
     items: normalizedItems,
     promoCode: promoApplied ? promoApplied.code : "",
     promoApplied,
     subtotal,
     discountAmount,
-    total: Math.max(0, subtotal - discountAmount),
+    total: Math.max(0, subtotal - discountAmount) + deliveryCost,
     createdAt: nowIso(),
   };
   db.orders.push(order);
@@ -495,17 +519,43 @@ app.get("/api/analytics", requireAdminApi, (_req, res) => {
 
   const byDayMap = new Map();
   const salesByProduct = new Map();
+  const byCategory = new Map();
+  const byDelivery = new Map();
+  const byPayment = new Map();
+  const byStatus = { new: 0, processing: 0, shipped: 0, done: 0, cancelled: 0 };
+
+  let totalRevenue = 0;
+  let totalDiscounts = 0;
+  let ordersWithPromo = 0;
 
   db.orders.forEach((o) => {
     const day = String(o.createdAt || "").slice(0, 10);
-    let orderRevenue = toNum(o.total, 0);
-    if (!orderRevenue) {
-      orderRevenue = o.items.reduce((sum, it) => sum + toNum(it.qty) * toNum(it.price), 0);
-    }
+    const orderTotal = toNum(o.total, 0) ||
+      (o.items.reduce((s, it) => s + toNum(it.qty) * toNum(it.price), 0) - toNum(o.discountAmount, 0));
+
+    totalRevenue += orderTotal;
+    totalDiscounts += toNum(o.discountAmount, 0);
+    if (o.promoCode) ordersWithPromo++;
+
+    // Статус
+    const st = String(o.status || "new");
+    if (byStatus[st] !== undefined) byStatus[st]++; else byStatus[st] = 1;
+
+    // Доставка
+    const dlv = String(o.deliveryLabel || o.delivery || "—");
+    byDelivery.set(dlv, (byDelivery.get(dlv) || 0) + 1);
+
+    // Оплата
+    const pay = String(o.paymentLabel || o.payment || "—");
+    byPayment.set(pay, (byPayment.get(pay) || 0) + 1);
+
+    // По дням
+    byDayMap.set(day, (byDayMap.get(day) || 0) + orderTotal);
+
     o.items.forEach((it) => {
       const qty = toNum(it.qty, 0);
       const revenue = qty * toNum(it.price, 0);
-      orderRevenue += revenue;
+
       const prev = salesByProduct.get(it.productId) || {
         productId: it.productId,
         productName: it.productName,
@@ -515,8 +565,15 @@ app.get("/api/analytics", requireAdminApi, (_req, res) => {
       prev.qty += qty;
       prev.revenue += revenue;
       salesByProduct.set(it.productId, prev);
+
+      // По категории
+      const product = findProduct(db, it.productId);
+      const cat = (product && product.category) || "other";
+      const prevCat = byCategory.get(cat) || { category: cat, qty: 0, revenue: 0 };
+      prevCat.qty += qty;
+      prevCat.revenue += revenue;
+      byCategory.set(cat, prevCat);
     });
-    byDayMap.set(day, (byDayMap.get(day) || 0) + orderRevenue);
   });
 
   const byDay = Array.from(byDayMap.entries())
@@ -530,18 +587,275 @@ app.get("/api/analytics", requireAdminApi, (_req, res) => {
     .sort((a, b) => b.revenue - a.revenue)
     .slice(0, 10);
 
+  const avgOrderValue = db.orders.length ? Math.round(totalRevenue / db.orders.length) : 0;
+  const totalStock = db.products.reduce((s, p) => s + toNum(p.stock, 0), 0);
+  const lowStockProducts = db.products
+    .filter((p) => toNum(p.stock, 0) <= 5)
+    .map((p) => ({ id: p.id, name: p.name, stock: p.stock, category: p.category }));
+
   res.json({
     totalOrders: db.orders.length,
     totalProducts: db.products.length,
-    totalRevenue: db.orders.reduce((sum, o) => {
-      const total = toNum(o.total, 0);
-      if (total) return sum + total;
-      return sum + o.items.reduce((s, it) => s + toNum(it.qty) * toNum(it.price), 0);
-    }, 0),
+    totalRevenue,
+    totalDiscounts,
+    avgOrderValue,
+    ordersWithPromo,
+    totalStock,
     byDay,
+    byStatus,
+    byCategory: Array.from(byCategory.values()).sort((a, b) => b.revenue - a.revenue),
+    byDelivery: Array.from(byDelivery.entries()).map(([method, count]) => ({ method, count })),
+    byPayment: Array.from(byPayment.entries()).map(([method, count]) => ({ method, count })),
     topByQty,
     topByRevenue,
+    lowStockProducts,
   });
+});
+
+// Дашборд — все данные в одном запросе
+app.get("/api/admin/dashboard", requireAdminApi, (_req, res) => {
+  const db = readDb();
+
+  const salesByProduct = new Map();
+  let totalRevenue = 0;
+  let totalDiscounts = 0;
+  let ordersWithPromo = 0;
+  const byDayMap = new Map();
+  const byCategory = new Map();
+  const byDelivery = new Map();
+  const byPayment = new Map();
+  const byStatus = { new: 0, processing: 0, shipped: 0, done: 0, cancelled: 0 };
+
+  db.orders.forEach((o) => {
+    const orderTotal = toNum(o.total, 0) ||
+      (o.items.reduce((s, it) => s + toNum(it.qty) * toNum(it.price), 0) - toNum(o.discountAmount, 0));
+    totalRevenue += orderTotal;
+    totalDiscounts += toNum(o.discountAmount, 0);
+    if (o.promoCode) ordersWithPromo++;
+
+    const st = String(o.status || "new");
+    if (byStatus[st] !== undefined) byStatus[st]++; else byStatus[st] = 1;
+
+    const dlv = String(o.deliveryLabel || o.delivery || "—");
+    byDelivery.set(dlv, (byDelivery.get(dlv) || 0) + 1);
+
+    const pay = String(o.paymentLabel || o.payment || "—");
+    byPayment.set(pay, (byPayment.get(pay) || 0) + 1);
+
+    const day = String(o.createdAt || "").slice(0, 10);
+    byDayMap.set(day, (byDayMap.get(day) || 0) + orderTotal);
+
+    o.items.forEach((it) => {
+      const qty = toNum(it.qty, 0);
+      const revenue = qty * toNum(it.price, 0);
+      const prev = salesByProduct.get(it.productId) || { productId: it.productId, productName: it.productName, qty: 0, revenue: 0 };
+      prev.qty += qty;
+      prev.revenue += revenue;
+      salesByProduct.set(it.productId, prev);
+      const product = findProduct(db, it.productId);
+      const cat = (product && product.category) || "other";
+      const prevCat = byCategory.get(cat) || { category: cat, qty: 0, revenue: 0 };
+      prevCat.qty += qty;
+      prevCat.revenue += revenue;
+      byCategory.set(cat, prevCat);
+    });
+  });
+
+  const byDay = Array.from(byDayMap.entries())
+    .map(([date, revenue]) => ({ date, revenue }))
+    .sort((a, b) => (a.date > b.date ? 1 : -1));
+
+  const orders = db.orders
+    .slice()
+    .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
+    .map((o) => {
+      const subtotal = o.subtotal || o.items.reduce((s, it) => s + toNum(it.qty) * toNum(it.price), 0);
+      const discount = toNum(o.discountAmount, 0);
+      const deliveryCost = toNum(o.deliveryCost, 0);
+      const total = toNum(o.total, 0) || Math.max(0, subtotal - discount) + deliveryCost;
+      return { ...o, subtotal, discount, deliveryCost, total };
+    });
+
+  res.json({
+    products: db.products,
+    inventory: {
+      products: db.products.map((p) => ({ id: p.id, name: p.name, stock: p.stock, category: p.category, sale: !!p.sale })),
+      logs: db.inventoryLogs.slice().sort((a, b) => b.id - a.id).slice(0, 50),
+    },
+    orders,
+    promos: db.promoCodes || [],
+    analytics: {
+      totalOrders: db.orders.length,
+      totalProducts: db.products.length,
+      totalRevenue,
+      totalDiscounts,
+      avgOrderValue: db.orders.length ? Math.round(totalRevenue / db.orders.length) : 0,
+      ordersWithPromo,
+      totalStock: db.products.reduce((s, p) => s + toNum(p.stock, 0), 0),
+      byDay,
+      byStatus,
+      byCategory: Array.from(byCategory.values()).sort((a, b) => b.revenue - a.revenue),
+      byDelivery: Array.from(byDelivery.entries()).map(([method, count]) => ({ method, count })),
+      byPayment: Array.from(byPayment.entries()).map(([method, count]) => ({ method, count })),
+      topByQty: Array.from(salesByProduct.values()).sort((a, b) => b.qty - a.qty).slice(0, 10),
+      topByRevenue: Array.from(salesByProduct.values()).sort((a, b) => b.revenue - a.revenue).slice(0, 10),
+      lowStockProducts: db.products.filter((p) => toNum(p.stock, 0) <= 5).map((p) => ({ id: p.id, name: p.name, stock: p.stock, category: p.category })),
+    },
+  });
+});
+
+// Парсер vitrine.market
+app.post("/api/admin/parse-vitrine", requireAdminApi, async (req, res) => {
+  const db = readDb();
+  const existingNames = new Set(db.products.map((p) => String(p.name).toLowerCase().trim()));
+
+  function detectCategory(name, desc) {
+    const text = `${name} ${desc}`.toLowerCase();
+    if (/платье|юбка|блуза|топ|бюстье|женск/.test(text)) return "womens";
+    if (/брюки|пиджак|костюм|мужск|рубашк|джинс/.test(text)) {
+      if (/женск|блуза|платье/.test(text)) return "womens";
+      return "mens";
+    }
+    if (/сумк|ремень|кошелёк|кошелек|шапк|перчат|шарф|очки|аксессу/.test(text)) return "accessories";
+    if (/унисекс|худи|свитшот|футболк|толстовк/.test(text)) return "unisex";
+    return "other";
+  }
+
+  // Пробуем получить данные с vitrine.market
+  const https = require("https");
+  const http = require("http");
+
+  function fetchUrl(url) {
+    return new Promise((resolve, reject) => {
+      const proto = url.startsWith("https") ? https : http;
+      const req = proto.get(url, {
+        headers: {
+          "User-Agent": "Mozilla/5.0 (compatible; ZhuchyBot/1.0)",
+          "Accept": "text/html,application/json,*/*",
+        },
+        timeout: 8000,
+      }, (r) => {
+        let data = "";
+        r.on("data", (chunk) => { data += chunk; });
+        r.on("end", () => resolve({ status: r.statusCode, body: data, headers: r.headers }));
+      });
+      req.on("error", reject);
+      req.on("timeout", () => { req.destroy(); reject(new Error("Timeout")); });
+    });
+  }
+
+  // Fallback-каталог, если сайт недоступен
+  const FALLBACK_PRODUCTS = [
+    { name: "Рубашка оверсайз хлопок", price: 5900, category: "mens", sizes: ["S","M","L","XL"], colors: ["Белый","Черный"], description: "Свободная рубашка из плотного хлопка.", composition: "100% хлопок", care: "Стирка при 40°C" },
+    { name: "Куртка бомбер тёмная", price: 14500, oldPrice: 18000, category: "mens", sale: true, sizes: ["S","M","L"], colors: ["Черный"], description: "Классический бомбер с рибом-манжетами.", composition: "100% нейлон", care: "Химчистка" },
+    { name: "Свитер объёмный шерсть", price: 9800, category: "mens", sizes: ["S","M","L","XL"], colors: ["Серый","Черный"], description: "Вязаный свитер крупной вязки.", composition: "100% шерсть", care: "Ручная стирка" },
+    { name: "Жилет стёганый утеплённый", price: 7200, category: "unisex", sizes: ["XS","S","M","L","XL"], colors: ["Черный","Тёмно-зелёный"], description: "Лёгкий утеплённый жилет.", composition: "Нейлон / полиэстер", care: "Стирка при 30°C" },
+    { name: "Пальто-кейп без рукавов", price: 22000, oldPrice: 28000, category: "womens", sale: true, sizes: ["XS","S","M"], colors: ["Черный"], description: "Пальто-кейп прямого силуэта.", composition: "80% шерсть, 20% полиэстер", care: "Химчистка" },
+    { name: "Брюки со складками и стрелками", price: 8400, category: "womens", sizes: ["XS","S","M","L"], colors: ["Черный","Серый"], description: "Классические брюки со стрелками.", composition: "65% полиэстер, 35% вискоза", care: "Химчистка" },
+    { name: "Кардиган длинный вязаный", price: 7600, category: "unisex", sizes: ["S","M","L","XL"], colors: ["Бежевый","Черный","Серый"], description: "Длинный кардиган rib-вязки.", composition: "50% шерсть, 50% акрил", care: "Ручная стирка" },
+    { name: "Шорты-бермуды технические", price: 5800, category: "mens", sizes: ["S","M","L","XL"], colors: ["Черный","Оливковый"], description: "Шорты длиной до колена с карманами.", composition: "100% полиэстер", care: "Стирка при 30°C" },
+    { name: "Платье-рубашка midi", price: 11500, category: "womens", sizes: ["XS","S","M","L"], colors: ["Черный","Белый"], description: "Платье-рубашка свободного кроя.", composition: "100% хлопок", care: "Стирка при 30°C" },
+    { name: "Снуд-труба шерстяной", price: 3200, category: "accessories", sizes: ["ONE SIZE"], colors: ["Черный","Серый"], description: "Шерстяной снуд двойной вязки.", composition: "100% мериносовая шерсть", care: "Ручная стирка" },
+  ];
+
+  let parsed = [];
+  let source = "fallback";
+
+  try {
+    const result = await fetchUrl("https://vitrine.market/catalog/odezhda");
+    if (result.status === 200 && result.body.length > 500) {
+      // Ищем JSON-данные в HTML (embedded JSON schema)
+      const jsonMatches = result.body.match(/application\/ld\+json[^>]*>([\s\S]*?)<\/script>/gi) || [];
+      for (const m of jsonMatches) {
+        try {
+          const inner = m.replace(/<script[^>]*>|<\/script>/gi, "");
+          const data = JSON.parse(inner);
+          const items = Array.isArray(data) ? data : (data["@graph"] ? data["@graph"] : [data]);
+          for (const item of items) {
+            if (item["@type"] === "Product" && item.name) {
+              parsed.push({
+                name: String(item.name).slice(0, 120),
+                price: Math.round(toNum(item.offers?.price || item.price, 0)),
+                description: String(item.description || "").slice(0, 500),
+                image: String(item.image || ""),
+                category: detectCategory(item.name, item.description || ""),
+                sizes: ["S", "M", "L"],
+                colors: ["Черный"],
+                stock: 10,
+                composition: "",
+                care: "",
+              });
+            }
+          }
+        } catch (_) {}
+      }
+
+      // Ищем product listings в HTML
+      if (parsed.length === 0) {
+        const nameMatches = result.body.match(/"name"\s*:\s*"([^"]{5,120})"/g) || [];
+        const priceMatches = result.body.match(/"price"\s*:\s*"?(\d+(?:\.\d+)?)"?/g) || [];
+        for (let i = 0; i < Math.min(nameMatches.length, priceMatches.length, 20); i++) {
+          const name = nameMatches[i].match(/"name"\s*:\s*"([^"]+)"/)?.[1] || "";
+          const priceStr = priceMatches[i].match(/(\d+(?:\.\d+)?)/)?.[1] || "0";
+          const price = Math.round(parseFloat(priceStr));
+          if (name && price > 0) {
+            parsed.push({
+              name,
+              price,
+              description: "",
+              image: "",
+              category: detectCategory(name, ""),
+              sizes: ["S", "M", "L"],
+              colors: ["Черный"],
+              stock: 10,
+              composition: "",
+              care: "",
+            });
+          }
+        }
+      }
+      if (parsed.length > 0) source = "vitrine.market";
+    }
+  } catch (_) {}
+
+  if (parsed.length === 0) {
+    parsed = FALLBACK_PRODUCTS;
+    source = "demo";
+  }
+
+  // Добавляем без дублей (по имени)
+  const added = [];
+  const skipped = [];
+  for (const item of parsed) {
+    const nameKey = String(item.name || "").toLowerCase().trim();
+    if (!nameKey || existingNames.has(nameKey)) {
+      skipped.push(item.name);
+      continue;
+    }
+    existingNames.add(nameKey);
+    const product = {
+      id: db.counters.product++,
+      name: String(item.name).trim(),
+      category: item.category || "other",
+      sale: !!item.sale,
+      price: Math.max(0, toNum(item.price, 0)),
+      oldPrice: Math.max(0, toNum(item.oldPrice, 0)),
+      stock: Math.max(1, toNum(item.stock, 10)),
+      sizes: Array.isArray(item.sizes) ? item.sizes : ["S", "M", "L"],
+      colors: Array.isArray(item.colors) ? item.colors : ["Черный"],
+      image: String(item.image || ""),
+      description: String(item.description || "").slice(0, 500),
+      composition: String(item.composition || ""),
+      care: String(item.care || ""),
+      createdAt: nowIso(),
+      updatedAt: nowIso(),
+    };
+    db.products.push(product);
+    added.push(product);
+  }
+
+  writeDb(db);
+  res.json({ ok: true, added: added.length, skipped: skipped.length, source });
 });
 
 app.post("/api/admin/cleanup", requireAdminApi, (req, res) => {

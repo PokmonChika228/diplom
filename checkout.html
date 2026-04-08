@@ -150,6 +150,13 @@
                     </span>
                   </label>
                   <label class="radio-card">
+                    <input type="radio" name="pay" value="sbp" />
+                    <span class="radio-card__text">
+                      <strong>СБП</strong>
+                      <span>Система быстрых платежей — мгновенно</span>
+                    </span>
+                  </label>
+                  <label class="radio-card">
                     <input type="radio" name="pay" value="receipt" />
                     <span class="radio-card__text">
                       <strong>При получении</strong>
@@ -177,7 +184,7 @@
               </div>
               <div class="cart-summary__row">
                 <span>Доставка</span>
-                <span>0 ₽</span>
+                <span data-checkout-delivery-cost>Бесплатно</span>
               </div>
               <div class="cart-summary__row" data-checkout-discount-row hidden>
                 <span>Скидка по промокоду</span>

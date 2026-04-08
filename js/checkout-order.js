@@ -4,11 +4,31 @@
   const totalEl = document.querySelector("[data-checkout-total]");
   const discountRow = document.querySelector("[data-checkout-discount-row]");
   const discountEl = document.querySelector("[data-checkout-discount]");
+  const deliveryCostEl = document.querySelector("[data-checkout-delivery-cost]");
   if (!root || !window.getCartLines) return;
+
+  const DELIVERY_OPTIONS = {
+    pickup: { label: "Самовывоз", cost: 0 },
+    courier: { label: "Курьер", cost: 500 },
+    cdek: { label: "СДЭК / ПВЗ", cost: 350 },
+  };
 
   function formatRub(n) {
     const x = Math.round(Number(n) || 0);
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " ₽";
+  }
+
+  function escape(s) {
+    const d = document.createElement("div");
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  function getDeliveryCost() {
+    const form = document.querySelector("[data-checkout-form]");
+    const checked = form ? form.querySelector('[name="delivery"]:checked') : null;
+    const val = checked ? checked.value : "pickup";
+    return (DELIVERY_OPTIONS[val] || { cost: 0 }).cost;
   }
 
   async function load() {
@@ -30,14 +50,13 @@
       sum += lineSum;
       const row = document.createElement("div");
       row.className = "order-mini__line";
-      const thumbSrc =
-        p.image || "https://placehold.co/200x150?text=Product";
+      const thumbSrc = p.image || "https://placehold.co/200x267?text=Product";
       row.innerHTML =
         '<a href="product.html?id=' +
         encodeURIComponent(line.productId) +
         '" class="product-thumb"><span class="product-thumb__media"><img src="' +
         thumbSrc +
-        '" alt="" width="800" height="600" loading="lazy" /></span></a><div><div style="font-weight:600">' +
+        '" alt="" width="200" height="267" loading="lazy" /></span></a><div><div style="font-weight:600">' +
         escape(p.name) +
         '</div><div style="font-size:0.8125rem;color:var(--color-text-muted)">' +
         escape(line.size) +
@@ -61,20 +80,23 @@
         discount = Math.min(sum, Number(promo.value || 0));
       }
     }
-    const total = Math.max(0, sum - discount);
 
-    if (subEl) subEl.textContent = formatRub(sum);
+    const deliveryCost = getDeliveryCost();
+    const total = Math.max(0, sum - discount) + deliveryCost;
+
+    if (subEl) {
+      subEl.textContent = formatRub(sum);
+      subEl.dataset.value = String(sum);
+    }
     if (totalEl) totalEl.textContent = formatRub(total);
     if (discountRow && discountEl) {
       discountRow.hidden = discount <= 0;
       discountEl.textContent = `− ${formatRub(discount)}`;
+      discountEl.dataset.value = String(discount);
     }
-  }
-
-  function escape(s) {
-    const d = document.createElement("div");
-    d.textContent = s;
-    return d.innerHTML;
+    if (deliveryCostEl) {
+      deliveryCostEl.textContent = deliveryCost === 0 ? "Бесплатно" : formatRub(deliveryCost);
+    }
   }
 
   load().catch(() => {

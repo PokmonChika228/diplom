@@ -1,12 +1,770 @@
 {
-  "products": [],
-  "inventoryLogs": [],
-  "orders": [],
-  "promoCodes": [],
+  "products": [
+    {
+      "id": 1,
+      "name": "Пальто Oversized из шерсти",
+      "category": "mens",
+      "sale": false,
+      "price": 18900,
+      "oldPrice": 0,
+      "stock": 8,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Черный",
+        "Антрацит"
+      ],
+      "image": "https://placehold.co/800x1067/1a1a1a/888888?text=Пальто",
+      "description": "Объёмное пальто из плотной шерстяной смеси с архитектурным кроем.",
+      "composition": "80% шерсть, 20% полиэстер",
+      "care": "Химчистка",
+      "createdAt": "2026-01-10T10:00:00.000Z",
+      "updatedAt": "2026-01-10T10:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "name": "Карго-брюки технические",
+      "category": "mens",
+      "sale": true,
+      "price": 7600,
+      "oldPrice": 9500,
+      "stock": 15,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Черный",
+        "Хаки"
+      ],
+      "image": "https://placehold.co/800x1067/1a1a1a/888888?text=Карго",
+      "description": "Брюки с объёмными карманами и регулируемыми манжетами.",
+      "composition": "100% хлопок",
+      "care": "Стирка при 30°C",
+      "createdAt": "2026-01-12T10:00:00.000Z",
+      "updatedAt": "2026-01-12T10:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "name": "Жакет асимметричный деконструктивный",
+      "category": "mens",
+      "sale": true,
+      "price": 19600,
+      "oldPrice": 24500,
+      "stock": 5,
+      "sizes": [
+        "S",
+        "M",
+        "L"
+      ],
+      "colors": [
+        "Черный"
+      ],
+      "image": "https://placehold.co/800x1067/1a1a1a/888888?text=Жакет",
+      "description": "Жакет с нарочито сдвинутыми швами и асимметричным разрезом полы.",
+      "composition": "70% шерсть, 30% вискоза",
+      "care": "Химчистка",
+      "createdAt": "2026-01-15T10:00:00.000Z",
+      "updatedAt": "2026-01-15T10:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "name": "Водолазка вязаная heavy knit",
+      "category": "mens",
+      "sale": false,
+      "price": 6800,
+      "oldPrice": 0,
+      "stock": 20,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "colors": [
+        "Черный",
+        "Тёмно-серый"
+      ],
+      "image": "https://placehold.co/800x1067/1a1a1a/888888?text=Водолазка",
+      "description": "Плотная вязаная водолазка с высоким горлом из мериносовой смеси.",
+      "composition": "60% мериносовая шерсть, 40% акрил",
+      "care": "Ручная стирка при 30°C",
+      "createdAt": "2026-01-18T10:00:00.000Z",
+      "updatedAt": "2026-01-18T10:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "name": "Брюки широкие с защипами",
+      "category": "mens",
+      "sale": false,
+      "price": 11200,
+      "oldPrice": 0,
+      "stock": 12,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Черный",
+        "Тёмно-синий"
+      ],
+      "image": "https://placehold.co/800x1067/1a1a1a/888888?text=Брюки",
+      "description": "Брюки свободного кроя с двойными защипами и высокой посадкой.",
+      "composition": "100% шерсть",
+      "care": "Химчистка",
+      "createdAt": "2026-01-20T10:00:00.000Z",
+      "updatedAt": "2026-01-20T10:00:00.000Z"
+    },
+    {
+      "id": 6,
+      "name": "Платье-кокон драпированное",
+      "category": "womens",
+      "sale": false,
+      "price": 21500,
+      "oldPrice": 0,
+      "stock": 7,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ],
+      "colors": [
+        "Черный",
+        "Глубокий бордо"
+      ],
+      "image": "https://placehold.co/800x1067/1a1a1a/888888?text=Платье",
+      "description": "Платье-кокон с асимметричной драпировкой и свободным силуэтом.",
+      "composition": "100% вискоза",
+      "care": "Ручная стирка",
+      "createdAt": "2026-01-22T10:00:00.000Z",
+      "updatedAt": "2026-01-22T10:00:00.000Z"
+    },
+    {
+      "id": 7,
+      "name": "Пальто структурированное с поясом",
+      "category": "womens",
+      "sale": true,
+      "price": 20800,
+      "oldPrice": 26000,
+      "stock": 4,
+      "sizes": [
+        "XS",
+        "S",
+        "M"
+      ],
+      "colors": [
+        "Черный"
+      ],
+      "image": "https://placehold.co/800x1067/1a1a1a/888888?text=Пальто+Ж",
+      "description": "Приталенное пальто с накладными карманами и широким поясом.",
+      "composition": "75% шерсть, 25% полиэстер",
+      "care": "Химчистка",
+      "createdAt": "2026-01-25T10:00:00.000Z",
+      "updatedAt": "2026-01-25T10:00:00.000Z"
+    },
+    {
+      "id": 8,
+      "name": "Брюки pallazo высокая посадка",
+      "category": "womens",
+      "sale": false,
+      "price": 8900,
+      "oldPrice": 0,
+      "stock": 18,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ],
+      "colors": [
+        "Черный",
+        "Тёмно-серый"
+      ],
+      "image": "https://placehold.co/800x1067/1a1a1a/888888?text=Паллацо",
+      "description": "Свободные брюки-паллацо с высокой посадкой и боковыми разрезами.",
+      "composition": "100% вискоза",
+      "care": "Стирка при 30°C",
+      "createdAt": "2026-01-28T10:00:00.000Z",
+      "updatedAt": "2026-01-28T10:00:00.000Z"
+    },
+    {
+      "id": 9,
+      "name": "Блуза объёмная с асимметрией",
+      "category": "womens",
+      "sale": true,
+      "price": 5760,
+      "oldPrice": 7200,
+      "stock": 22,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Черный",
+        "Белый"
+      ],
+      "image": "https://placehold.co/800x1067/1a1a1a/888888?text=Блуза",
+      "description": "Блуза с объёмными рукавами и асимметричным низом.",
+      "composition": "100% шёлк",
+      "care": "Химчистка",
+      "createdAt": "2026-02-01T10:00:00.000Z",
+      "updatedAt": "2026-02-01T10:00:00.000Z"
+    },
+    {
+      "id": 10,
+      "name": "Юбка архитектурная midi",
+      "category": "womens",
+      "sale": false,
+      "price": 12500,
+      "oldPrice": 0,
+      "stock": 10,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ],
+      "colors": [
+        "Черный"
+      ],
+      "image": "https://placehold.co/800x1067/1a1a1a/888888?text=Юбка",
+      "description": "Юбка-midi с структурированными складками и боковыми кокетками.",
+      "composition": "60% полиэстер, 40% вискоза",
+      "care": "Стирка при 30°C",
+      "createdAt": "2026-02-03T10:00:00.000Z",
+      "updatedAt": "2026-02-03T10:00:00.000Z"
+    },
+    {
+      "id": 11,
+      "name": "Жакет raw-hem оверсайз",
+      "category": "womens",
+      "sale": false,
+      "price": 16800,
+      "oldPrice": 0,
+      "stock": 8,
+      "sizes": [
+        "XS",
+        "S",
+        "M"
+      ],
+      "colors": [
+        "Черный",
+        "Тёмно-серый"
+      ],
+      "image": "https://placehold.co/800x1067/1a1a1a/888888?text=Жакет+Ж",
+      "description": "Жакет оверсайз с необработанными краями и объёмными плечами.",
+      "composition": "100% хлопок",
+      "care": "Стирка при 30°C",
+      "createdAt": "2026-02-05T10:00:00.000Z",
+      "updatedAt": "2026-02-05T10:00:00.000Z"
+    },
+    {
+      "id": 12,
+      "name": "Худи тяжёлый хлопок унисекс",
+      "category": "unisex",
+      "sale": true,
+      "price": 6800,
+      "oldPrice": 8500,
+      "stock": 25,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "colors": [
+        "Черный",
+        "Графит"
+      ],
+      "image": "https://placehold.co/800x1067/1a1a1a/888888?text=Худи",
+      "description": "Тяжёлый оверсайз-худи из плотного хлопка с лаконичной вышивкой.",
+      "composition": "100% хлопок 380 г/м²",
+      "care": "Стирка при 40°C",
+      "createdAt": "2026-02-08T10:00:00.000Z",
+      "updatedAt": "2026-02-08T10:00:00.000Z"
+    },
+    {
+      "id": 13,
+      "name": "Футболка оверсайз базовая",
+      "category": "unisex",
+      "sale": false,
+      "price": 4500,
+      "oldPrice": 0,
+      "stock": 30,
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "colors": [
+        "Черный",
+        "Белый",
+        "Серый"
+      ],
+      "image": "https://placehold.co/800x1067/1a1a1a/888888?text=Футболка",
+      "description": "Базовая футболка оверсайз из плотного хлопка с плотным плечом.",
+      "composition": "100% хлопок 240 г/м²",
+      "care": "Стирка при 40°C",
+      "createdAt": "2026-02-10T10:00:00.000Z",
+      "updatedAt": "2026-02-10T10:00:00.000Z"
+    },
+    {
+      "id": 14,
+      "name": "Свитшот технический с молнией",
+      "category": "unisex",
+      "sale": true,
+      "price": 6240,
+      "oldPrice": 7800,
+      "stock": 15,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Черный"
+      ],
+      "image": "https://placehold.co/800x1067/1a1a1a/888888?text=Свитшот",
+      "description": "Технический свитшот с молнией стойки и боковыми карманами на молниях.",
+      "composition": "80% хлопок, 20% полиэстер",
+      "care": "Стирка при 30°C",
+      "createdAt": "2026-02-12T10:00:00.000Z",
+      "updatedAt": "2026-02-12T10:00:00.000Z"
+    },
+    {
+      "id": 15,
+      "name": "Жилет утилитарный тёмный",
+      "category": "unisex",
+      "sale": false,
+      "price": 11000,
+      "oldPrice": 0,
+      "stock": 9,
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Черный",
+        "Тёмно-оливковый"
+      ],
+      "image": "https://placehold.co/800x1067/1a1a1a/888888?text=Жилет",
+      "description": "Утилитарный жилет с множеством карманов и регулируемой линией талии.",
+      "composition": "100% нейлон",
+      "care": "Стирка при 30°C",
+      "createdAt": "2026-02-15T10:00:00.000Z",
+      "updatedAt": "2026-02-15T10:00:00.000Z"
+    },
+    {
+      "id": 16,
+      "name": "Сумка-тоут структурированная",
+      "category": "accessories",
+      "sale": false,
+      "price": 12000,
+      "oldPrice": 0,
+      "stock": 12,
+      "sizes": [
+        "ONE SIZE"
+      ],
+      "colors": [
+        "Черный"
+      ],
+      "image": "https://placehold.co/800x1067/1a1a1a/888888?text=Сумка",
+      "description": "Кожаная сумка-тоут с жёсткими стенками и съёмным плечевым ремнём.",
+      "composition": "100% натуральная кожа",
+      "care": "Протирать влажной тряпкой",
+      "createdAt": "2026-02-18T10:00:00.000Z",
+      "updatedAt": "2026-02-18T10:00:00.000Z"
+    },
+    {
+      "id": 17,
+      "name": "Ремень широкий кожаный",
+      "category": "accessories",
+      "sale": true,
+      "price": 3840,
+      "oldPrice": 4800,
+      "stock": 20,
+      "sizes": [
+        "S",
+        "M",
+        "L"
+      ],
+      "colors": [
+        "Черный",
+        "Тёмно-коричневый"
+      ],
+      "image": "https://placehold.co/800x1067/1a1a1a/888888?text=Ремень",
+      "description": "Широкий ремень из натуральной кожи с матовой пряжкой.",
+      "composition": "Натуральная кожа",
+      "care": "Протирать влажной тряпкой",
+      "createdAt": "2026-02-20T10:00:00.000Z",
+      "updatedAt": "2026-02-20T10:00:00.000Z"
+    },
+    {
+      "id": 18,
+      "name": "Шапка рёберная вязка",
+      "category": "accessories",
+      "sale": false,
+      "price": 2900,
+      "oldPrice": 0,
+      "stock": 35,
+      "sizes": [
+        "ONE SIZE"
+      ],
+      "colors": [
+        "Черный",
+        "Тёмно-серый",
+        "Антрацит"
+      ],
+      "image": "https://placehold.co/800x1067/1a1a1a/888888?text=Шапка",
+      "description": "Шапка из шерстяной рёберной вязки с плотной посадкой.",
+      "composition": "50% шерсть, 50% акрил",
+      "care": "Ручная стирка",
+      "createdAt": "2026-02-22T10:00:00.000Z",
+      "updatedAt": "2026-02-22T10:00:00.000Z"
+    },
+    {
+      "id": 19,
+      "name": "Кошелёк минималистичный",
+      "category": "accessories",
+      "sale": false,
+      "price": 3600,
+      "oldPrice": 0,
+      "stock": 28,
+      "sizes": [
+        "ONE SIZE"
+      ],
+      "colors": [
+        "Черный"
+      ],
+      "image": "https://placehold.co/800x1067/1a1a1a/888888?text=Кошелёк",
+      "description": "Тонкий кошелёк из матовой кожи на 8 карт и купюрник.",
+      "composition": "100% натуральная кожа",
+      "care": "Протирать влажной тряпкой",
+      "createdAt": "2026-02-24T10:00:00.000Z",
+      "updatedAt": "2026-02-24T10:00:00.000Z"
+    }
+  ],
+  "inventoryLogs": [
+    {
+      "id": 1,
+      "productId": 1,
+      "qty": 10,
+      "type": "delivery",
+      "note": "Первая поставка",
+      "createdAt": "2026-01-10T09:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "productId": 12,
+      "qty": 30,
+      "type": "delivery",
+      "note": "Основная партия",
+      "createdAt": "2026-02-08T09:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "productId": 13,
+      "qty": 50,
+      "type": "delivery",
+      "note": "Базовая линейка",
+      "createdAt": "2026-02-10T09:00:00.000Z"
+    }
+  ],
+  "orders": [
+    {
+      "id": 1,
+      "customerName": "Алексей Морозов",
+      "phone": "+7 (916) 123-45-67",
+      "email": "morozov@mail.ru",
+      "address": "Москва, ул. Тверская, 12, кв. 45",
+      "status": "done",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 1,
+          "productName": "Пальто Oversized из шерсти",
+          "qty": 1,
+          "price": 18900
+        },
+        {
+          "productId": 13,
+          "productName": "Футболка оверсайз базовая",
+          "qty": 2,
+          "price": 4500
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 27900,
+      "discountAmount": 0,
+      "total": 28400,
+      "createdAt": "2026-03-01T14:22:00.000Z"
+    },
+    {
+      "id": 2,
+      "customerName": "Мария Соколова",
+      "phone": "+7 (925) 234-56-78",
+      "email": "sokol@yandex.ru",
+      "address": "Санкт-Петербург, Невский пр., 88, кв. 12",
+      "status": "shipped",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 6,
+          "productName": "Платье-кокон драпированное",
+          "qty": 1,
+          "price": 21500
+        },
+        {
+          "productId": 18,
+          "productName": "Шапка рёберная вязка",
+          "qty": 1,
+          "price": 2900
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 24400,
+      "discountAmount": 3660,
+      "total": 21090,
+      "createdAt": "2026-03-05T11:10:00.000Z"
+    },
+    {
+      "id": 3,
+      "customerName": "Дмитрий Волков",
+      "phone": "+7 (903) 345-67-89",
+      "email": "volkov@gmail.com",
+      "address": "Москва, ул. Садовая, 5, кв. 7",
+      "status": "processing",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 3,
+          "productName": "Жакет асимметричный деконструктивный",
+          "qty": 1,
+          "price": 19600
+        },
+        {
+          "productId": 5,
+          "productName": "Брюки широкие с защипами",
+          "qty": 1,
+          "price": 11200
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 30800,
+      "discountAmount": 4620,
+      "total": 26180,
+      "createdAt": "2026-03-10T16:45:00.000Z"
+    },
+    {
+      "id": 4,
+      "customerName": "Елена Кузнецова",
+      "phone": "+7 (985) 456-78-90",
+      "email": "kuznetsova@inbox.ru",
+      "address": "Краснодар, ул. Красная, 33, кв. 2",
+      "status": "new",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 7,
+          "productName": "Пальто структурированное с поясом",
+          "qty": 1,
+          "price": 20800
+        },
+        {
+          "productId": 10,
+          "productName": "Юбка архитектурная midi",
+          "qty": 1,
+          "price": 12500
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 33300,
+      "discountAmount": 0,
+      "total": 33650,
+      "createdAt": "2026-03-15T09:30:00.000Z"
+    },
+    {
+      "id": 5,
+      "customerName": "Иван Петров",
+      "phone": "+7 (967) 567-89-01",
+      "email": "petrov@mail.ru",
+      "address": "Москва, Ленинский пр., 120, кв. 18",
+      "status": "done",
+      "delivery": "courier",
+      "deliveryLabel": "Курьер",
+      "deliveryCost": 500,
+      "payment": "receipt",
+      "paymentLabel": "При получении",
+      "items": [
+        {
+          "productId": 12,
+          "productName": "Худи тяжёлый хлопок унисекс",
+          "qty": 2,
+          "price": 6800
+        },
+        {
+          "productId": 16,
+          "productName": "Сумка-тоут структурированная",
+          "qty": 1,
+          "price": 12000
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 25600,
+      "discountAmount": 3840,
+      "total": 22260,
+      "createdAt": "2026-03-20T13:00:00.000Z"
+    },
+    {
+      "id": 6,
+      "customerName": "Ольга Смирнова",
+      "phone": "+7 (916) 678-90-12",
+      "email": "smirnova@yandex.ru",
+      "address": "Казань, ул. Баумана, 7, кв. 91",
+      "status": "shipped",
+      "delivery": "cdek",
+      "deliveryLabel": "СДЭК / ПВЗ",
+      "deliveryCost": 350,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 9,
+          "productName": "Блуза объёмная с асимметрией",
+          "qty": 1,
+          "price": 5760
+        },
+        {
+          "productId": 14,
+          "productName": "Свитшот технический с молнией",
+          "qty": 1,
+          "price": 6240
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 12000,
+      "discountAmount": 0,
+      "total": 12350,
+      "createdAt": "2026-03-25T11:20:00.000Z"
+    },
+    {
+      "id": 7,
+      "customerName": "Тимур Ахметов",
+      "phone": "+7 (903) 789-01-23",
+      "email": "akhmetov@inbox.ru",
+      "address": "Уфа, ул. Мустая Карима, 14, кв. 5",
+      "status": "new",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "sbp",
+      "paymentLabel": "СБП",
+      "items": [
+        {
+          "productId": 2,
+          "productName": "Карго-брюки технические",
+          "qty": 1,
+          "price": 7600
+        },
+        {
+          "productId": 4,
+          "productName": "Водолазка вязаная heavy knit",
+          "qty": 1,
+          "price": 6800
+        },
+        {
+          "productId": 17,
+          "productName": "Ремень широкий кожаный",
+          "qty": 1,
+          "price": 3840
+        }
+      ],
+      "promoCode": "DARK15",
+      "promoApplied": {
+        "id": 1,
+        "code": "DARK15",
+        "type": "percent",
+        "value": 15
+      },
+      "subtotal": 18240,
+      "discountAmount": 2736,
+      "total": 15504,
+      "createdAt": "2026-04-01T10:00:00.000Z"
+    }
+  ],
+  "promoCodes": [
+    {
+      "id": 1,
+      "code": "DARK15",
+      "type": "percent",
+      "value": 15,
+      "active": true,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    }
+  ],
   "counters": {
-    "product": 1,
-    "order": 1,
-    "log": 1,
-    "promo": 1
+    "product": 20,
+    "order": 8,
+    "log": 4,
+    "promo": 2
   }
 }
