@@ -5,6 +5,7 @@ const API = {
   orders: "/api/orders",
   promos: "/api/promocodes",
   analytics: "/api/analytics",
+  cleanup: "/api/admin/cleanup",
 };
 
 const fmtRub = (n) =>
@@ -274,6 +275,7 @@ function bindForms() {
   const orderSearchForm = document.getElementById("order-search-form");
   const imageFileInput = productForm?.querySelector('input[name="imageFile"]');
   const logoutBtn = document.getElementById("admin-logout");
+  const cleanupButtons = Array.from(document.querySelectorAll("[data-cleanup]"));
 
   logoutBtn?.addEventListener("click", async () => {
     await fetch("/api/admin/logout", { method: "POST" }).catch(() => {});
@@ -352,6 +354,24 @@ function bindForms() {
     e.preventDefault();
     const val = new FormData(orderSearchForm).get("orderId");
     await loadOrders(String(val || "").trim());
+  });
+
+  cleanupButtons.forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const target = String(btn.dataset.cleanup || "");
+      if (!target) return;
+      const ok = confirm(
+        target === "all"
+          ? "Полностью очистить базу данных? Это действие нельзя отменить."
+          : `Очистить данные: ${target}?`
+      );
+      if (!ok) return;
+      await jsonFetch(API.cleanup, {
+        method: "POST",
+        body: JSON.stringify({ target }),
+      });
+      await refreshAll();
+    });
   });
 }
 

@@ -10,7 +10,9 @@ const { v2: cloudinary } = require("cloudinary");
 
 const app = express();
 const PORT = process.env.PORT || 8080;
-const DB_PATH = path.join(__dirname, "data", "db.json");
+const DB_PATH = process.env.DB_PATH
+  ? path.resolve(process.env.DB_PATH)
+  : path.join(__dirname, "data", "db.json");
 const UPLOADS_DIR = path.join(__dirname, "uploads");
 const IS_PROD = process.env.NODE_ENV === "production";
 const ADMIN_LOGIN = String(process.env.ADMIN_LOGIN || "admin");
@@ -86,8 +88,9 @@ function ensureDb() {
   if (!fs.existsSync(UPLOADS_DIR)) {
     fs.mkdirSync(UPLOADS_DIR, { recursive: true });
   }
-  if (!fs.existsSync(path.dirname(DB_PATH))) {
-    fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
+  const dbDir = path.dirname(DB_PATH);
+  if (!fs.existsSync(dbDir)) {
+    fs.mkdirSync(dbDir, { recursive: true });
   }
   if (!fs.existsSync(DB_PATH)) {
     fs.writeFileSync(
@@ -107,8 +110,14 @@ function ensureDb() {
   }
   // Миграции схемы для уже существующей базы
   const db = JSON.parse(fs.readFileSync(DB_PATH, "utf-8"));
+  if (!Array.isArray(db.products)) db.products = [];
+  if (!Array.isArray(db.inventoryLogs)) db.inventoryLogs = [];
+  if (!Array.isArray(db.orders)) db.orders = [];
   if (!Array.isArray(db.promoCodes)) db.promoCodes = [];
   if (!db.counters) db.counters = { product: 1, order: 1, log: 1, promo: 1 };
+  if (!db.counters.product) db.counters.product = 1;
+  if (!db.counters.order) db.counters.order = 1;
+  if (!db.counters.log) db.counters.log = 1;
   if (!db.counters.promo) db.counters.promo = 1;
   if (Array.isArray(db.products)) {
     db.products = db.products.map((product) => {
@@ -164,6 +173,11 @@ function toNum(v, fallback = 0) {
 
 function findProduct(db, productId) {
   return db.products.find((p) => String(p.id) === String(productId));
+}
+
+function resetCounter(db, key, collectionName) {
+  const maxId = db[collectionName].reduce((max, item) => Math.max(max, toNum(item?.id, 0)), 0);
+  db.counters[key] = maxId + 1;
 }
 
 app.get("/api/products", (_req, res) => {
@@ -520,6 +534,61 @@ app.get("/api/analytics", requireAdminApi, (_req, res) => {
     topByQty,
     topByRevenue,
   });
+});
+
+app.post("/api/admin/cleanup", requireAdminApi, (req, res) => {
+  const db = readDb();
+  const target = String(req.body?.target || "").trim().toLowerCase();
+  const cleaned = [];
+
+  if (target === "all") {
+    db.products = [];
+    db.inventoryLogs = [];
+    db.orders = [];
+    db.promoCodes = [];
+    db.counters = { product: 1, order: 1, log: 1, promo: 1 };
+    writeDb(db);
+    return res.json({ ok: true, cleaned: ["products", "inventory", "orders", "reports", "promocodes"] });
+  }
+
+  if (target === "orders") {
+    db.orders = [];
+    resetCounter(db, "order", "orders");
+    cleaned.push("orders");
+  }
+
+  if (target === "inventory" || target === "deliveries" || target === "supplies") {
+    db.inventoryLogs = [];
+    resetCounter(db, "log", "inventoryLogs");
+    cleaned.push("inventory");
+  }
+
+  if (target === "reports" || target === "analytics") {
+    db.orders = [];
+    resetCounter(db, "order", "orders");
+    cleaned.push("reports");
+  }
+
+  if (target === "products") {
+    db.products = [];
+    resetCounter(db, "product", "products");
+    cleaned.push("products");
+  }
+
+  if (target === "promocodes") {
+    db.promoCodes = [];
+    resetCounter(db, "promo", "promoCodes");
+    cleaned.push("promocodes");
+  }
+
+  if (!cleaned.length) {
+    return res.status(400).json({
+      error: "Unknown cleanup target. Use: orders, inventory, reports, products, promocodes, all",
+    });
+  }
+
+  writeDb(db);
+  return res.json({ ok: true, cleaned });
 });
 
 app.post("/api/admin/login", async (req, res) => {
