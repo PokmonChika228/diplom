@@ -327,6 +327,7 @@
       if (el) el.textContent = val;
     }
     setText("kpi-orders", a.totalOrders != null ? a.totalOrders : 0);
+    setText("kpi-items", a.totalItemsSold != null ? a.totalItemsSold : 0);
     setText("kpi-products", a.totalProducts != null ? a.totalProducts : 0);
     setText("kpi-revenue", fmt(a.totalRevenue || 0));
     setText("kpi-avg", fmt(a.avgOrderValue || 0));
@@ -436,8 +437,10 @@
     if (!canvas) return;
     var ctx = canvas.getContext("2d");
     var dpr = window.devicePixelRatio || 1;
-    var cssW = canvas.offsetWidth || parseInt(canvas.getAttribute("width"), 10);
-    var cssH = parseInt(canvas.getAttribute("height"), 10);
+    canvas.style.width = "";
+    canvas.style.height = "";
+    var cssW = canvas.offsetWidth || parseInt(canvas.getAttribute("width"), 10) || 600;
+    var cssH = parseInt(canvas.getAttribute("height"), 10) || 260;
     canvas.width = cssW * dpr;
     canvas.height = cssH * dpr;
     canvas.style.width = cssW + "px";

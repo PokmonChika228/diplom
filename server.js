@@ -527,6 +527,7 @@ app.get("/api/analytics", requireAdminApi, (_req, res) => {
   let totalRevenue = 0;
   let totalDiscounts = 0;
   let ordersWithPromo = 0;
+  let totalItemsSold = 0;
 
   db.orders.forEach((o) => {
     const day = String(o.createdAt || "").slice(0, 10);
@@ -536,6 +537,7 @@ app.get("/api/analytics", requireAdminApi, (_req, res) => {
     totalRevenue += orderTotal;
     totalDiscounts += toNum(o.discountAmount, 0);
     if (o.promoCode) ordersWithPromo++;
+    totalItemsSold += o.items.reduce((s, it) => s + toNum(it.qty, 0), 0);
 
     // Статус
     const st = String(o.status || "new");
@@ -600,6 +602,7 @@ app.get("/api/analytics", requireAdminApi, (_req, res) => {
     totalDiscounts,
     avgOrderValue,
     ordersWithPromo,
+    totalItemsSold,
     totalStock,
     byDay,
     byStatus,
@@ -620,6 +623,7 @@ app.get("/api/admin/dashboard", requireAdminApi, (_req, res) => {
   let totalRevenue = 0;
   let totalDiscounts = 0;
   let ordersWithPromo = 0;
+  let totalItemsSold = 0;
   const byDayMap = new Map();
   const byCategory = new Map();
   const byDelivery = new Map();
@@ -632,6 +636,7 @@ app.get("/api/admin/dashboard", requireAdminApi, (_req, res) => {
     totalRevenue += orderTotal;
     totalDiscounts += toNum(o.discountAmount, 0);
     if (o.promoCode) ordersWithPromo++;
+    totalItemsSold += o.items.reduce((s, it) => s + toNum(it.qty, 0), 0);
 
     const st = String(o.status || "new");
     if (byStatus[st] !== undefined) byStatus[st]++; else byStatus[st] = 1;
@@ -691,6 +696,7 @@ app.get("/api/admin/dashboard", requireAdminApi, (_req, res) => {
       totalDiscounts,
       avgOrderValue: db.orders.length ? Math.round(totalRevenue / db.orders.length) : 0,
       ordersWithPromo,
+      totalItemsSold,
       totalStock: db.products.reduce((s, p) => s + toNum(p.stock, 0), 0),
       byDay,
       byStatus,
@@ -1042,12 +1048,18 @@ app.post("/api/admin/generate-orders", requireAdminApi, (req, res) => {
   const generated = [];
   for (let i = 0; i < count; i++) {
     const numItems = randInt(1, 3);
-    const shuffled = products.slice().sort(() => Math.random() - 0.5);
+    const availableProducts = db.products.filter((p) => toNum(p.stock, 0) > 0);
+    if (!availableProducts.length) break;
+    const shuffled = availableProducts.slice().sort(() => Math.random() - 0.5);
     const orderItems = [];
     let subtotal = 0;
     for (let j = 0; j < Math.min(numItems, shuffled.length); j++) {
       const p = shuffled[j];
-      const qty = randInt(1, 2);
+      const maxQty = Math.min(2, toNum(p.stock, 0));
+      if (maxQty < 1) continue;
+      const qty = randInt(1, maxQty);
+      p.stock -= qty;
+      p.updatedAt = nowIso();
       orderItems.push({ productId: p.id, productName: p.name, qty, price: p.price });
       subtotal += qty * p.price;
     }
