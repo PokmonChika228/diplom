@@ -12,6 +12,7 @@ const SESSION_SECRET = String(
 const DB_PATH = process.env.DB_PATH
   ? path.resolve(process.env.DB_PATH)
   : path.join(process.cwd(), "data", "db.json");
+const TMP_DB_PATH = "/tmp/site-db.json";
 const BLOBS_STORE_NAME = String(process.env.NETLIFY_BLOBS_STORE || "site-db");
 const FORCE_LOCAL_DB = String(process.env.FORCE_LOCAL_DB || "").toLowerCase() === "true";
 const USE_BLOBS = !FORCE_LOCAL_DB;
@@ -32,6 +33,11 @@ async function getBlobsStore() {
   if (!blobsModulePromise) blobsModulePromise = import("@netlify/blobs");
   const mod = await blobsModulePromise;
   return mod.getStore(BLOBS_STORE_NAME);
+}
+
+function effectiveDbPath() {
+  if (process.env.NETLIFY === "true") return TMP_DB_PATH;
+  return DB_PATH;
 }
 
 function nowIso() {
@@ -70,38 +76,48 @@ function normalizeDb(db) {
 
 async function readDb() {
   if (USE_BLOBS) {
-    const store = await getBlobsStore();
-    const raw = await store.get("db.json");
-    if (!raw) {
-      await store.set("db.json", JSON.stringify(INITIAL_DB));
-      return { ...INITIAL_DB };
+    try {
+      const store = await getBlobsStore();
+      const raw = await store.get("db.json");
+      if (!raw) {
+        await store.set("db.json", JSON.stringify(INITIAL_DB));
+        return { ...INITIAL_DB };
+      }
+      const db = normalizeDb(JSON.parse(raw));
+      await store.set("db.json", JSON.stringify(db));
+      return db;
+    } catch {
+      // Blobs might be unavailable in current environment; fallback to local writable path.
     }
-    const db = normalizeDb(JSON.parse(raw));
-    await store.set("db.json", JSON.stringify(db));
-    return db;
   }
 
-  const dir = path.dirname(DB_PATH);
+  const dbPath = effectiveDbPath();
+  const dir = path.dirname(dbPath);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  if (!fs.existsSync(DB_PATH)) {
-    fs.writeFileSync(DB_PATH, JSON.stringify(INITIAL_DB, null, 2));
+  if (!fs.existsSync(dbPath)) {
+    fs.writeFileSync(dbPath, JSON.stringify(INITIAL_DB, null, 2));
     return { ...INITIAL_DB };
   }
-  const db = normalizeDb(JSON.parse(fs.readFileSync(DB_PATH, "utf-8")));
-  fs.writeFileSync(DB_PATH, JSON.stringify(db, null, 2));
+  const db = normalizeDb(JSON.parse(fs.readFileSync(dbPath, "utf-8")));
+  fs.writeFileSync(dbPath, JSON.stringify(db, null, 2));
   return db;
 }
 
 async function writeDb(db) {
   const normalized = normalizeDb(db);
   if (USE_BLOBS) {
-    const store = await getBlobsStore();
-    await store.set("db.json", JSON.stringify(normalized));
-    return;
+    try {
+      const store = await getBlobsStore();
+      await store.set("db.json", JSON.stringify(normalized));
+      return;
+    } catch {
+      // Blobs might be unavailable in current environment; fallback to local writable path.
+    }
   }
-  const dir = path.dirname(DB_PATH);
+  const dbPath = effectiveDbPath();
+  const dir = path.dirname(dbPath);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(DB_PATH, JSON.stringify(normalized, null, 2));
+  fs.writeFileSync(dbPath, JSON.stringify(normalized, null, 2));
 }
 
 function parseCookies(cookieHeader) {
