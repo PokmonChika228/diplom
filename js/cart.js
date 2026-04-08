@@ -82,7 +82,7 @@
         : `<span data-line-total data-rub="${lineTotal}" data-usd="${lineTotalU}">${formatMoney(lineTotal, lineTotalU)}</span>`;
     art.innerHTML = `
       <a href="product.html?id=${encodeURIComponent(line.productId)}" class="product-thumb">
-        <span class="product-thumb__media"><img src="${thumbSrc}" alt="" width="800" height="600" loading="lazy" /></span>
+        <span class="product-thumb__media"><img src="${thumbSrc}" alt="" width="200" height="267" loading="lazy" /></span>
       </a>
       <div class="cart-row__info">
         <a href="product.html?id=${encodeURIComponent(line.productId)}" class="cart-row__name">${escapeHtml(productName)}</a>

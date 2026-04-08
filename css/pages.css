@@ -769,6 +769,7 @@
   font: inherit;
   font-weight: 600;
   background: var(--color-surface);
+  color: var(--color-text);
 }
 
 .qty input:focus {
