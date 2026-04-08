@@ -100,7 +100,6 @@ async function readDb() {
         return { ...INITIAL_DB };
       }
       const db = normalizeDb(JSON.parse(raw));
-      await store.set("db.json", JSON.stringify(db));
       return db;
     } catch {
       // Blobs might be unavailable in current environment; fallback to local writable path.
@@ -120,7 +119,6 @@ async function readDb() {
         return { ...INITIAL_DB };
       }
       const db = normalizeDb(JSON.parse(fs.readFileSync(dbPath, "utf-8")));
-      fs.writeFileSync(dbPath, JSON.stringify(db, null, 2));
       return db;
     } catch {
       // try next candidate path
@@ -553,8 +551,10 @@ exports.handler = async (event) => {
       for (const item of body.items) {
         const product = findProduct(db, item.productId);
         if (!product) return json(400, { error: `Product ${item.productId} not found` });
-        const qty = Math.max(1, toNum(item.qty, 1));
-        if (product.stock < qty) return json(400, { error: `Not enough stock for ${product.name}` });
+        const requestedQty = Math.max(1, toNum(item.qty, 1));
+        const availableQty = Math.max(0, toNum(product.stock, 0));
+        if (availableQty <= 0) return json(400, { error: `${product.name} is out of stock` });
+        const qty = Math.min(requestedQty, availableQty);
         product.stock -= qty;
         normalizedItems.push({
           productId: product.id,
