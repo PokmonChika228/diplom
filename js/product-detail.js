@@ -14,6 +14,20 @@
   const relatedRoot = document.querySelector("[data-pdp-related]");
   const addBtn = document.querySelector("[data-add-to-cart]");
   const toast = document.querySelector("[data-pdp-toast]");
+  const descItem = document.querySelector("[data-pdp-desc-item]");
+  const compositionItem = document.querySelector("[data-pdp-composition-item]");
+  const careItem = document.querySelector("[data-pdp-care-item]");
+  function setOptionalAccordion(itemEl, contentEl, value) {
+    if (!itemEl || !contentEl) return;
+    const text = String(value || "").trim();
+    if (!text) {
+      itemEl.hidden = true;
+      return;
+    }
+    itemEl.hidden = false;
+    contentEl.textContent = text;
+  }
+
 
   function formatRub(n) {
     return `${Math.round(Number(n) || 0)
@@ -165,9 +179,9 @@
       const desc = document.querySelector("[data-pdp-desc]");
       const comp = document.querySelector("[data-pdp-composition]");
       const care = document.querySelector("[data-pdp-care]");
-      if (desc) desc.textContent = product.description || "Описание скоро появится.";
-      if (comp) comp.textContent = "Состав уточняется.";
-      if (care) care.textContent = "Рекомендации по уходу уточняются.";
+      setOptionalAccordion(descItem, desc, product.description);
+      setOptionalAccordion(compositionItem, comp, product.composition);
+      setOptionalAccordion(careItem, care, product.care);
 
       setThumbs(product.image || "https://placehold.co/1200x900?text=Product");
       setSizes(product.sizes);

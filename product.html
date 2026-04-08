@@ -96,7 +96,7 @@
               <p class="pdp-buy__price" data-pdp-price></p>
               <p class="pdp-buy__stock">В наличии</p>
 
-              <div data-pdp-colors-wrap>
+              <div data-pdp-colors-wrap hidden>
                 <p class="pdp-option-label" id="label-color">Цвет</p>
                 <div class="swatch-list" role="group" aria-labelledby="label-color" data-pdp-colors style="margin-bottom: var(--space-lg)"></div>
               </div>
@@ -110,7 +110,7 @@
               </div>
 
               <div class="accordion" role="region" aria-label="О товаре">
-                <div class="accordion-item is-open" data-accordion-item>
+                <div class="accordion-item is-open" data-accordion-item data-pdp-desc-item>
                   <button type="button" class="accordion-trigger" data-accordion-trigger aria-expanded="true">
                     Описание
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -119,7 +119,7 @@
                   </button>
                   <div class="accordion-panel" role="region" data-pdp-desc></div>
                 </div>
-                <div class="accordion-item" data-accordion-item>
+                <div class="accordion-item" data-accordion-item data-pdp-composition-item>
                   <button type="button" class="accordion-trigger" data-accordion-trigger aria-expanded="false">
                     Состав
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -128,7 +128,7 @@
                   </button>
                   <div class="accordion-panel" role="region" data-pdp-composition></div>
                 </div>
-                <div class="accordion-item" data-accordion-item>
+                <div class="accordion-item" data-accordion-item data-pdp-care-item>
                   <button type="button" class="accordion-trigger" data-accordion-trigger aria-expanded="false">
                     Уход
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">

@@ -242,6 +242,8 @@ app.post("/api/products", requireAdminApi, (req, res) => {
           .filter(Boolean),
     image: String(body.image || ""),
     description: String(body.description || ""),
+    composition: String(body.composition || ""),
+    care: String(body.care || ""),
     createdAt: nowIso(),
     updatedAt: nowIso(),
   };
@@ -286,6 +288,12 @@ app.put("/api/products/:id", requireAdminApi, (req, res) => {
   if (body.image !== undefined) product.image = String(body.image || "");
   if (body.description !== undefined) {
     product.description = String(body.description || "");
+  }
+  if (body.composition !== undefined) {
+    product.composition = String(body.composition || "");
+  }
+  if (body.care !== undefined) {
+    product.care = String(body.care || "");
   }
   product.updatedAt = nowIso();
 

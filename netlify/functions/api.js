@@ -270,6 +270,8 @@ exports.handler = async (event) => {
               .filter(Boolean),
         image: String(body.image || ""),
         description: String(body.description || ""),
+        composition: String(body.composition || ""),
+        care: String(body.care || ""),
         createdAt: nowIso(),
         updatedAt: nowIso(),
       };
@@ -315,6 +317,8 @@ exports.handler = async (event) => {
       }
       if (body.image !== undefined) p.image = String(body.image || "");
       if (body.description !== undefined) p.description = String(body.description || "");
+      if (body.composition !== undefined) p.composition = String(body.composition || "");
+      if (body.care !== undefined) p.care = String(body.care || "");
       p.updatedAt = nowIso();
       await writeDb(db);
       return json(200, p);

@@ -40,6 +40,8 @@ function fillForm(form, product) {
   form.colors.value = (product.colors || []).join(", ");
   form.image.value = product.image || "";
   form.description.value = product.description || "";
+  form.composition.value = product.composition || "";
+  form.care.value = product.care || "";
 }
 
 function resetForm(form) {

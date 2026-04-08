@@ -42,6 +42,8 @@
 
   function makeCard(product) {
     const category = String(product.category || "other").toLowerCase();
+    const categoryTokens =
+      category === "unisex" ? "mens womens unisex" : category;
     const isSale = !!product.sale;
     const isNew = false;
     const price = Number(product.price || 0);
@@ -52,7 +54,7 @@
 
     const article = document.createElement("article");
     article.className = "product-card";
-    article.setAttribute("data-category", category);
+    article.setAttribute("data-category", categoryTokens);
     article.setAttribute("data-sale", String(isSale));
     article.setAttribute("data-name", product.name || "");
     article.setAttribute("data-price", String(price));
