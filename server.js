@@ -821,10 +821,42 @@ app.post("/api/admin/parse-vitrine", requireAdminApi, async (req, res) => {
     });
   }
 
+  function extractFirstImg(html, baseUrl) {
+    // og:image
+    const ogMatch = html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i)
+      || html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i);
+    if (ogMatch && ogMatch[1] && ogMatch[1].startsWith("http")) return ogMatch[1];
+    return "";
+  }
+
+  function extractProductLinks(html, base) {
+    const links = [];
+    const re = /href=["']([^"']*\/product[^"']*|[^"']*\/item[^"']*|[^"']*\/catalog\/[^"']+\d+[^"']*)["']/gi;
+    let m;
+    while ((m = re.exec(html)) !== null && links.length < 20) {
+      let href = m[1];
+      if (!href.startsWith("http")) href = base + (href.startsWith("/") ? "" : "/") + href;
+      if (!links.includes(href)) links.push(href);
+    }
+    return links;
+  }
+
   try {
-    const result = await fetchUrl("https://vitrine.market/catalog/odezhda");
-    if (result.status === 200 && result.body.length > 500) {
-      const jsonMatches = result.body.match(/application\/ld\+json[^>]*>([\s\S]*?)<\/script>/gi) || [];
+    const CATALOG_URLS = [
+      "https://vitrine.market/catalog/odezhda",
+      "https://vitrine.market/catalog",
+    ];
+    let catalogHtml = "";
+    for (const url of CATALOG_URLS) {
+      try {
+        const result = await fetchUrl(url);
+        if (result.status === 200 && result.body.length > 500) { catalogHtml = result.body; break; }
+      } catch (_) {}
+    }
+
+    if (catalogHtml) {
+      // 1. Попытка JSON-LD
+      const jsonMatches = catalogHtml.match(/application\/ld\+json[^>]*>([\s\S]*?)<\/script>/gi) || [];
       for (const m of jsonMatches) {
         try {
           const inner = m.replace(/<script[^>]*>|<\/script>/gi, "");
@@ -833,10 +865,10 @@ app.post("/api/admin/parse-vitrine", requireAdminApi, async (req, res) => {
           for (const item of items) {
             if (item["@type"] === "Product" && item.name) {
               const cat = detectCategory(item.name, item.description || "");
-              // Попытка получить изображение из разных полей schema.org
               let img = "";
               if (item.image) {
                 img = Array.isArray(item.image) ? item.image[0] : String(item.image);
+                if (typeof img === "object") img = img.url || img.contentUrl || "";
                 if (img && !img.startsWith("http")) img = "";
               }
               if (!img) img = catImage(cat, item.name);
@@ -855,6 +887,66 @@ app.post("/api/admin/parse-vitrine", requireAdminApi, async (req, res) => {
           }
         } catch (_) {}
       }
+
+      // 2. Ищем ссылки на отдельные страницы товаров и загружаем их
+      if (parsed.length < requestCount) {
+        const productLinks = extractProductLinks(catalogHtml, "https://vitrine.market");
+        const fetches = productLinks.slice(0, Math.min(20, requestCount * 2)).map(async (link) => {
+          try {
+            const r = await fetchUrl(link);
+            if (r.status !== 200 || r.body.length < 200) return;
+            // JSON-LD на странице товара
+            const pJsonMatches = r.body.match(/application\/ld\+json[^>]*>([\s\S]*?)<\/script>/gi) || [];
+            for (const pm of pJsonMatches) {
+              try {
+                const inner = pm.replace(/<script[^>]*>|<\/script>/gi, "");
+                const data = JSON.parse(inner);
+                const items = Array.isArray(data) ? data : (data["@graph"] ? data["@graph"] : [data]);
+                for (const item of items) {
+                  if (item["@type"] === "Product" && item.name) {
+                    const cat = detectCategory(item.name, item.description || "");
+                    let img = "";
+                    if (item.image) {
+                      img = Array.isArray(item.image) ? item.image[0] : String(item.image);
+                      if (typeof img === "object") img = img.url || img.contentUrl || "";
+                      if (img && !img.startsWith("http")) img = "";
+                    }
+                    // og:image как запасной вариант
+                    if (!img) img = extractFirstImg(r.body, "https://vitrine.market");
+                    if (!img) img = catImage(cat, item.name);
+                    parsed.push({
+                      name: String(item.name).slice(0, 120),
+                      price: Math.round(toNum(item.offers?.price || item.price, 0)),
+                      description: String(item.description || "").slice(0, 500),
+                      image: img,
+                      category: cat,
+                      sizes: ["S", "M", "L"],
+                      colors: ["Черный"],
+                      composition: "",
+                      care: "",
+                    });
+                  }
+                }
+              } catch (_) {}
+            }
+            // Если JSON-LD не дал результатов, берём og:image для страницы
+            if (parsed.length === 0) {
+              const img = extractFirstImg(r.body, "https://vitrine.market");
+              // Заголовок страницы
+              const titleMatch = r.body.match(/<title[^>]*>([^<]+)<\/title>/i);
+              if (titleMatch && img) {
+                const name = titleMatch[1].replace(/\s*[|–—-].*$/, "").trim().slice(0, 120);
+                if (name) {
+                  const cat = detectCategory(name, "");
+                  parsed.push({ name, price: 0, description: "", image: img, category: cat, sizes: ["S","M","L"], colors: ["Черный"], composition: "", care: "" });
+                }
+              }
+            }
+          } catch (_) {}
+        });
+        await Promise.allSettled(fetches);
+      }
+
       if (parsed.length > 0) source = "vitrine.market";
     }
   } catch (_) {}

@@ -56,6 +56,12 @@
       ? "https://placehold.co/400x300?text=Deleted"
       : p.image || "https://placehold.co/400x300?text=Product";
     const lineTotal = missing ? 0 : lineTotalRub(line, p);
+    const isSale = !missing && p.sale && p.oldPrice > p.price;
+    const priceHtml = missing
+      ? formatRub(0)
+      : isSale
+        ? `<del style="opacity:.55;font-weight:400;margin-right:.35em">${formatRub(p.oldPrice * Math.max(1, parseInt(line.qty, 10) || 1))}</del><strong style="color:var(--color-sale)" data-line-total>${formatRub(lineTotal)}</strong>`
+        : `<span data-line-total>${formatRub(lineTotal)}</span>`;
     art.innerHTML = `
       <a href="product.html?id=${encodeURIComponent(line.productId)}" class="product-thumb">
         <span class="product-thumb__media"><img src="${thumbSrc}" alt="" width="800" height="600" loading="lazy" /></span>
@@ -64,7 +70,7 @@
         <a href="product.html?id=${encodeURIComponent(line.productId)}" class="cart-row__name">${escapeHtml(productName)}</a>
         <p class="cart-row__meta">Размер: ${escapeHtml(line.size || "ONE")}</p>
         ${missing ? '<p class="cart-row__meta" style="color:#a33">Товар временно недоступен</p>' : ""}
-        <p class="cart-row__price"><span data-line-total>${formatRub(lineTotal)}</span></p>
+        <p class="cart-row__price">${priceHtml}</p>
         <div class="cart-row__actions">
           <div class="qty" data-qty>
             <button type="button" data-qty-down aria-label="Уменьшить количество">−</button>
@@ -128,6 +134,10 @@
         window.updateCartLineQty(pid, size, q);
         const totalEl = row.querySelector("[data-line-total]");
         if (totalEl && product) totalEl.textContent = formatRub(Number(product.price || 0) * q);
+        const delEl = row.querySelector(".cart-row__price del");
+        if (delEl && product && product.oldPrice > product.price) {
+          delEl.textContent = formatRub(Number(product.oldPrice || 0) * q);
+        }
         updateSummary();
       };
       row.querySelector("[data-qty-down]")?.addEventListener("click", () => {
