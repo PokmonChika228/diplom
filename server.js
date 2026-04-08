@@ -1203,6 +1203,13 @@ app.post("/api/admin/cleanup", requireAdminApi, (req, res) => {
   return res.json({ ok: true, cleaned });
 });
 
+app.get("/api/admin/orders/latest-id", requireAdminApi, (req, res) => {
+  const db = readDb();
+  const orders = db.orders || [];
+  const latestId = orders.length > 0 ? Math.max(...orders.map((o) => o.id || 0)) : 0;
+  res.json({ latestId, count: orders.length });
+});
+
 // Кэш курса валют (1 час)
 let _rateCache = null;
 let _rateCacheTime = 0;

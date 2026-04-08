@@ -529,14 +529,14 @@ main {
 
 .site-ticker {
   width: 100%;
-  background: #ffffff;
-  color: #000000;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  background: #ffffff !important;
+  color: #000000 !important;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   overflow: hidden;
-  height: 34px;
+  height: 44px;
   display: flex;
   align-items: center;
 }
@@ -546,11 +546,13 @@ main {
   white-space: nowrap;
   animation: tickerScroll 28s linear infinite;
   will-change: transform;
+  color: #000000 !important;
 }
 
 .site-ticker__text {
-  padding-right: 6rem;
+  padding-right: 8rem;
   flex-shrink: 0;
+  color: #000000 !important;
 }
 
 @keyframes tickerScroll {

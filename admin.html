@@ -18,7 +18,7 @@
         <nav id="admin-nav">
           <a href="#" data-tab="products" class="nav-tab is-active">Номенклатура</a>
           <a href="#" data-tab="inventory" class="nav-tab">Склад</a>
-          <a href="#" data-tab="orders" class="nav-tab">Заказы</a>
+          <a href="#" data-tab="orders" class="nav-tab">Заказы<span class="notif-badge" id="orders-badge" hidden>0</span></a>
           <a href="#" data-tab="promocodes" class="nav-tab">Промокоды</a>
           <a href="#" data-tab="analytics" class="nav-tab">Аналитика</a>
           <a href="#" data-tab="simulation" class="nav-tab">Симуляция</a>
@@ -167,13 +167,20 @@
 
           <div class="analytics-row">
             <div class="admin-card flex-1">
-              <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:10px">
-                <h3 style="margin:0">Динамика выручки</h3>
-                <div style="display:flex;gap:4px">
-                  <button class="chart-period-btn is-active" data-period="day">По дням</button>
-                  <button class="chart-period-btn" data-period="week">По неделям</button>
-                  <button class="chart-period-btn" data-period="month">По месяцам</button>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;justify-content:space-between">
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                  <h3 style="margin:0">Динамика выручки</h3>
+                  <div style="display:flex;gap:4px">
+                    <button class="chart-range-btn is-active" data-range="all">Всё время</button>
+                    <button class="chart-range-btn" data-range="year">Год</button>
+                    <button class="chart-range-btn" data-range="month">Месяц</button>
+                  </div>
                 </div>
+                <select id="chart-group-select" class="select" style="font-size:0.75rem;padding:4px 10px;min-width:130px">
+                  <option value="day">По дням</option>
+                  <option value="week">По неделям</option>
+                  <option value="month">По месяцам</option>
+                </select>
               </div>
               <div class="chart-wrap">
                 <canvas id="sales-chart" width="900" height="260"></canvas>
@@ -489,6 +496,7 @@
       </div>
     </div>
 
+    <div id="admin-toast-container"></div>
     <script src="js/admin.js"></script>
   </body>
 </html>

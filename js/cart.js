@@ -21,6 +21,15 @@
       .replace(/\B(?=(\d{3})+(?!\d))/g, " ")} ₽`;
   }
 
+  function formatMoney(rub, usd) {
+    if (typeof window.formatPrice === "function") return window.formatPrice(Number(rub || 0), Number(usd || 0));
+    return formatRub(rub);
+  }
+
+  function isUsd() {
+    return typeof window.CURRENCY !== "undefined" && window.CURRENCY === "USD";
+  }
+
   function escapeHtml(s) {
     const d = document.createElement("div");
     d.textContent = s;
@@ -29,6 +38,14 @@
 
   function lineTotalRub(line, product) {
     const unit = Number(product.price || 0);
+    const qty = Math.max(1, parseInt(line.qty, 10) || 1);
+    return unit * qty;
+  }
+
+  function lineTotalUsd(line, product) {
+    const usd = Number(product.priceUsd || 0);
+    const rub = Number(product.price || 0);
+    const unit = usd > 0 ? usd : Math.round(rub / 90);
     const qty = Math.max(1, parseInt(line.qty, 10) || 1);
     return unit * qty;
   }
@@ -56,12 +73,13 @@
       ? "https://placehold.co/400x300?text=Deleted"
       : p.image || "https://placehold.co/400x300?text=Product";
     const lineTotal = missing ? 0 : lineTotalRub(line, p);
+    const lineTotalU = missing ? 0 : lineTotalUsd(line, p);
     const isSale = !missing && p.sale && p.oldPrice > p.price;
     const priceHtml = missing
       ? formatRub(0)
       : isSale
-        ? `<del style="opacity:.55;font-weight:400;margin-right:.35em">${formatRub(p.oldPrice * Math.max(1, parseInt(line.qty, 10) || 1))}</del><strong style="color:var(--color-sale)" data-line-total>${formatRub(lineTotal)}</strong>`
-        : `<span data-line-total>${formatRub(lineTotal)}</span>`;
+        ? `<del style="opacity:.55;font-weight:400;margin-right:.35em">${formatMoney(p.oldPrice * Math.max(1, parseInt(line.qty, 10) || 1), 0)}</del><strong style="color:var(--color-sale)" data-line-total data-rub="${lineTotal}" data-usd="${lineTotalU}">${formatMoney(lineTotal, lineTotalU)}</strong>`
+        : `<span data-line-total data-rub="${lineTotal}" data-usd="${lineTotalU}">${formatMoney(lineTotal, lineTotalU)}</span>`;
     art.innerHTML = `
       <a href="product.html?id=${encodeURIComponent(line.productId)}" class="product-thumb">
         <span class="product-thumb__media"><img src="${thumbSrc}" alt="" width="800" height="600" loading="lazy" /></span>
@@ -86,26 +104,32 @@
 
   function updateSummary() {
     const lines = window.getCartLines();
-    let subtotal = 0;
+    let subtotalRub = 0;
+    let subtotalUsd = 0;
     lines.forEach((line) => {
       const p = productsById.get(String(line.productId));
-      if (p) subtotal += lineTotalRub(line, p);
+      if (p) {
+        subtotalRub += lineTotalRub(line, p);
+        subtotalUsd += lineTotalUsd(line, p);
+      }
     });
-    const discount = calcDiscount(subtotal);
-    const total = Math.max(0, subtotal - discount);
+    const discount = calcDiscount(subtotalRub);
+    const discountUsd = subtotalRub > 0 && subtotalUsd > 0 ? Math.round((discount / subtotalRub) * subtotalUsd) : 0;
+    const totalRub = Math.max(0, subtotalRub - discount);
+    const totalUsd = Math.max(0, subtotalUsd - discountUsd);
 
     const itemsQty = lines.reduce((s, l) => s + Math.max(1, parseInt(l.qty, 10) || 1), 0);
     const label = document.querySelector("[data-cart-lines-label]");
     if (label) label.textContent = lines.length ? `Товары: ${itemsQty} шт.` : "Товары";
     const sub = document.querySelector("[data-cart-subtotal]");
     const tot = document.querySelector("[data-cart-total]");
-    if (sub) sub.textContent = formatRub(subtotal);
-    if (tot) tot.textContent = formatRub(total);
+    if (sub) sub.textContent = formatMoney(subtotalRub, subtotalUsd);
+    if (tot) tot.textContent = formatMoney(totalRub, totalUsd);
 
     if (discountRow && discountEl) {
       const has = discount > 0;
       discountRow.hidden = !has;
-      discountEl.textContent = `− ${formatRub(discount)}`;
+      discountEl.textContent = `− ${formatMoney(discount, discountUsd)}`;
     }
 
     const empty = document.getElementById("cart-empty");
@@ -133,10 +157,17 @@
         input.value = String(q);
         window.updateCartLineQty(pid, size, q);
         const totalEl = row.querySelector("[data-line-total]");
-        if (totalEl && product) totalEl.textContent = formatRub(Number(product.price || 0) * q);
+        if (totalEl && product) {
+          const rubTotal = Number(product.price || 0) * q;
+          const usdUnit = Number(product.priceUsd || 0) > 0 ? Number(product.priceUsd) : Math.round(Number(product.price || 0) / 90);
+          const usdTotal = usdUnit * q;
+          totalEl.setAttribute("data-rub", rubTotal);
+          totalEl.setAttribute("data-usd", usdTotal);
+          totalEl.textContent = formatMoney(rubTotal, usdTotal);
+        }
         const delEl = row.querySelector(".cart-row__price del");
         if (delEl && product && product.oldPrice > product.price) {
-          delEl.textContent = formatRub(Number(product.oldPrice || 0) * q);
+          delEl.textContent = formatMoney(Number(product.oldPrice || 0) * q, 0);
         }
         updateSummary();
       };
@@ -235,4 +266,8 @@
     if (storedCode) applyPromoCode(storedCode);
     render();
   })();
+
+  window.addEventListener("currencychange", function () {
+    render();
+  });
 })();

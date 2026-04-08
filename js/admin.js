@@ -293,9 +293,12 @@
     (orders || []).forEach(function (o) {
       var items = (o.items || []).map(function (it) { return esc(it.productName) + " ×" + it.qty; }).join("<br>");
       var promoInfo = o.promoCode ? '<span style="color:var(--color-sale)">' + esc(o.promoCode) + "</span><br>–" + fmt(o.discountAmount || 0) : "—";
+      var totalRub = o.total || 0;
+      var totalUsdStr = _cachedRate > 0 ? "~$" + Math.round(totalRub / _cachedRate) : "";
       var totalInfo = fmt(o.subtotal || 0) + " товары<br>" + fmt(o.deliveryCost || 0) + " дост." +
         (o.discountAmount ? "<br>–" + fmt(o.discountAmount) + " скидка" : "") +
-        "<br><strong>" + fmt(o.total || 0) + "</strong>";
+        "<br><strong>" + fmt(totalRub) + "</strong>" +
+        (totalUsdStr ? '<br><span style="color:var(--color-text-muted);font-size:0.75rem">' + totalUsdStr + "</span>" : "");
 
       var statusOpts = Object.keys(STATUS_MAP).map(function (s) {
         return "<option value='" + s + "'" + (o.status === s ? " selected" : "") + ">" + STATUS_MAP[s] + "</option>";
@@ -452,7 +455,13 @@
     var rateEl = document.getElementById("kpi-exchange-rate");
     if (rateEl) {
       fetch("/api/exchange-rate").then(function (r) { return r.json(); }).then(function (d) {
-        rateEl.textContent = d.rate ? d.rate.toFixed(2) + " ₽/$ " + (d.fromCache ? "(кэш)" : "(ЦБ РФ)") : "—";
+        var rate = d.usdToRub || d.rate || 0;
+        if (rate) {
+          _cachedRate = rate;
+          rateEl.textContent = rate.toFixed(2) + " ₽/$";
+        } else {
+          rateEl.textContent = "—";
+        }
       }).catch(function () { rateEl.textContent = "—"; });
     }
 
@@ -502,9 +511,13 @@
     }).join("");
   }
 
+  /* ===================== EXCHANGE RATE CACHE ===================== */
+  var _cachedRate = 90;
+
   /* ===================== CHART ===================== */
   var rawByDay = [];
   var chartPeriod = "day";
+  var chartRange = "all";
 
   function groupByPeriod(byDay, period) {
     if (period === "day") return byDay;
@@ -540,6 +553,21 @@
     return dateStr.slice(5).replace("-", ".");
   }
 
+  function filterByRange(byDay, range) {
+    if (range === "all") return byDay;
+    var now = new Date();
+    var cutoff;
+    if (range === "year") {
+      cutoff = new Date(now);
+      cutoff.setFullYear(now.getFullYear() - 1);
+    } else {
+      cutoff = new Date(now);
+      cutoff.setDate(now.getDate() - 30);
+    }
+    var cutoffStr = cutoff.toISOString().slice(0, 10);
+    return byDay.filter(function (d) { return d.date >= cutoffStr; });
+  }
+
   function drawChart(byDay) {
     rawByDay = byDay || [];
     renderChart();
@@ -561,7 +589,8 @@
     var H = cssH;
     ctx.clearRect(0, 0, W, H);
 
-    var data = groupByPeriod(rawByDay, chartPeriod);
+    var filtered = filterByRange(rawByDay, chartRange);
+    var data = groupByPeriod(filtered, chartPeriod);
 
     if (!data.length) {
       ctx.fillStyle = "#555";
@@ -636,14 +665,22 @@
     });
   }
 
-  document.querySelectorAll(".chart-period-btn").forEach(function (btn) {
+  document.querySelectorAll(".chart-range-btn").forEach(function (btn) {
     btn.addEventListener("click", function () {
-      chartPeriod = btn.dataset.period;
-      document.querySelectorAll(".chart-period-btn").forEach(function (b) { b.classList.remove("is-active"); });
+      chartRange = btn.dataset.range;
+      document.querySelectorAll(".chart-range-btn").forEach(function (b) { b.classList.remove("is-active"); });
       btn.classList.add("is-active");
       renderChart();
     });
   });
+
+  var chartGroupSelect = document.getElementById("chart-group-select");
+  if (chartGroupSelect) {
+    chartGroupSelect.addEventListener("change", function () {
+      chartPeriod = chartGroupSelect.value;
+      renderChart();
+    });
+  }
 
   /* ===================== SIMULATION ===================== */
   var btnParse = document.getElementById("btn-parse-vitrine");
@@ -841,7 +878,7 @@
       if (!confirm(msg)) return;
       authFetch("/api/admin/cleanup", {
         method: "POST",
-        body: JSON.stringify({ type: type }),
+        body: JSON.stringify({ target: type }),
       }).then(function (r) {
         if (!r.ok) { alert("Ошибка очистки"); return; }
         return authFetch("/api/admin/dashboard").then(function (fr) {
@@ -851,6 +888,77 @@
     });
   });
 
+  /* ===================== TOAST SYSTEM ===================== */
+  function showToast(title, msg, cls) {
+    var container = document.getElementById("admin-toast-container");
+    if (!container) return;
+    var toast = document.createElement("div");
+    toast.className = "admin-toast" + (cls ? " " + cls : "");
+    toast.innerHTML =
+      '<div class="admin-toast__icon">' + (cls === "toast-new-order" ? "🛒" : "ℹ️") + "</div>" +
+      '<div class="admin-toast__body">' +
+        '<div class="admin-toast__title">' + esc(title) + "</div>" +
+        (msg ? '<div class="admin-toast__msg">' + esc(msg) + "</div>" : "") +
+      "</div>";
+    toast.addEventListener("click", function () { toast.remove(); });
+    container.appendChild(toast);
+    setTimeout(function () {
+      toast.style.opacity = "0";
+      toast.style.transform = "translateX(40px)";
+      toast.style.transition = "all 0.3s ease";
+      setTimeout(function () { toast.remove(); }, 320);
+    }, 5000);
+  }
+
+  /* ===================== ORDER NOTIFICATION POLLING ===================== */
+  var _lastKnownOrderId = 0;
+  var _badgeCount = 0;
+
+  function initOrderPolling() {
+    fetch("/api/exchange-rate").then(function (r) { return r.json(); }).then(function (d) {
+      var rate = d.usdToRub || d.rate || 0;
+      if (rate) _cachedRate = rate;
+    }).catch(function () {});
+
+    authFetch("/api/admin/orders/latest-id").then(function (r) {
+      if (!r.ok) return;
+      return r.json().then(function (d) { _lastKnownOrderId = d.latestId || 0; });
+    }).catch(function () {});
+
+    setInterval(function () {
+      authFetch("/api/admin/orders/latest-id").then(function (r) {
+        if (!r.ok) return;
+        return r.json().then(function (d) {
+          var newId = d.latestId || 0;
+          if (_lastKnownOrderId > 0 && newId > _lastKnownOrderId) {
+            var newCount = newId - _lastKnownOrderId;
+            _badgeCount += newCount;
+            var badge = document.getElementById("orders-badge");
+            if (badge) {
+              badge.textContent = _badgeCount;
+              badge.hidden = false;
+            }
+            showToast(
+              "Новый заказ!",
+              "Поступил" + (newCount > 1 ? "о " + newCount + " новых заказа" : " новый заказ") + ". Откройте раздел «Заказы».",
+              "toast-new-order"
+            );
+          }
+          _lastKnownOrderId = newId;
+        });
+      }).catch(function () {});
+    }, 30000);
+  }
+
+  document.querySelectorAll(".nav-tab[data-tab='orders']").forEach(function (link) {
+    link.addEventListener("click", function () {
+      _badgeCount = 0;
+      var badge = document.getElementById("orders-badge");
+      if (badge) badge.hidden = true;
+    });
+  });
+
   /* ===================== START ===================== */
   loadAll();
+  initOrderPolling();
 })();
