@@ -23,6 +23,7 @@
           <a href="#" data-tab="analytics" class="nav-tab">Аналитика</a>
           <a href="#" data-tab="simulation" class="nav-tab">Симуляция</a>
           <a href="#" data-tab="cleanup" class="nav-tab">Очистка</a>
+          <a href="#" data-tab="interface" class="nav-tab">Интерфейс</a>
           <a href="index.html" style="margin-top:12px;border-top:1px solid var(--color-border);padding-top:12px">На сайт →</a>
         </nav>
         <button id="admin-logout" class="btn btn--outline" type="button" style="margin-top:auto;width:100%">Выйти</button>
@@ -332,6 +333,68 @@
             <button class="btn btn--secondary" type="button" data-cleanup="all" style="background:var(--color-sale);border-color:var(--color-sale)">
               Полностью очистить БД
             </button>
+          </div>
+        </div>
+
+        <!-- TAB: interface -->
+        <div class="admin-tab" id="tab-interface" hidden>
+          <div class="admin-header">
+            <h2>Интерфейс сайта</h2>
+            <p>Настройка бегущей строки и главного изображения.</p>
+          </div>
+
+          <!-- Бегущая строка -->
+          <div class="admin-card">
+            <h3>Бегущая строка</h3>
+            <p style="color:var(--color-text-muted);font-size:0.875rem;margin-bottom:16px">Отображается вверху сайта над шапкой. Можно включить или выключить без удаления текста.</p>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <label style="display:flex;align-items:center;gap:10px;font-size:0.875rem;cursor:pointer">
+                <input type="checkbox" id="ticker-enabled" style="width:16px;height:16px;accent-color:var(--color-text)" />
+                Показывать бегущую строку на сайте
+              </label>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <label for="ticker-text" style="font-size:0.8125rem;color:var(--color-text-muted)">Текст строки</label>
+                <input class="input" id="ticker-text" type="text" placeholder="Бесплатная доставка при заказе от 5000 ₽ · Новая коллекция уже в каталоге" style="width:100%" />
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+                <button class="btn btn--secondary" id="btn-save-ticker" type="button">Сохранить</button>
+                <span id="ticker-status" style="font-size:0.875rem;color:var(--color-text-muted)"></span>
+              </div>
+              <div id="ticker-preview-wrap" style="display:none;margin-top:4px">
+                <p style="font-size:0.8125rem;color:var(--color-text-muted);margin-bottom:6px">Предпросмотр:</p>
+                <div style="background:#111;padding:8px 16px;font-size:0.8125rem;letter-spacing:0.04em;white-space:nowrap;overflow:hidden;border:1px solid var(--color-border);border-radius:4px">
+                  <span id="ticker-preview-text"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Изображение на главной -->
+          <div class="admin-card">
+            <h3>Главное изображение (герой)</h3>
+            <p style="color:var(--color-text-muted);font-size:0.875rem;margin-bottom:16px">Большой фоновый снимок в верхней части главной страницы. Загрузите файл или вставьте URL.</p>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <label style="font-size:0.8125rem;color:var(--color-text-muted)">Загрузить изображение</label>
+                <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+                  <input type="file" id="hero-file" accept="image/*" style="font-size:0.875rem;color:var(--color-text-muted)" />
+                  <button class="btn btn--outline" id="btn-upload-hero" type="button">Загрузить</button>
+                  <span id="hero-upload-status" style="font-size:0.875rem;color:var(--color-text-muted)"></span>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <label for="hero-url" style="font-size:0.8125rem;color:var(--color-text-muted)">Или вставьте URL изображения</label>
+                <input class="input" id="hero-url" type="url" placeholder="https://..." style="width:100%" />
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+                <button class="btn btn--secondary" id="btn-save-hero" type="button">Сохранить</button>
+                <span id="hero-status" style="font-size:0.875rem;color:var(--color-text-muted)"></span>
+              </div>
+              <div id="hero-preview-wrap" style="display:none;margin-top:4px">
+                <p style="font-size:0.8125rem;color:var(--color-text-muted);margin-bottom:6px">Текущее изображение:</p>
+                <img id="hero-preview-img" src="" alt="Hero preview" style="max-width:100%;max-height:220px;object-fit:cover;border-radius:6px;border:1px solid var(--color-border)" />
+              </div>
+            </div>
           </div>
         </div>
 

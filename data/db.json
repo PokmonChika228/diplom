@@ -21118,5 +21118,14 @@
     "order": 508,
     "log": 4,
     "promo": 2
+  },
+  "uiSettings": {
+    "ticker": {
+      "enabled": false,
+      "text": ""
+    },
+    "heroImage": {
+      "src": ""
+    }
   }
 }

@@ -102,6 +102,7 @@ function ensureDb() {
           orders: [],
           promoCodes: [],
           counters: { product: 1, order: 1, log: 1, promo: 1 },
+          uiSettings: { ticker: { enabled: false, text: "" }, heroImage: { src: "" } },
         },
         null,
         2
@@ -115,6 +116,9 @@ function ensureDb() {
   if (!Array.isArray(db.orders)) db.orders = [];
   if (!Array.isArray(db.promoCodes)) db.promoCodes = [];
   if (!db.counters) db.counters = { product: 1, order: 1, log: 1, promo: 1 };
+  if (!db.uiSettings) db.uiSettings = { ticker: { enabled: false, text: "" }, heroImage: { src: "" } };
+  if (!db.uiSettings.ticker) db.uiSettings.ticker = { enabled: false, text: "" };
+  if (!db.uiSettings.heroImage) db.uiSettings.heroImage = { src: "" };
   if (!db.counters.product) db.counters.product = 1;
   if (!db.counters.order) db.counters.order = 1;
   if (!db.counters.log) db.counters.log = 1;
@@ -1173,6 +1177,29 @@ app.post("/api/admin/cleanup", requireAdminApi, (req, res) => {
 
   writeDb(db);
   return res.json({ ok: true, cleaned });
+});
+
+app.get("/api/ui-settings", (_req, res) => {
+  const db = readDb();
+  res.json(db.uiSettings || { ticker: { enabled: false, text: "" }, heroImage: { src: "" } });
+});
+
+app.post("/api/admin/ui-settings", requireAdminApi, (req, res) => {
+  const db = readDb();
+  const body = req.body || {};
+  if (body.ticker !== undefined) {
+    db.uiSettings.ticker = {
+      enabled: body.ticker.enabled === true || String(body.ticker.enabled) === "true",
+      text: String(body.ticker.text || ""),
+    };
+  }
+  if (body.heroImage !== undefined) {
+    db.uiSettings.heroImage = {
+      src: String(body.heroImage.src || ""),
+    };
+  }
+  writeDb(db);
+  res.json(db.uiSettings);
 });
 
 app.post("/api/admin/login", async (req, res) => {

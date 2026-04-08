@@ -53,6 +53,7 @@
     if (name === "inventory") loadInventory();
     if (name === "orders") loadOrders();
     if (name === "promocodes") loadPromos();
+    if (name === "interface") loadUiSettings();
   }
 
   tabLinks.forEach(function (l) {
@@ -608,6 +609,113 @@
           if (statusEl) statusEl.textContent = "Ошибка: " + (err.message || "неизвестная");
         })
         .finally(function () { btnGenOrders.disabled = false; });
+    });
+  }
+
+  /* ===================== INTERFACE SETTINGS ===================== */
+  function loadUiSettings() {
+    authFetch("/api/ui-settings").then(function (r) {
+      if (!r.ok) return;
+      return r.json().then(function (s) {
+        var tickerEnabled = document.getElementById("ticker-enabled");
+        var tickerText = document.getElementById("ticker-text");
+        var tickerPreviewWrap = document.getElementById("ticker-preview-wrap");
+        var tickerPreviewText = document.getElementById("ticker-preview-text");
+        if (tickerEnabled) tickerEnabled.checked = !!(s.ticker && s.ticker.enabled);
+        if (tickerText) tickerText.value = (s.ticker && s.ticker.text) || "";
+        if (tickerPreviewWrap && tickerPreviewText && s.ticker && s.ticker.text) {
+          tickerPreviewText.textContent = s.ticker.text;
+          tickerPreviewWrap.style.display = "";
+        }
+        var heroUrl = document.getElementById("hero-url");
+        var heroPreviewWrap = document.getElementById("hero-preview-wrap");
+        var heroPreviewImg = document.getElementById("hero-preview-img");
+        if (heroUrl) heroUrl.value = (s.heroImage && s.heroImage.src) || "";
+        if (heroPreviewWrap && heroPreviewImg && s.heroImage && s.heroImage.src) {
+          heroPreviewImg.src = s.heroImage.src;
+          heroPreviewWrap.style.display = "";
+        }
+      });
+    });
+  }
+
+  var btnSaveTicker = document.getElementById("btn-save-ticker");
+  if (btnSaveTicker) {
+    btnSaveTicker.addEventListener("click", function () {
+      var enabled = !!(document.getElementById("ticker-enabled") || {}).checked;
+      var text = (document.getElementById("ticker-text") || {}).value || "";
+      var statusEl = document.getElementById("ticker-status");
+      var previewWrap = document.getElementById("ticker-preview-wrap");
+      var previewText = document.getElementById("ticker-preview-text");
+      btnSaveTicker.disabled = true;
+      if (statusEl) statusEl.textContent = "Сохраняю…";
+      authFetch("/api/admin/ui-settings", {
+        method: "POST",
+        body: JSON.stringify({ ticker: { enabled: enabled, text: text } }),
+      }).then(function (r) {
+        return r.json().then(function (d) {
+          if (!r.ok) throw new Error(d.error || "Ошибка");
+          if (statusEl) statusEl.textContent = "Сохранено ✓";
+          if (previewText) previewText.textContent = text;
+          if (previewWrap) previewWrap.style.display = text ? "" : "none";
+          setTimeout(function () { if (statusEl) statusEl.textContent = ""; }, 2500);
+        });
+      }).catch(function (err) {
+        if (statusEl) statusEl.textContent = "Ошибка: " + err.message;
+      }).finally(function () { btnSaveTicker.disabled = false; });
+    });
+  }
+
+  var btnUploadHero = document.getElementById("btn-upload-hero");
+  if (btnUploadHero) {
+    btnUploadHero.addEventListener("click", function () {
+      var fileInput = document.getElementById("hero-file");
+      var statusEl = document.getElementById("hero-upload-status");
+      var heroUrlInput = document.getElementById("hero-url");
+      if (!fileInput || !fileInput.files || !fileInput.files[0]) {
+        if (statusEl) statusEl.textContent = "Выберите файл";
+        return;
+      }
+      var fd = new FormData();
+      fd.append("image", fileInput.files[0]);
+      btnUploadHero.disabled = true;
+      if (statusEl) statusEl.textContent = "Загружаю…";
+      fetch("/api/upload-image", { method: "POST", body: fd, credentials: "same-origin" })
+        .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+        .then(function (res) {
+          if (!res.ok) throw new Error(res.data.error || "Ошибка загрузки");
+          if (heroUrlInput) heroUrlInput.value = res.data.url;
+          if (statusEl) statusEl.textContent = "Загружено ✓";
+          setTimeout(function () { if (statusEl) statusEl.textContent = ""; }, 2500);
+        }).catch(function (err) {
+          if (statusEl) statusEl.textContent = "Ошибка: " + err.message;
+        }).finally(function () { btnUploadHero.disabled = false; });
+    });
+  }
+
+  var btnSaveHero = document.getElementById("btn-save-hero");
+  if (btnSaveHero) {
+    btnSaveHero.addEventListener("click", function () {
+      var src = (document.getElementById("hero-url") || {}).value || "";
+      var statusEl = document.getElementById("hero-status");
+      var previewWrap = document.getElementById("hero-preview-wrap");
+      var previewImg = document.getElementById("hero-preview-img");
+      btnSaveHero.disabled = true;
+      if (statusEl) statusEl.textContent = "Сохраняю…";
+      authFetch("/api/admin/ui-settings", {
+        method: "POST",
+        body: JSON.stringify({ heroImage: { src: src } }),
+      }).then(function (r) {
+        return r.json().then(function (d) {
+          if (!r.ok) throw new Error(d.error || "Ошибка");
+          if (statusEl) statusEl.textContent = "Сохранено ✓";
+          if (previewImg) previewImg.src = src;
+          if (previewWrap) previewWrap.style.display = src ? "" : "none";
+          setTimeout(function () { if (statusEl) statusEl.textContent = ""; }, 2500);
+        });
+      }).catch(function (err) {
+        if (statusEl) statusEl.textContent = "Ошибка: " + err.message;
+      }).finally(function () { btnSaveHero.disabled = false; });
     });
   }
 

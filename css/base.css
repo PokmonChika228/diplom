@@ -499,3 +499,35 @@ main {
 .field:last-child {
   margin-bottom: 0;
 }
+
+/* ===================== TICKER ===================== */
+.site-ticker {
+  width: 100%;
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  overflow: hidden;
+  height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.site-ticker__track {
+  display: flex;
+  white-space: nowrap;
+  animation: tickerScroll 22s linear infinite;
+  will-change: transform;
+}
+
+.site-ticker__text {
+  padding-right: 6rem;
+  flex-shrink: 0;
+}
+
+@keyframes tickerScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
