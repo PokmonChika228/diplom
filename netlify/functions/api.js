@@ -18,6 +18,7 @@ const NETLIFY_BLOBS_SITE_ID = String(process.env.NETLIFY_BLOBS_SITE_ID || proces
 const NETLIFY_BLOBS_TOKEN = String(process.env.NETLIFY_BLOBS_TOKEN || process.env.NETLIFY_AUTH_TOKEN || "");
 const FORCE_LOCAL_DB = String(process.env.FORCE_LOCAL_DB || "").toLowerCase() === "true";
 const USE_BLOBS = !FORCE_LOCAL_DB;
+const IS_NETLIFY_RUNTIME = process.env.NETLIFY === "true";
 const CLOUDINARY_CLOUD_NAME = String(process.env.CLOUDINARY_CLOUD_NAME || "");
 const CLOUDINARY_API_KEY = String(process.env.CLOUDINARY_API_KEY || "");
 const CLOUDINARY_API_SECRET = String(process.env.CLOUDINARY_API_SECRET || "");
@@ -101,8 +102,13 @@ async function readDb() {
       }
       const db = normalizeDb(JSON.parse(raw));
       return db;
-    } catch {
-      // Blobs might be unavailable in current environment; fallback to local writable path.
+    } catch (err) {
+      if (IS_NETLIFY_RUNTIME) {
+        throw new Error(
+          `Persistent storage is not configured. Set NETLIFY_BLOBS_STORE, NETLIFY_BLOBS_SITE_ID and NETLIFY_BLOBS_TOKEN. Original: ${err?.message || "unknown"}`
+        );
+      }
+      // Local development fallback only.
     }
   }
 
@@ -135,8 +141,13 @@ async function writeDb(db) {
       const store = await getBlobsStore();
       await store.set("db.json", JSON.stringify(normalized));
       return;
-    } catch {
-      // Blobs might be unavailable in current environment; fallback to local writable path.
+    } catch (err) {
+      if (IS_NETLIFY_RUNTIME) {
+        throw new Error(
+          `Persistent storage is not configured. Set NETLIFY_BLOBS_STORE, NETLIFY_BLOBS_SITE_ID and NETLIFY_BLOBS_TOKEN. Original: ${err?.message || "unknown"}`
+        );
+      }
+      // Local development fallback only.
     }
   }
   const primaryPath = effectiveDbPath();

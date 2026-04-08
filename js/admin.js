@@ -401,6 +401,13 @@ jsonFetch("/api/admin/session")
     return refreshAll();
   })
   .catch((err) => {
-    alert(`Ошибка загрузки админ-панели: ${err.message}`);
+    const msg = String(err?.message || "");
+    if (msg.includes("Persistent storage is not configured")) {
+      alert(
+        "Ошибка: на Netlify не настроено постоянное хранилище. Добавь переменные NETLIFY_BLOBS_STORE, NETLIFY_BLOBS_SITE_ID, NETLIFY_BLOBS_TOKEN в Environment."
+      );
+      return;
+    }
+    alert(`Ошибка загрузки админ-панели: ${msg}`);
   });
 
