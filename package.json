@@ -20,5 +20,8 @@
     "express": "^5.2.1",
     "express-session": "^1.19.0",
     "multer": "^2.1.1"
+  },
+  "overrides": {
+    "path-to-regexp": "8.3.0"
   }
 }
