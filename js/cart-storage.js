@@ -1,13 +1,23 @@
 /**
- * Корзина в sessionStorage. Формат строк: { productId, size, qty }
+ * Корзина в localStorage (fallback: sessionStorage). Формат строк: { productId, size, qty }
  * DYNAMIC: заменить на API.
  */
 (function () {
   const KEY = "brandCartLines";
+  const storage = (() => {
+    try {
+      const testKey = "__cart_test__";
+      localStorage.setItem(testKey, "1");
+      localStorage.removeItem(testKey);
+      return localStorage;
+    } catch {
+      return sessionStorage;
+    }
+  })();
 
   window.getCartLines = function () {
     try {
-      const s = sessionStorage.getItem(KEY);
+      const s = storage.getItem(KEY);
       const arr = s ? JSON.parse(s) : [];
       return Array.isArray(arr) ? arr : [];
     } catch {
@@ -29,7 +39,7 @@
   };
 
   window.saveCartLines = function (lines) {
-    sessionStorage.setItem(KEY, JSON.stringify(lines));
+    storage.setItem(KEY, JSON.stringify(lines));
     window.syncCartBadges();
   };
 

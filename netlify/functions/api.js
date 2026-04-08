@@ -14,6 +14,8 @@ const DB_PATH = process.env.DB_PATH
   : path.join(process.cwd(), "data", "db.json");
 const TMP_DB_PATH = "/tmp/site-db.json";
 const BLOBS_STORE_NAME = String(process.env.NETLIFY_BLOBS_STORE || "site-db");
+const NETLIFY_BLOBS_SITE_ID = String(process.env.NETLIFY_BLOBS_SITE_ID || process.env.NETLIFY_SITE_ID || "");
+const NETLIFY_BLOBS_TOKEN = String(process.env.NETLIFY_BLOBS_TOKEN || process.env.NETLIFY_AUTH_TOKEN || "");
 const FORCE_LOCAL_DB = String(process.env.FORCE_LOCAL_DB || "").toLowerCase() === "true";
 const USE_BLOBS = !FORCE_LOCAL_DB;
 const CLOUDINARY_CLOUD_NAME = String(process.env.CLOUDINARY_CLOUD_NAME || "");
@@ -32,6 +34,17 @@ let blobsModulePromise = null;
 async function getBlobsStore() {
   if (!blobsModulePromise) blobsModulePromise = import("@netlify/blobs");
   const mod = await blobsModulePromise;
+  if (NETLIFY_BLOBS_SITE_ID && NETLIFY_BLOBS_TOKEN) {
+    try {
+      return mod.getStore({
+        name: BLOBS_STORE_NAME,
+        siteID: NETLIFY_BLOBS_SITE_ID,
+        token: NETLIFY_BLOBS_TOKEN,
+      });
+    } catch {
+      // fallback to context-based store resolution
+    }
+  }
   return mod.getStore(BLOBS_STORE_NAME);
 }
 

@@ -43,7 +43,8 @@
 
   function renderLine(line) {
     const p = productsById.get(String(line.productId));
-    if (!p) return null;
+    const missing = !p;
+    const productName = missing ? `Товар #${line.productId}` : p.name || "Товар";
     const qty = Math.max(1, parseInt(line.qty, 10) || 1);
     const art = document.createElement("article");
     art.className = "cart-row";
@@ -51,15 +52,18 @@
     art.dataset.productId = String(line.productId);
     art.dataset.size = line.size;
 
-    const thumbSrc = p.image || "https://placehold.co/400x300?text=Product";
-    const lineTotal = lineTotalRub(line, p);
+    const thumbSrc = missing
+      ? "https://placehold.co/400x300?text=Deleted"
+      : p.image || "https://placehold.co/400x300?text=Product";
+    const lineTotal = missing ? 0 : lineTotalRub(line, p);
     art.innerHTML = `
       <a href="product.html?id=${encodeURIComponent(line.productId)}" class="product-thumb">
         <span class="product-thumb__media"><img src="${thumbSrc}" alt="" width="800" height="600" loading="lazy" /></span>
       </a>
       <div class="cart-row__info">
-        <a href="product.html?id=${encodeURIComponent(line.productId)}" class="cart-row__name">${escapeHtml(p.name || "Товар")}</a>
+        <a href="product.html?id=${encodeURIComponent(line.productId)}" class="cart-row__name">${escapeHtml(productName)}</a>
         <p class="cart-row__meta">Размер: ${escapeHtml(line.size || "ONE")}</p>
+        ${missing ? '<p class="cart-row__meta" style="color:#a33">Товар временно недоступен</p>' : ""}
         <p class="cart-row__price"><span data-line-total>${formatRub(lineTotal)}</span></p>
         <div class="cart-row__actions">
           <div class="qty" data-qty>
@@ -116,14 +120,14 @@
       const pid = row.dataset.productId;
       const size = row.dataset.size;
       const product = productsById.get(String(pid));
-      if (!input || !product) return;
+      if (!input) return;
 
       const refreshRow = () => {
         const q = Math.max(1, parseInt(input.value, 10) || 1);
         input.value = String(q);
         window.updateCartLineQty(pid, size, q);
         const totalEl = row.querySelector("[data-line-total]");
-        if (totalEl) totalEl.textContent = formatRub(Number(product.price || 0) * q);
+        if (totalEl && product) totalEl.textContent = formatRub(Number(product.price || 0) * q);
         updateSummary();
       };
       row.querySelector("[data-qty-down]")?.addEventListener("click", () => {
@@ -195,12 +199,8 @@
 
   function render() {
     const lines = window.getCartLines();
-    const validLines = lines.filter((l) => productsById.has(String(l.productId)));
-    if (validLines.length !== lines.length) {
-      window.saveCartLines(validLines);
-    }
     root.innerHTML = "";
-    validLines.forEach((line) => {
+    lines.forEach((line) => {
       const el = renderLine(line);
       if (el) root.appendChild(el);
     });
