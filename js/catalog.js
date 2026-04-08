@@ -172,13 +172,14 @@
     bootstrapped = true;
     try {
       const res = await fetch("/api/products");
-      if (!res.ok) return;
+      if (!res.ok) throw new Error("Products API failed");
       const products = await res.json();
-      if (!Array.isArray(products) || !products.length) return;
+      if (!Array.isArray(products)) throw new Error("Invalid products payload");
       grid.innerHTML = "";
       products.forEach((p) => grid.appendChild(makeCard(p)));
     } catch {
-      // fallback to static markup
+      // If API is unavailable, don't show stale static mock products.
+      grid.innerHTML = "";
     }
   }
 

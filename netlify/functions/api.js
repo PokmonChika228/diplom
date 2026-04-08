@@ -180,6 +180,22 @@ function parseBody(event) {
 }
 
 function routeOf(event) {
+  const qs = event.queryStringParameters || {};
+  const routeFromQuery = String(qs.route || "").trim();
+  if (routeFromQuery) {
+    const normalized = `/api/${routeFromQuery.replace(/^\/+/, "")}`.replace(/\/+$/, "");
+    return normalized || "/";
+  }
+  const headerPath = String(
+    event.headers?.["x-original-path"] ||
+      event.headers?.["x-nf-original-path"] ||
+      event.headers?.["x-forwarded-path"] ||
+      ""
+  ).trim();
+  if (headerPath) {
+    const normalized = headerPath.replace(/\/+$/, "");
+    return normalized || "/";
+  }
   const p = String(event.path || "").replace(/\/+$/, "");
   return p || "/";
 }

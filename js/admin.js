@@ -390,7 +390,15 @@ function bindForms() {
 }
 
 bindForms();
-refreshAll().catch((err) => {
-  alert(`Ошибка загрузки админ-панели: ${err.message}`);
-});
+jsonFetch("/api/admin/session")
+  .then((session) => {
+    if (!session?.authenticated) {
+      location.href = "/admin-login.html";
+      return;
+    }
+    return refreshAll();
+  })
+  .catch((err) => {
+    alert(`Ошибка загрузки админ-панели: ${err.message}`);
+  });
 
