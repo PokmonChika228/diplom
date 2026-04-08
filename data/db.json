@@ -146,7 +146,7 @@
       "sale": false,
       "price": 29900,
       "oldPrice": 0,
-      "stock": 28,
+      "stock": 26,
       "sizes": [
         "XS",
         "S",
@@ -2992,36 +2992,7 @@
       "createdAt": "2026-02-10T09:00:00.000Z"
     }
   ],
-  "orders": [
-    {
-      "id": 1,
-      "customerName": "dad",
-      "phone": "adsa",
-      "email": "da@gmail.com",
-      "address": "d",
-      "comment": "",
-      "status": "new",
-      "delivery": "pickup",
-      "deliveryLabel": "Самовывоз",
-      "deliveryCost": 0,
-      "payment": "card",
-      "paymentLabel": "Картой онлайн",
-      "items": [
-        {
-          "productId": 7,
-          "productName": "Пиджак Уверенность/Решение",
-          "qty": 1,
-          "price": 29900
-        }
-      ],
-      "promoCode": "",
-      "promoApplied": null,
-      "subtotal": 29900,
-      "discountAmount": 0,
-      "total": 29900,
-      "createdAt": "2026-04-08T19:14:41.169Z"
-    }
-  ],
+  "orders": [],
   "promoCodes": [
     {
       "id": 1,
@@ -3034,7 +3005,7 @@
   ],
   "counters": {
     "product": 121,
-    "order": 2,
+    "order": 1,
     "log": 4,
     "promo": 2
   },

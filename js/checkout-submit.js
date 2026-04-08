@@ -31,10 +31,15 @@
     document.body.style.overflow = "hidden";
   }
 
+  var _orderSuccess = false;
+
   function closeModal() {
     modal.classList.remove("is-open");
     modal.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
+    if (_orderSuccess) {
+      window.location.href = "index.html";
+    }
   }
 
   closeBtn?.addEventListener("click", closeModal);
@@ -101,6 +106,7 @@
       const order = await submitOrder();
       sessionStorage.removeItem("brandCartLines");
       sessionStorage.removeItem("brandPromoCode");
+      _orderSuccess = true;
       if (typeof window.syncCartBadges === "function") window.syncCartBadges();
       const p = modal.querySelector("p");
       if (p) {

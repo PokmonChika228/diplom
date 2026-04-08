@@ -26,17 +26,6 @@
     return formatRub(rub);
   }
 
-  function usdVal(rub, usd) {
-    var u = Number(usd || 0);
-    return u > 0 ? u : Math.round(Number(rub || 0) / 90);
-  }
-
-  function formatMoneyBoth(rub, usd) {
-    var rubStr = formatRub(rub);
-    var u = usdVal(rub, usd);
-    return rubStr + ' <small style="color:var(--color-text-muted);font-weight:400">/ $' + u.toLocaleString("en-US") + "</small>";
-  }
-
   function isUsd() {
     return typeof window.CURRENCY !== "undefined" && window.CURRENCY === "USD";
   }
@@ -89,8 +78,8 @@
     const priceHtml = missing
       ? formatRub(0)
       : isSale
-        ? `<del style="opacity:.55;font-weight:400;margin-right:.35em">${formatMoneyBoth(p.oldPrice * Math.max(1, parseInt(line.qty, 10) || 1), 0)}</del><strong style="color:var(--color-sale)" data-line-total data-rub="${lineTotal}" data-usd="${lineTotalU}">${formatMoneyBoth(lineTotal, lineTotalU)}</strong>`
-        : `<span data-line-total data-rub="${lineTotal}" data-usd="${lineTotalU}">${formatMoneyBoth(lineTotal, lineTotalU)}</span>`;
+        ? `<del style="opacity:.55;font-weight:400;margin-right:.35em">${formatMoney(p.oldPrice * Math.max(1, parseInt(line.qty, 10) || 1), 0)}</del><strong style="color:var(--color-sale)" data-line-total data-rub="${lineTotal}" data-usd="${lineTotalU}">${formatMoney(lineTotal, lineTotalU)}</strong>`
+        : `<span data-line-total data-rub="${lineTotal}" data-usd="${lineTotalU}">${formatMoney(lineTotal, lineTotalU)}</span>`;
     art.innerHTML = `
       <a href="product.html?id=${encodeURIComponent(line.productId)}" class="product-thumb">
         <span class="product-thumb__media"><img src="${thumbSrc}" alt="" width="800" height="600" loading="lazy" /></span>
@@ -134,13 +123,13 @@
     if (label) label.textContent = lines.length ? `Товары: ${itemsQty} шт.` : "Товары";
     const sub = document.querySelector("[data-cart-subtotal]");
     const tot = document.querySelector("[data-cart-total]");
-    if (sub) sub.innerHTML = formatMoneyBoth(subtotalRub, subtotalUsd);
-    if (tot) tot.innerHTML = formatMoneyBoth(totalRub, totalUsd);
+    if (sub) sub.textContent = formatMoney(subtotalRub, subtotalUsd);
+    if (tot) tot.textContent = formatMoney(totalRub, totalUsd);
 
     if (discountRow && discountEl) {
       const has = discount > 0;
       discountRow.hidden = !has;
-      discountEl.innerHTML = `− ${formatMoneyBoth(discount, discountUsd)}`;
+      discountEl.textContent = `− ${formatMoney(discount, discountUsd)}`;
     }
 
     const empty = document.getElementById("cart-empty");
@@ -174,11 +163,11 @@
           const usdTotal = usdUnit * q;
           totalEl.setAttribute("data-rub", rubTotal);
           totalEl.setAttribute("data-usd", usdTotal);
-          totalEl.innerHTML = formatMoneyBoth(rubTotal, usdTotal);
+          totalEl.textContent = formatMoney(rubTotal, usdTotal);
         }
         const delEl = row.querySelector(".cart-row__price del");
         if (delEl && product && product.oldPrice > product.price) {
-          delEl.innerHTML = formatMoneyBoth(Number(product.oldPrice || 0) * q, 0);
+          delEl.textContent = formatMoney(Number(product.oldPrice || 0) * q, 0);
         }
         updateSummary();
       };

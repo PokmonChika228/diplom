@@ -294,11 +294,9 @@
       var items = (o.items || []).map(function (it) { return esc(it.productName) + " ×" + it.qty; }).join("<br>");
       var promoInfo = o.promoCode ? '<span style="color:var(--color-sale)">' + esc(o.promoCode) + "</span><br>–" + fmt(o.discountAmount || 0) : "—";
       var totalRub = o.total || 0;
-      var totalUsdStr = _cachedRate > 0 ? "~$" + Math.round(totalRub / _cachedRate) : "";
       var totalInfo = fmt(o.subtotal || 0) + " товары<br>" + fmt(o.deliveryCost || 0) + " дост." +
         (o.discountAmount ? "<br>–" + fmt(o.discountAmount) + " скидка" : "") +
-        "<br><strong>" + fmt(totalRub) + "</strong>" +
-        (totalUsdStr ? '<br><span style="color:var(--color-text-muted);font-size:0.75rem">' + totalUsdStr + "</span>" : "");
+        "<br><strong>" + fmt(totalRub) + "</strong>";
 
       var statusOpts = Object.keys(STATUS_MAP).map(function (s) {
         return "<option value='" + s + "'" + (o.status === s ? " selected" : "") + ">" + STATUS_MAP[s] + "</option>";
@@ -951,7 +949,7 @@
           _lastKnownOrderId = newId;
         });
       }).catch(function () {});
-    }, 30000);
+    }, 10000);
   }
 
   document.querySelectorAll(".nav-tab[data-tab='orders']").forEach(function (link) {

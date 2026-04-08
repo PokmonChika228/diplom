@@ -9,15 +9,12 @@
         var t1 = document.getElementById("site-ticker-text");
         var t2 = document.getElementById("site-ticker-text2");
         if (ticker && t1) {
-          t1.textContent = s.ticker.text;
-          if (t2) t2.textContent = s.ticker.text;
+          var sep = "   \u2022   ";
+          var repeated = s.ticker.text + sep + s.ticker.text + sep + s.ticker.text + sep + s.ticker.text;
+          t1.textContent = repeated;
+          if (t2) t2.textContent = repeated;
           ticker.hidden = false;
-          requestAnimationFrame(function () {
-            document.documentElement.style.setProperty("--ticker-h", ticker.offsetHeight + "px");
-          });
         }
-      } else {
-        document.documentElement.style.setProperty("--ticker-h", "0px");
       }
 
       if (s.heroImage && s.heroImage.src) {

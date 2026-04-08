@@ -1,5 +1,14 @@
 (function () {
   var STORAGE_KEY = "zhuchy_currency";
+  window.EXCHANGE_RATE = 90;
+
+  fetch("/api/exchange-rate")
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      var rate = d.usdToRub || 0;
+      if (rate > 0) window.EXCHANGE_RATE = rate;
+    })
+    .catch(function () {});
 
   function getCurrency() {
     return localStorage.getItem(STORAGE_KEY) === "USD" ? "USD" : "RUB";
@@ -11,22 +20,30 @@
 
   window.CURRENCY = getCurrency();
 
-  window.formatPrice = function (priceRub, priceUsd) {
-    if (window.CURRENCY === "USD") {
-      var usd = Number(priceUsd || 0);
-      if (usd > 0) return "$" + usd.toLocaleString("en-US");
-      return "$" + Math.round((Number(priceRub || 0)) / 90).toLocaleString("en-US");
-    }
+  function rubToStr(priceRub) {
     return Math.round(Number(priceRub || 0)).toLocaleString("ru-RU") + "\u00a0\u20bd";
+  }
+
+  function rubToUsdStr(priceRub, priceUsd) {
+    var usd = Number(priceUsd || 0);
+    if (usd <= 0) usd = Math.round(Number(priceRub || 0) / window.EXCHANGE_RATE);
+    return "~$" + usd.toLocaleString("en-US");
+  }
+
+  window.formatPrice = function (priceRub, priceUsd) {
+    var rub = rubToStr(priceRub);
+    if (window.CURRENCY === "USD") {
+      return rub + " / " + rubToUsdStr(priceRub, priceUsd);
+    }
+    return rub;
   };
 
   window.formatOldPrice = function (priceRub, priceUsd) {
+    var rub = rubToStr(priceRub);
     if (window.CURRENCY === "USD") {
-      var usd = Number(priceUsd || 0);
-      if (usd > 0) return "$" + usd.toLocaleString("en-US");
-      return "$" + Math.round((Number(priceRub || 0)) / 90).toLocaleString("en-US");
+      return rub + " / " + rubToUsdStr(priceRub, priceUsd);
     }
-    return Math.round(Number(priceRub || 0)).toLocaleString("ru-RU") + "\u00a0\u20bd";
+    return rub;
   };
 
   function applyToggleState() {
