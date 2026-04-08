@@ -2,7 +2,6 @@ const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
-const { getStore } = require("@netlify/blobs");
 
 const ADMIN_LOGIN = String(process.env.ADMIN_LOGIN || "admin");
 const ADMIN_PASSWORD = String(process.env.ADMIN_PASSWORD || "change_me_please");
@@ -26,6 +25,13 @@ const INITIAL_DB = {
   promoCodes: [],
   counters: { product: 1, order: 1, log: 1, promo: 1 },
 };
+
+let blobsModulePromise = null;
+async function getBlobsStore() {
+  if (!blobsModulePromise) blobsModulePromise = import("@netlify/blobs");
+  const mod = await blobsModulePromise;
+  return mod.getStore(BLOBS_STORE_NAME);
+}
 
 function nowIso() {
   return new Date().toISOString();
@@ -63,7 +69,7 @@ function normalizeDb(db) {
 
 async function readDb() {
   if (USE_BLOBS) {
-    const store = getStore(BLOBS_STORE_NAME);
+    const store = await getBlobsStore();
     const raw = await store.get("db.json");
     if (!raw) {
       await store.set("db.json", JSON.stringify(INITIAL_DB));
@@ -88,7 +94,7 @@ async function readDb() {
 async function writeDb(db) {
   const normalized = normalizeDb(db);
   if (USE_BLOBS) {
-    const store = getStore(BLOBS_STORE_NAME);
+    const store = await getBlobsStore();
     await store.set("db.json", JSON.stringify(normalized));
     return;
   }
