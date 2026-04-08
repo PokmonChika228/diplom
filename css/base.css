@@ -523,16 +523,20 @@ main {
 }
 
 /* ===================== TICKER ===================== */
+[hidden].site-ticker {
+  display: none !important;
+}
+
 .site-ticker {
   width: 100%;
-  background: var(--color-text);
-  color: var(--color-bg);
+  background: #ffffff;
+  color: #000000;
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   overflow: hidden;
-  height: 32px;
+  height: 34px;
   display: flex;
   align-items: center;
 }
@@ -540,7 +544,7 @@ main {
 .site-ticker__track {
   display: flex;
   white-space: nowrap;
-  animation: tickerScroll 22s linear infinite;
+  animation: tickerScroll 28s linear infinite;
   will-change: transform;
 }
 

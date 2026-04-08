@@ -98,12 +98,116 @@
         "<td>" + fmt(p.price) + "</td>" +
         "<td>" + (p.priceUsd > 0 ? "$" + Number(p.priceUsd).toLocaleString("en-US") : "—") + "</td>" +
         "<td" + (p.stock <= 5 ? ' style="color:var(--color-sale)"' : "") + ">" + p.stock + "</td>" +
-        '<td class="actions">' +
+        '<td class="actions" style="white-space:nowrap">' +
+          '<button class="btn btn--outline" style="padding:4px 10px;font-size:0.75rem;margin-right:4px" onclick="editProduct(' + p.id + ')">✎ Изменить</button>' +
           '<button class="btn btn--outline" style="padding:4px 10px;font-size:0.75rem;color:var(--color-sale)" onclick="deleteProduct(' + p.id + ')">✕</button>' +
         "</td>";
       tbody.appendChild(tr);
     });
   }
+
+  /* ===== Product Modal ===== */
+  var productModal = document.getElementById("product-modal-overlay");
+  var productModalForm = document.getElementById("product-modal-form");
+  var productModalTitle = document.getElementById("product-modal-title");
+  var productModalStatus = document.getElementById("product-modal-status");
+
+  function openProductModal(product) {
+    if (!productModal) return;
+    var isNew = !product;
+    if (productModalTitle) productModalTitle.textContent = isNew ? "Добавить товар" : "Редактировать товар";
+    document.getElementById("pm-id").value = isNew ? "" : product.id;
+    document.getElementById("pm-name").value = isNew ? "" : (product.name || "");
+    document.getElementById("pm-category").value = isNew ? "other" : (product.category || "other");
+    document.getElementById("pm-price").value = isNew ? "" : (product.price || 0);
+    document.getElementById("pm-old-price").value = isNew ? "" : (product.oldPrice || 0);
+    document.getElementById("pm-price-usd").value = isNew ? "" : (product.priceUsd || 0);
+    document.getElementById("pm-stock").value = isNew ? "" : (product.stock || 0);
+    document.getElementById("pm-sale").checked = isNew ? false : !!product.sale;
+    document.getElementById("pm-image").value = isNew ? "" : (product.image || "");
+    document.getElementById("pm-sizes").value = isNew ? "" : (Array.isArray(product.sizes) ? product.sizes.join(", ") : (product.sizes || ""));
+    document.getElementById("pm-colors").value = isNew ? "" : (Array.isArray(product.colors) ? product.colors.join(", ") : (product.colors || ""));
+    document.getElementById("pm-description").value = isNew ? "" : (product.description || "");
+    document.getElementById("pm-composition").value = isNew ? "" : (product.composition || "");
+    document.getElementById("pm-care").value = isNew ? "" : (product.care || "");
+    if (productModalStatus) productModalStatus.textContent = "";
+    productModal.style.display = "";
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeProductModal() {
+    if (!productModal) return;
+    productModal.style.display = "none";
+    document.body.style.overflow = "";
+  }
+
+  var btnAddProduct = document.getElementById("btn-add-product");
+  if (btnAddProduct) {
+    btnAddProduct.addEventListener("click", function () { openProductModal(null); });
+  }
+
+  var productModalClose = document.getElementById("product-modal-close");
+  if (productModalClose) productModalClose.addEventListener("click", closeProductModal);
+  var productModalCancel = document.getElementById("product-modal-cancel");
+  if (productModalCancel) productModalCancel.addEventListener("click", closeProductModal);
+  if (productModal) {
+    productModal.addEventListener("click", function (e) {
+      if (e.target === productModal) closeProductModal();
+    });
+  }
+
+  if (productModalForm) {
+    productModalForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var id = document.getElementById("pm-id").value;
+      var isNew = !id;
+      var payload = {
+        name: document.getElementById("pm-name").value.trim(),
+        category: document.getElementById("pm-category").value,
+        price: parseFloat(document.getElementById("pm-price").value) || 0,
+        oldPrice: parseFloat(document.getElementById("pm-old-price").value) || 0,
+        priceUsd: parseFloat(document.getElementById("pm-price-usd").value) || 0,
+        stock: parseInt(document.getElementById("pm-stock").value, 10) || 0,
+        sale: document.getElementById("pm-sale").checked,
+        image: document.getElementById("pm-image").value.trim(),
+        sizes: document.getElementById("pm-sizes").value.split(",").map(function (s) { return s.trim(); }).filter(Boolean),
+        colors: document.getElementById("pm-colors").value.split(",").map(function (s) { return s.trim(); }).filter(Boolean),
+        description: document.getElementById("pm-description").value.trim(),
+        composition: document.getElementById("pm-composition").value.trim(),
+        care: document.getElementById("pm-care").value.trim(),
+      };
+      var submitBtn = document.getElementById("product-modal-submit");
+      if (submitBtn) submitBtn.disabled = true;
+      if (productModalStatus) productModalStatus.textContent = "Сохраняю…";
+      var url = isNew ? "/api/products" : "/api/products/" + id;
+      var method = isNew ? "POST" : "PUT";
+      authFetch(url, { method: method, body: JSON.stringify(payload) })
+        .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+        .then(function (res) {
+          if (!res.ok) throw new Error(res.data.error || "Ошибка");
+          if (isNew) {
+            DB.products = DB.products || [];
+            DB.products.push(res.data);
+          } else {
+            var idx = (DB.products || []).findIndex(function (p) { return String(p.id) === String(id); });
+            if (idx >= 0) DB.products[idx] = res.data;
+          }
+          syncProductSelect();
+          loadProducts();
+          closeProductModal();
+        })
+        .catch(function (err) {
+          if (productModalStatus) productModalStatus.textContent = "Ошибка: " + (err.message || "неизвестная");
+        })
+        .finally(function () { if (submitBtn) submitBtn.disabled = false; });
+    });
+  }
+
+  window.editProduct = function (id) {
+    var product = (DB.products || []).find(function (p) { return p.id === id; });
+    if (!product) return;
+    openProductModal(product);
+  };
 
   window.deleteProduct = function (id) {
     if (!confirm("Удалить товар?")) return;
