@@ -32,9 +32,9 @@ window.SITE_CONTENT = window.SITE_CONTENT || {
   },
   nav: {
     categories: [
-      { id: "mens", label: "Мужское", href: "catalog.html#mens" },
-      { id: "womens", label: "Женское", href: "catalog.html#womens" },
-      { id: "acc", label: "Аксессуары", href: "catalog.html#accessories" },
+      { id: "mens", label: "Man", href: "catalog.html#mens" },
+      { id: "womens", label: "Woman", href: "catalog.html#womens" },
+      { id: "acc", label: "Accessories", href: "catalog.html#accessories" },
       { id: "sale", label: "Sale", href: "catalog.html#sale", highlight: true },
     ],
   },
