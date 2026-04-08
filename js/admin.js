@@ -389,79 +389,147 @@
   }
 
   /* ===================== CHART ===================== */
+  var rawByDay = [];
+  var chartPeriod = "day";
+
+  function groupByPeriod(byDay, period) {
+    if (period === "day") return byDay;
+    var map = new Map();
+    byDay.forEach(function (d) {
+      var key;
+      if (period === "month") {
+        key = d.date.slice(0, 7);
+      } else {
+        var dt = new Date(d.date);
+        var day = dt.getDay();
+        var diff = dt.getDate() - day + (day === 0 ? -6 : 1);
+        var mon = new Date(dt);
+        mon.setDate(diff);
+        key = mon.toISOString().slice(0, 10);
+      }
+      map.set(key, (map.get(key) || 0) + d.revenue);
+    });
+    return Array.from(map.entries())
+      .map(function (e) { return { date: e[0], revenue: e[1] }; })
+      .sort(function (a, b) { return a.date > b.date ? 1 : -1; });
+  }
+
+  function formatLabel(dateStr, period) {
+    if (period === "month") {
+      var parts = dateStr.split("-");
+      var months = ["Янв","Фев","Мар","Апр","Май","Июн","Июл","Авг","Сен","Окт","Ноя","Дек"];
+      return months[parseInt(parts[1], 10) - 1] + " " + parts[0].slice(2);
+    }
+    if (period === "week") {
+      return dateStr.slice(5).replace("-", ".");
+    }
+    return dateStr.slice(5).replace("-", ".");
+  }
+
   function drawChart(byDay) {
+    rawByDay = byDay || [];
+    renderChart();
+  }
+
+  function renderChart() {
     var canvas = document.getElementById("sales-chart");
     if (!canvas) return;
     var ctx = canvas.getContext("2d");
-    var W = canvas.width;
-    var H = canvas.height;
+    var dpr = window.devicePixelRatio || 1;
+    var cssW = canvas.offsetWidth || parseInt(canvas.getAttribute("width"), 10);
+    var cssH = parseInt(canvas.getAttribute("height"), 10);
+    canvas.width = cssW * dpr;
+    canvas.height = cssH * dpr;
+    canvas.style.width = cssW + "px";
+    canvas.style.height = cssH + "px";
+    ctx.scale(dpr, dpr);
+    var W = cssW;
+    var H = cssH;
     ctx.clearRect(0, 0, W, H);
 
-    if (!byDay.length) {
+    var data = groupByPeriod(rawByDay, chartPeriod);
+
+    if (!data.length) {
       ctx.fillStyle = "#555";
-      ctx.font = "14px Manrope";
+      ctx.font = "14px Manrope, sans-serif";
       ctx.textAlign = "center";
       ctx.fillText("Нет данных за период", W / 2, H / 2);
       return;
     }
 
-    var pad = { t: 20, r: 20, b: 40, l: 64 };
-    var maxVal = Math.max.apply(null, byDay.map(function (d) { return d.revenue; }).concat([1]));
-    var stepX = (W - pad.l - pad.r) / Math.max(byDay.length - 1, 1);
-    var scaleY = (H - pad.t - pad.b) / maxVal;
-    var GRID = 4;
+    var pad = { t: 24, r: 24, b: 46, l: 72 };
+    var maxVal = Math.max.apply(null, data.map(function (d) { return d.revenue; }).concat([1]));
+    var areaW = W - pad.l - pad.r;
+    var areaH = H - pad.t - pad.b;
+    var stepX = areaW / Math.max(data.length - 1, 1);
+    var scaleY = areaH / maxVal;
+    var GRID = 5;
 
-    ctx.strokeStyle = "rgba(255,255,255,0.07)";
+    ctx.strokeStyle = "rgba(255,255,255,0.06)";
     ctx.lineWidth = 1;
-    for (var i = 0; i <= GRID; i++) {
-      var y = pad.t + (i / GRID) * (H - pad.t - pad.b);
+    for (var g = 0; g <= GRID; g++) {
+      var gy = pad.t + (g / GRID) * areaH;
       ctx.beginPath();
-      ctx.moveTo(pad.l, y);
-      ctx.lineTo(W - pad.r, y);
+      ctx.moveTo(pad.l, gy);
+      ctx.lineTo(W - pad.r, gy);
       ctx.stroke();
-      ctx.fillStyle = "#666";
-      ctx.font = "11px Manrope";
+      var val = maxVal * (1 - g / GRID);
+      var label = val >= 1000000 ? (val / 1000000).toFixed(1) + "М" : (val / 1000).toFixed(0) + "к";
+      ctx.fillStyle = "#777";
+      ctx.font = "11px Manrope, sans-serif";
       ctx.textAlign = "right";
-      ctx.fillText(((maxVal * (1 - i / GRID)) / 1000).toFixed(0) + "к", pad.l - 6, y + 4);
+      ctx.fillText(label, pad.l - 8, gy + 4);
     }
 
     ctx.beginPath();
-    byDay.forEach(function (d, i) {
+    data.forEach(function (d, i) {
       var x = pad.l + i * stepX;
       var y = H - pad.b - d.revenue * scaleY;
       if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
     });
-
-    var grad = ctx.createLinearGradient(0, pad.t, 0, H - pad.b);
-    grad.addColorStop(0, "rgba(200,200,200,0.3)");
-    grad.addColorStop(1, "rgba(200,200,200,0)");
-    ctx.strokeStyle = "rgba(200,200,200,0.8)";
+    ctx.strokeStyle = "rgba(220,220,220,0.9)";
     ctx.lineWidth = 2;
+    ctx.lineJoin = "round";
     ctx.stroke();
 
-    ctx.lineTo(pad.l + (byDay.length - 1) * stepX, H - pad.b);
+    var lastX = pad.l + (data.length - 1) * stepX;
+    var grad = ctx.createLinearGradient(0, pad.t, 0, H - pad.b);
+    grad.addColorStop(0, "rgba(200,200,200,0.22)");
+    grad.addColorStop(1, "rgba(200,200,200,0)");
+    ctx.lineTo(lastX, H - pad.b);
     ctx.lineTo(pad.l, H - pad.b);
     ctx.closePath();
     ctx.fillStyle = grad;
     ctx.fill();
 
-    var step = byDay.length <= 10 ? 1 : Math.ceil(byDay.length / 10);
-    ctx.fillStyle = "#666";
-    ctx.font = "10px Manrope";
+    var maxLabels = Math.floor(areaW / 50);
+    var step = data.length <= maxLabels ? 1 : Math.ceil(data.length / maxLabels);
+    ctx.fillStyle = "#777";
+    ctx.font = "10px Manrope, sans-serif";
     ctx.textAlign = "center";
-    byDay.forEach(function (d, i) {
-      if (i % step !== 0) return;
-      ctx.fillText(d.date.slice(5), pad.l + i * stepX, H - pad.b + 14);
+    data.forEach(function (d, i) {
+      if (i % step !== 0 && i !== data.length - 1) return;
+      ctx.fillText(formatLabel(d.date, chartPeriod), pad.l + i * stepX, H - pad.b + 16);
     });
 
+    var dotStep = data.length <= 60 ? 1 : Math.ceil(data.length / 60);
     ctx.fillStyle = "#fff";
-    byDay.forEach(function (d, i) {
-      if (byDay.length > 20 && i % step !== 0) return;
+    data.forEach(function (d, i) {
+      if (i % dotStep !== 0) return;
       ctx.beginPath();
-      ctx.arc(pad.l + i * stepX, H - pad.b - d.revenue * scaleY, 3, 0, Math.PI * 2);
+      ctx.arc(pad.l + i * stepX, H - pad.b - d.revenue * scaleY, 2.5, 0, Math.PI * 2);
       ctx.fill();
     });
   }
+
+  document.querySelectorAll(".chart-period-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      chartPeriod = btn.dataset.period;
+      document.querySelectorAll(".chart-period-btn").forEach(function (b) { b.classList.remove("is-active"); });
+      btn.classList.add("is-active");
+      renderChart();
+    });
+  });
 
   /* ===================== SIMULATION ===================== */
   var btnParse = document.getElementById("btn-parse-vitrine");

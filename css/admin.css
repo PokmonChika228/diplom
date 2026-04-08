@@ -252,6 +252,30 @@
   background: linear-gradient(180deg, #1a1a1a, #121212);
 }
 
+.chart-period-btn {
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-family: inherit;
+  font-weight: 500;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.chart-period-btn:hover {
+  border-color: rgba(255,255,255,0.3);
+  color: var(--color-text);
+}
+
+.chart-period-btn.is-active {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.3);
+  color: var(--color-text);
+}
+
 /* Status badge */
 .status-badge {
   display: inline-block;

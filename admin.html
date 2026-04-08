@@ -161,9 +161,16 @@
 
           <div class="analytics-row">
             <div class="admin-card flex-1">
-              <h3>Динамика выручки по дням</h3>
+              <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:10px">
+                <h3 style="margin:0">Динамика выручки</h3>
+                <div style="display:flex;gap:4px">
+                  <button class="chart-period-btn is-active" data-period="day">По дням</button>
+                  <button class="chart-period-btn" data-period="week">По неделям</button>
+                  <button class="chart-period-btn" data-period="month">По месяцам</button>
+                </div>
+              </div>
               <div class="chart-wrap">
-                <canvas id="sales-chart" width="700" height="240"></canvas>
+                <canvas id="sales-chart" width="900" height="260"></canvas>
               </div>
             </div>
           </div>

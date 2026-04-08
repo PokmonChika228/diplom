@@ -1074,7 +1074,9 @@ app.post("/api/admin/generate-orders", requireAdminApi, (req, res) => {
     const street = pick(STREETS);
     const houseNum = randInt(1, 200);
     const apt = randInt(1, 150);
-    const daysAgo = randInt(0, 90);
+    const startOf2025 = new Date("2025-01-01T00:00:00.000Z").getTime();
+    const maxDaysAgo = Math.floor((Date.now() - startOf2025) / 86400000);
+    const daysAgo = randInt(0, maxDaysAgo);
     const orderDate = new Date(Date.now() - daysAgo * 86400000);
 
     const order = {
