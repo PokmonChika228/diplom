@@ -97,98 +97,11 @@
         "<td>" + fmt(p.price) + "</td>" +
         "<td" + (p.stock <= 5 ? ' style="color:var(--color-sale)"' : "") + ">" + p.stock + "</td>" +
         '<td class="actions">' +
-          '<button class="btn btn--outline" style="padding:4px 10px;font-size:0.75rem" onclick="editProduct(' + p.id + ')">✎</button> ' +
           '<button class="btn btn--outline" style="padding:4px 10px;font-size:0.75rem;color:var(--color-sale)" onclick="deleteProduct(' + p.id + ')">✕</button>' +
         "</td>";
       tbody.appendChild(tr);
     });
   }
-
-  var productForm = document.getElementById("product-form");
-  var productReset = document.getElementById("product-reset");
-
-  if (productForm) {
-    productForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var fd = new FormData(productForm);
-      var id = fd.get("id");
-      var file = fd.get("imageFile");
-      var imageUrl = fd.get("image") || "";
-
-      function doSave(imgUrl) {
-        var body = {
-          name: fd.get("name"),
-          category: fd.get("category"),
-          price: parseInt(fd.get("price") || "0", 10),
-          oldPrice: parseInt(fd.get("oldPrice") || "0", 10),
-          stock: parseInt(fd.get("stock") || "0", 10),
-          sale: !!fd.get("sale"),
-          sizes: fd.get("sizes") ? fd.get("sizes").split(",").map(function (s) { return s.trim(); }).filter(Boolean) : [],
-          colors: fd.get("colors") ? fd.get("colors").split(",").map(function (s) { return s.trim(); }).filter(Boolean) : [],
-          image: imgUrl,
-          description: fd.get("description"),
-          composition: fd.get("composition"),
-          care: fd.get("care"),
-        };
-        var url = id ? "/api/products/" + id : "/api/products";
-        var method = id ? "PUT" : "POST";
-        authFetch(url, { method: method, body: JSON.stringify(body) }).then(function (r) {
-          if (!r.ok) return r.json().then(function (d) { alert(d.error || "Ошибка"); });
-          return r.json().then(function (product) {
-            if (id) {
-              var idx = DB.products.findIndex(function (p) { return p.id === product.id; });
-              if (idx >= 0) DB.products[idx] = product;
-            } else {
-              DB.products.push(product);
-            }
-            syncProductSelect();
-            loadProducts();
-            productForm.reset();
-            productForm.querySelector('[name="id"]').value = "";
-          });
-        });
-      }
-
-      if (file && file.size > 0) {
-        var uploadForm = new FormData();
-        uploadForm.append("image", file);
-        fetch("/api/upload", { method: "POST", headers: { "x-admin-token": token }, body: uploadForm })
-          .then(function (ur) { return ur.json().catch(function () { return {}; }); })
-          .then(function (ud) { doSave(ud.url || imageUrl); })
-          .catch(function () { doSave(imageUrl); });
-      } else {
-        doSave(imageUrl);
-      }
-    });
-  }
-
-  if (productReset) {
-    productReset.addEventListener("click", function () {
-      productForm.reset();
-      productForm.querySelector('[name="id"]').value = "";
-    });
-  }
-
-  window.editProduct = function (id) {
-    var p = (DB.products || []).find(function (x) { return x.id === id; });
-    if (!p) return;
-    var f = productForm;
-    f.querySelector('[name="id"]').value = p.id;
-    f.querySelector('[name="name"]').value = p.name || "";
-    f.querySelector('[name="category"]').value = p.category || "other";
-    f.querySelector('[name="price"]').value = p.price || 0;
-    f.querySelector('[name="oldPrice"]').value = p.oldPrice || 0;
-    f.querySelector('[name="stock"]').value = p.stock || 0;
-    f.querySelector('[name="sale"]').checked = !!p.sale;
-    f.querySelector('[name="sizes"]').value = (p.sizes || []).join(", ");
-    f.querySelector('[name="colors"]').value = (p.colors || []).join(", ");
-    f.querySelector('[name="image"]').value = p.image || "";
-    f.querySelector('[name="description"]').value = p.description || "";
-    f.querySelector('[name="composition"]').value = p.composition || "";
-    f.querySelector('[name="care"]').value = p.care || "";
-    showTab("products");
-    f.scrollIntoView({ behavior: "smooth" });
-  };
 
   window.deleteProduct = function (id) {
     if (!confirm("Удалить товар?")) return;
