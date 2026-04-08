@@ -13,7 +13,8 @@ const DB_PATH = process.env.DB_PATH
   ? path.resolve(process.env.DB_PATH)
   : path.join(process.cwd(), "data", "db.json");
 const BLOBS_STORE_NAME = String(process.env.NETLIFY_BLOBS_STORE || "site-db");
-const USE_BLOBS = process.env.NETLIFY === "true" || process.env.CONTEXT;
+const FORCE_LOCAL_DB = String(process.env.FORCE_LOCAL_DB || "").toLowerCase() === "true";
+const USE_BLOBS = !FORCE_LOCAL_DB;
 const CLOUDINARY_CLOUD_NAME = String(process.env.CLOUDINARY_CLOUD_NAME || "");
 const CLOUDINARY_API_KEY = String(process.env.CLOUDINARY_API_KEY || "");
 const CLOUDINARY_API_SECRET = String(process.env.CLOUDINARY_API_SECRET || "");
