@@ -1,19 +1,6 @@
 (function () {
   var STORAGE_KEY = "zhuchy_currency";
-  window.EXCHANGE_RATE = 90;
-
-  fetch("/api/exchange-rate")
-    .then(function (r) { return r.json(); })
-    .then(function (d) {
-      var rate = d.usdToRub || 0;
-      if (rate > 0) {
-        window.EXCHANGE_RATE = rate;
-        if (window.CURRENCY === "USD") {
-          window.dispatchEvent(new CustomEvent("currencychange", { detail: { currency: "USD" } }));
-        }
-      }
-    })
-    .catch(function () {});
+  window.EXCHANGE_RATE = 81;
 
   function getCurrency() {
     return localStorage.getItem(STORAGE_KEY) === "USD" ? "USD" : "RUB";

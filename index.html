@@ -36,7 +36,11 @@
         </nav>
 
         <div class="header-actions">
-          <button type="button" class="icon-btn cur-toggle-btn" data-currency-toggle aria-label="Переключить валюту"><span class="cur-rub">₽</span><span class="cur-sep">/</span><span class="cur-usd">$</span></button>
+          <div class="cur-lever-wrap" style="margin-bottom:0">
+            <span class="cur-lever-label">₽</span>
+            <button type="button" class="cur-lever" data-currency-toggle aria-label="Переключить валюту" aria-pressed="false"><span class="cur-lever__thumb"></span></button>
+            <span class="cur-lever-label">$</span>
+          </div>
           <a href="cart.html" class="icon-btn cart-btn" aria-label="Корзина">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <path d="M6 6h15l-1.5 9h-12z" stroke-linejoin="round" />
