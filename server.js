@@ -780,7 +780,7 @@ app.get("/api/admin/dashboard", requireAdminApi, (_req, res) => {
   res.json({
     products: db.products,
     inventory: {
-      products: db.products.map((p) => ({ id: p.id, name: p.name, stock: p.stock, category: p.category, sale: !!p.sale })),
+      products: db.products.map((p) => ({ id: p.id, name: p.name, stock: p.stock, category: p.category, sale: !!p.sale, sizes: p.sizes || [], stockBySizes: p.stockBySizes || null })),
       logs: db.inventoryLogs.slice().sort((a, b) => b.id - a.id).slice(0, 50),
     },
     orders,
