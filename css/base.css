@@ -569,6 +569,20 @@ main {
   margin-bottom: 0;
 }
 
+.input--error,
+.textarea--error {
+  border-color: var(--color-sale) !important;
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15) !important;
+}
+
+.field-error {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.75rem;
+  color: var(--color-sale);
+  font-weight: 500;
+}
+
 /* ===================== TICKER ===================== */
 [hidden].site-ticker {
   display: none !important;

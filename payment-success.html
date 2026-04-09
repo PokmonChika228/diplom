@@ -43,10 +43,10 @@
     <main id="main">
       <section class="section">
         <div class="section__inner" style="max-width:540px;text-align:center;padding-top:var(--space-3xl)">
-          <div style="font-size:3rem;margin-bottom:var(--space-lg)">✓</div>
-          <h1 class="section__title" id="ps-title">Оплата прошла успешно</h1>
+          <div id="ps-icon" style="font-size:3rem;margin-bottom:var(--space-lg)">⏳</div>
+          <h1 class="section__title" id="ps-title">Проверяем оплату…</h1>
           <p id="ps-desc" style="color:var(--color-text-muted);margin-bottom:var(--space-xl)">
-            Спасибо! Ваш заказ оплачен и принят в обработку. Мы свяжемся с вами для подтверждения.
+            Пожалуйста, подождите секунду.
           </p>
           <a class="btn btn--secondary" href="catalog.html">Продолжить покупки</a>
         </div>
@@ -65,12 +65,56 @@
       (function () {
         const params = new URLSearchParams(location.search);
         const orderId = params.get("order");
-        if (orderId) {
-          document.getElementById("ps-desc").textContent =
-            "Спасибо! Заказ №" + orderId + " оплачен и принят в обработку. Мы свяжемся с вами для подтверждения.";
-          if (typeof window.saveCartLines === "function") window.saveCartLines([]);
-          sessionStorage.removeItem("brandPromoCode");
+
+        if (typeof window.saveCartLines === "function") window.saveCartLines([]);
+        sessionStorage.removeItem("brandPromoCode");
+
+        function setSuccess(id) {
+          document.getElementById("ps-icon").textContent = "✓";
+          document.getElementById("ps-title").textContent = "Оплата прошла успешно";
+          document.getElementById("ps-desc").textContent = id
+            ? "Спасибо! Заказ №" + id + " оплачен и принят в обработку. Мы свяжемся с вами для подтверждения."
+            : "Спасибо! Ваш заказ оплачен и принят в обработку.";
         }
+
+        function setFailed() {
+          document.getElementById("ps-icon").textContent = "✗";
+          document.getElementById("ps-title").textContent = "Оплата не подтверждена";
+          document.getElementById("ps-desc").textContent =
+            "Статус платежа ещё не обновился. Заказ сохранён — если деньги списались, он появится в системе автоматически. Вы также можете связаться с нами.";
+        }
+
+        if (!orderId) {
+          setSuccess(null);
+          return;
+        }
+
+        let attempts = 0;
+        const MAX_ATTEMPTS = 5;
+
+        function checkStatus() {
+          attempts++;
+          fetch("/api/payment/check-order/" + orderId, { method: "POST" })
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+              if (data.status === "succeeded") {
+                setSuccess(orderId);
+              } else if (attempts < MAX_ATTEMPTS) {
+                setTimeout(checkStatus, 2000);
+              } else {
+                setFailed();
+              }
+            })
+            .catch(function () {
+              if (attempts < MAX_ATTEMPTS) {
+                setTimeout(checkStatus, 2000);
+              } else {
+                setFailed();
+              }
+            });
+        }
+
+        checkStatus();
       })();
     </script>
   </body>

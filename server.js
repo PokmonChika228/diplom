@@ -1341,7 +1341,7 @@ app.post("/api/payment/create", async (req, res) => {
   if (!HAS_YOOKASSA) {
     return res.status(503).json({ error: "Оплата картой недоступна: не настроены ключи ЮKassa" });
   }
-  const { orderId, amount, description, returnUrl } = req.body || {};
+  const { orderId, amount, description, returnUrl, paymentType } = req.body || {};
   if (!orderId || !amount) {
     return res.status(400).json({ error: "orderId and amount are required" });
   }
@@ -1352,10 +1352,12 @@ app.post("/api/payment/create", async (req, res) => {
   const baseUrl = process.env.SITE_URL || `${req.protocol}://${req.get("host")}`;
   const successUrl = returnUrl || `${baseUrl}/payment-success.html?order=${orderId}`;
 
+  const methodType = paymentType === "sbp" ? "sbp" : "bank_card";
+
   try {
     const result = await yookassaRequest("POST", "/v3/payments", {
       amount: { value: String(Number(amount).toFixed(2)), currency: "RUB" },
-      payment_method_data: { type: "bank_card" },
+      payment_method_data: { type: methodType },
       confirmation: { type: "redirect", return_url: successUrl },
       capture: true,
       description: description || `Заказ №${orderId} — ZHUCHY club`,
@@ -1372,6 +1374,38 @@ app.post("/api/payment/create", async (req, res) => {
   } catch (err) {
     console.error("YooKassa error:", err.message);
     return res.status(500).json({ error: "Ошибка платёжного сервиса" });
+  }
+});
+
+// Активная проверка статуса оплаты по orderId (вызывается со страницы успеха)
+app.post("/api/payment/check-order/:orderId", async (req, res) => {
+  const db = readDb();
+  const order = db.orders.find((o) => String(o.id) === String(req.params.orderId));
+  if (!order) return res.status(404).json({ error: "Order not found" });
+
+  if (order.paymentStatus === "succeeded") {
+    return res.json({ status: "succeeded", alreadyConfirmed: true });
+  }
+
+  if (!order.paymentId || !HAS_YOOKASSA) {
+    return res.json({ status: order.paymentStatus || "unknown" });
+  }
+
+  try {
+    const result = await yookassaRequest("GET", `/v3/payments/${order.paymentId}`, null);
+    const ykStatus = result.body?.status;
+    if (ykStatus === "succeeded") {
+      order.paymentStatus = "succeeded";
+      if (order.status === "new") order.status = "processing";
+      writeDb(db);
+    } else if (ykStatus) {
+      order.paymentStatus = ykStatus;
+      writeDb(db);
+    }
+    return res.json({ status: ykStatus || order.paymentStatus || "unknown" });
+  } catch (err) {
+    console.error("YooKassa check error:", err.message);
+    return res.json({ status: order.paymentStatus || "unknown" });
   }
 });
 

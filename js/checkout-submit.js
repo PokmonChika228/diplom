@@ -19,9 +19,119 @@
     receipt: "При получении",
   };
 
-  function getDeliveryInfo() {
+  /* ===== Валидация ===== */
+
+  function showFieldError(input, msg) {
+    clearFieldError(input);
+    input.classList.add("input--error");
+    const err = document.createElement("span");
+    err.className = "field-error";
+    err.textContent = msg;
+    err.setAttribute("role", "alert");
+    input.parentNode.appendChild(err);
+    input.setAttribute("aria-invalid", "true");
+  }
+
+  function clearFieldError(input) {
+    input.classList.remove("input--error");
+    input.removeAttribute("aria-invalid");
+    const prev = input.parentNode.querySelector(".field-error");
+    if (prev) prev.remove();
+  }
+
+  function clearAllErrors() {
+    form.querySelectorAll(".input--error, .textarea--error").forEach(function (el) {
+      clearFieldError(el);
+    });
+    form.querySelectorAll(".field-error").forEach(function (el) { el.remove(); });
+  }
+
+  function validatePhone(val) {
+    const clean = val.replace(/[\s\-\(\)]/g, "");
+    return /^(\+7|8)\d{10}$/.test(clean);
+  }
+
+  function validateName(val) {
+    const parts = val.trim().split(/\s+/);
+    return parts.length >= 2 && parts.every(function (p) { return p.length >= 2; });
+  }
+
+  function getDeliveryVal() {
     const checked = form.querySelector('[name="delivery"]:checked');
-    const val = checked ? checked.value : "pickup";
+    return checked ? checked.value : "pickup";
+  }
+
+  function validateForm() {
+    clearAllErrors();
+    let valid = true;
+
+    const nameEl = form.querySelector('[name="name"]');
+    const phoneEl = form.querySelector('[name="phone"]');
+    const emailEl = form.querySelector('[name="email"]');
+    const addressEl = form.querySelector('[name="address"]');
+
+    if (!nameEl.value.trim()) {
+      showFieldError(nameEl, "Введите имя и фамилию");
+      valid = false;
+    } else if (!validateName(nameEl.value)) {
+      showFieldError(nameEl, "Укажите имя и фамилию через пробел");
+      valid = false;
+    }
+
+    if (!phoneEl.value.trim()) {
+      showFieldError(phoneEl, "Введите номер телефона");
+      valid = false;
+    } else if (!validatePhone(phoneEl.value)) {
+      showFieldError(phoneEl, "Формат: +7 (999) 123-45-67 или 8 999 123 45 67");
+      valid = false;
+    }
+
+    if (!emailEl.value.trim()) {
+      showFieldError(emailEl, "Введите email");
+      valid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim())) {
+      showFieldError(emailEl, "Некорректный email");
+      valid = false;
+    }
+
+    const delivery = getDeliveryVal();
+    if (delivery !== "pickup" && !addressEl.value.trim()) {
+      showFieldError(addressEl, "Укажите адрес доставки");
+      valid = false;
+    }
+
+    return valid;
+  }
+
+  /* live-валидация при blur */
+  form.querySelector('[name="name"]').addEventListener("blur", function () {
+    if (!this.value.trim()) { showFieldError(this, "Введите имя и фамилию"); return; }
+    if (!validateName(this.value)) { showFieldError(this, "Укажите имя и фамилию через пробел"); return; }
+    clearFieldError(this);
+  });
+  form.querySelector('[name="phone"]').addEventListener("blur", function () {
+    if (!this.value.trim()) { showFieldError(this, "Введите номер телефона"); return; }
+    if (!validatePhone(this.value)) { showFieldError(this, "Формат: +7 (999) 123-45-67 или 8 999 123 45 67"); return; }
+    clearFieldError(this);
+  });
+  form.querySelector('[name="email"]').addEventListener("blur", function () {
+    if (!this.value.trim()) { showFieldError(this, "Введите email"); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value.trim())) { showFieldError(this, "Некорректный email"); return; }
+    clearFieldError(this);
+  });
+  form.querySelectorAll('[name="delivery"]').forEach(function (r) {
+    r.addEventListener("change", function () {
+      const addressEl = form.querySelector('[name="address"]');
+      if (getDeliveryVal() === "pickup") {
+        clearFieldError(addressEl);
+      }
+    });
+  });
+
+  /* ===== Модальное окно ===== */
+
+  function getDeliveryInfo() {
+    const val = getDeliveryVal();
     return DELIVERY_OPTIONS[val] || { label: "Самовывоз", cost: 0 };
   }
 
@@ -42,13 +152,15 @@
     }
   }
 
-  closeBtn?.addEventListener("click", closeModal);
-  modal.addEventListener("click", (e) => {
+  closeBtn && closeBtn.addEventListener("click", closeModal);
+  modal.addEventListener("click", function (e) {
     if (e.target === modal) closeModal();
   });
-  document.addEventListener("keydown", (e) => {
+  document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") closeModal();
   });
+
+  /* ===== Отправка заказа ===== */
 
   async function submitOrder() {
     const lines =
@@ -62,21 +174,18 @@
     const deliveryInfo = DELIVERY_OPTIONS[deliveryVal] || { label: "Самовывоз", cost: 0 };
 
     const payload = {
-      customerName: form.querySelector('[name="name"]')?.value?.trim(),
-      phone: form.querySelector('[name="phone"]')?.value?.trim(),
-      email: form.querySelector('[name="email"]')?.value?.trim(),
-      address: form.querySelector('[name="address"]')?.value?.trim(),
-      comment: form.querySelector('[name="comment"]')?.value?.trim(),
+      customerName: form.querySelector('[name="name"]').value.trim(),
+      phone: form.querySelector('[name="phone"]').value.trim(),
+      email: form.querySelector('[name="email"]').value.trim(),
+      address: form.querySelector('[name="address"]').value.trim(),
+      comment: form.querySelector('[name="comment"]').value.trim(),
       promoCode: sessionStorage.getItem("brandPromoCode") || "",
       delivery: deliveryVal,
       deliveryLabel: deliveryInfo.label,
       deliveryCost: deliveryInfo.cost,
       payment: paymentVal,
       paymentLabel: PAYMENT_OPTIONS[paymentVal] || paymentVal,
-      items: lines.map((l) => ({
-        productId: l.productId,
-        qty: l.qty,
-      })),
+      items: lines.map(function (l) { return { productId: l.productId, qty: l.qty }; }),
     };
 
     const res = await fetch("/api/orders", {
@@ -84,16 +193,16 @@
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
-    const data = await res.json().catch(() => ({}));
+    const data = await res.json().catch(function () { return {}; });
     if (!res.ok) throw new Error(data.error || "Не удалось оформить заказ");
 
     if ((paymentVal === "card" || paymentVal === "sbp") && data.total > 0) {
       const payRes = await fetch("/api/payment/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ orderId: data.id, amount: data.total }),
+        body: JSON.stringify({ orderId: data.id, amount: data.total, paymentType: paymentVal }),
       });
-      const payData = await payRes.json().catch(() => ({}));
+      const payData = await payRes.json().catch(function () { return {}; });
       if (payRes.ok && payData.confirmationUrl) {
         data._redirectUrl = payData.confirmationUrl;
       }
@@ -102,11 +211,12 @@
     return data;
   }
 
-  form.addEventListener("submit", async (e) => {
+  form.addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    if (!form.checkValidity()) {
-      form.reportValidity();
+    if (!validateForm()) {
+      const firstErr = form.querySelector(".input--error");
+      if (firstErr) firstErr.scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
 
@@ -114,6 +224,9 @@
       errorBox.hidden = true;
       errorBox.textContent = "";
     }
+
+    const submitBtn = form.querySelector('[type="submit"]');
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = "Оформляем…"; }
 
     try {
       const order = await submitOrder();
@@ -129,7 +242,7 @@
       _orderSuccess = true;
       const p = modal.querySelector("p");
       if (p) {
-        p.textContent = `Спасибо! Заказ №${order.id} успешно принят. Мы свяжемся с вами для подтверждения.`;
+        p.textContent = "Спасибо! Заказ №" + order.id + " успешно принят. Мы свяжемся с вами для подтверждения.";
       }
       openModal();
     } catch (err) {
@@ -139,17 +252,18 @@
       } else {
         alert(err.message || "Ошибка оформления заказа");
       }
+    } finally {
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = "Подтвердить заказ"; }
     }
   });
 
-  // Обновлять стоимость доставки в сайдбаре при смене способа
+  /* ===== Стоимость доставки ===== */
   function updateDeliveryDisplay() {
     const info = getDeliveryInfo();
     const deliveryEl = document.querySelector("[data-checkout-delivery-cost]");
     if (deliveryEl) {
-      deliveryEl.textContent = info.cost === 0 ? "Бесплатно" : `${info.cost} ₽`;
+      deliveryEl.textContent = info.cost === 0 ? "Бесплатно" : info.cost + " ₽";
     }
-    // Пересчитать итого
     const subtotalEl = document.querySelector("[data-checkout-subtotal]");
     const totalEl = document.querySelector("[data-checkout-total]");
     const discountEl = document.querySelector("[data-checkout-discount]");
@@ -157,11 +271,11 @@
       const sub = parseInt(subtotalEl.dataset.value || "0", 10) || 0;
       const disc = parseInt((discountEl && discountEl.dataset.value) || "0", 10) || 0;
       const total = Math.max(0, sub - disc) + info.cost;
-      totalEl.textContent = `${total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} ₽`;
+      totalEl.textContent = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " ₽";
     }
   }
 
-  form.querySelectorAll('[name="delivery"]').forEach((r) => {
+  form.querySelectorAll('[name="delivery"]').forEach(function (r) {
     r.addEventListener("change", updateDeliveryDisplay);
   });
 })();

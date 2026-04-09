@@ -103,7 +103,7 @@
       "sale": true,
       "price": 9900,
       "oldPrice": 14200,
-      "stock": 6,
+      "stock": 5,
       "sizes": [
         "S",
         "M",
@@ -3296,6 +3296,36 @@
       "createdAt": "2026-04-09T10:08:15.960Z",
       "paymentId": "31698e50-000f-5000-8000-1659185cb19b",
       "paymentStatus": "pending"
+    },
+    {
+      "id": 7,
+      "customerName": "dads",
+      "phone": "dda",
+      "email": "das@gmail.com",
+      "address": "dsad",
+      "comment": "",
+      "status": "processing",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 5,
+          "productName": "Bag liquid chrome",
+          "qty": 1,
+          "price": 9900
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 9900,
+      "discountAmount": 0,
+      "total": 9900,
+      "createdAt": "2026-04-09T10:15:29.302Z",
+      "paymentId": "31699002-000f-5001-8000-112af13e8f8d",
+      "paymentStatus": "succeeded"
     }
   ],
   "promoCodes": [
@@ -3310,7 +3340,7 @@
   ],
   "counters": {
     "product": 121,
-    "order": 7,
+    "order": 8,
     "log": 4,
     "promo": 2
   },
