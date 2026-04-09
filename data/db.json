@@ -598,7 +598,7 @@
       "sale": true,
       "price": 5000,
       "oldPrice": 6900,
-      "stock": 34,
+      "stock": 33,
       "sizes": [
         "S",
         "M",
@@ -3326,6 +3326,36 @@
       "createdAt": "2026-04-09T10:15:29.302Z",
       "paymentId": "31699002-000f-5001-8000-112af13e8f8d",
       "paymentStatus": "succeeded"
+    },
+    {
+      "id": 8,
+      "customerName": "sadasd ddad",
+      "phone": "+79219082770",
+      "email": "dda@gmail.com",
+      "address": "dsad",
+      "comment": "",
+      "status": "new",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 24,
+          "productName": "CAMO PANTS/SHORTS",
+          "qty": 1,
+          "price": 5000
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 5000,
+      "discountAmount": 0,
+      "total": 5000,
+      "createdAt": "2026-04-09T10:20:50.856Z",
+      "paymentId": "31699143-000f-5000-b000-198567b3b1ea",
+      "paymentStatus": "pending"
     }
   ],
   "promoCodes": [
@@ -3336,13 +3366,21 @@
       "value": 15,
       "active": true,
       "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "code": "55555",
+      "type": "percent",
+      "value": 150,
+      "active": true,
+      "createdAt": "2026-04-09T10:23:30.813Z"
     }
   ],
   "counters": {
     "product": 121,
-    "order": 8,
+    "order": 9,
     "log": 4,
-    "promo": 2
+    "promo": 3
   },
   "uiSettings": {
     "ticker": {

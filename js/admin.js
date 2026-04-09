@@ -303,7 +303,7 @@
       var paymentBadge = isPaid
         ? "<br><span style='color:#4caf50;font-size:0.75rem;font-weight:600'>✓ Оплачено</span>"
         : "<br><span style='color:var(--color-sale);font-size:0.75rem'>⏳ Ожидает оплаты</span>" +
-          "<br><button class='btn btn--sm' style='margin-top:4px;font-size:0.7rem;padding:2px 8px' onclick='markAsPaid(" + o.id + ", this)'>Отметить как оплачено</button>";
+          "<br><button class='btn btn--sm' style='margin-top:4px;font-size:0.7rem;padding:2px 8px' onclick='checkPayment(" + o.id + ", this)'>Проверить оплату</button>";
 
       var tr = document.createElement("tr");
       if (!isPaid) tr.style.opacity = "0.65";
@@ -322,19 +322,29 @@
     });
   }
 
-  window.markAsPaid = function (id, btn) {
-    if (!confirm("Отметить заказ #" + id + " как оплаченный?")) return;
+  window.checkPayment = function (id, btn) {
     btn.disabled = true;
-    btn.textContent = "...";
-    authFetch("/api/orders/" + id + "/mark-paid", { method: "PUT" })
+    btn.textContent = "Проверяем…";
+    fetch("/api/payment/check-order/" + id, { method: "POST" })
       .then(function (r) { return r.json(); })
       .then(function (data) {
-        if (!data.ok) { alert("Ошибка"); btn.disabled = false; btn.textContent = "Отметить как оплачено"; return; }
-        var order = (DB.orders || []).find(function (o) { return o.id === id; });
-        if (order) { order.paymentStatus = "succeeded"; order.paymentConfirmed = true; }
-        loadOrders();
+        if (data.status === "succeeded") {
+          var order = (DB.orders || []).find(function (o) { return o.id === id; });
+          if (order) { order.paymentStatus = "succeeded"; order.paymentConfirmed = true; }
+          loadOrders();
+        } else {
+          btn.disabled = false;
+          btn.textContent = "Проверить оплату";
+          var msg = data.status === "pending" ? "Оплата ещё не поступила" :
+                    data.status === "canceled" ? "Платёж отменён" :
+                    "Статус: " + (data.status || "неизвестно");
+          btn.insertAdjacentHTML("afterend", "<br><span style='color:var(--color-sale);font-size:0.7rem'>" + msg + "</span>");
+        }
       })
-      .catch(function () { btn.disabled = false; btn.textContent = "Отметить как оплачено"; });
+      .catch(function () {
+        btn.disabled = false;
+        btn.textContent = "Проверить оплату";
+      });
   };
 
   function loadOrders() {
