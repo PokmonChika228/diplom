@@ -17,8 +17,8 @@ const DB_PATH = process.env.DB_PATH
 const UPLOADS_DIR = path.join(__dirname, "uploads");
 const IS_PROD = process.env.NODE_ENV === "production";
 const ADMIN_LOGIN = String(process.env.ADMIN_LOGIN || "admin");
-const ADMIN_PASSWORD = String(process.env.ADMIN_PASSWORD || "admin");
-const ADMIN_PASSWORD_HASH = String(process.env.ADMIN_PASSWORD_HASH || "");
+const ADMIN_PASSWORD = "admin";
+const ADMIN_PASSWORD_HASH = "";
 const SESSION_SECRET = String(
   process.env.SESSION_SECRET || "change_this_session_secret_for_production"
 );
@@ -1532,11 +1532,7 @@ setInterval(runPaymentTimeoutJob, 60 * 1000);
 runPaymentTimeoutJob();
 
 app.listen(PORT, () => {
-  if (!ADMIN_PASSWORD_HASH && ADMIN_PASSWORD === "change_me_please") {
-    console.warn(
-      "WARNING: Set ADMIN_PASSWORD or ADMIN_PASSWORD_HASH in environment for secure admin access."
-    );
-  }
+
   if (SESSION_SECRET === "change_this_session_secret_for_production") {
     console.warn("WARNING: Set SESSION_SECRET in environment for production.");
   }

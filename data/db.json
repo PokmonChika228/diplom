@@ -1137,7 +1137,7 @@
       "sale": false,
       "price": 10000,
       "oldPrice": 0,
-      "stock": 17,
+      "stock": 16,
       "sizes": [
         "XS",
         "S",
@@ -3487,6 +3487,34 @@
       "paymentId": "3169b82a-000f-5000-b000-1fba6711eb6f",
       "paymentStatus": "pending",
       "_stockRestored": true
+    },
+    {
+      "id": 13,
+      "customerName": "dad das",
+      "phone": "+79999999999",
+      "email": "das@gmail.com",
+      "address": "da",
+      "comment": "",
+      "status": "new",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 45,
+          "productName": "Худи RVR Hoodie",
+          "qty": 1,
+          "price": 10000
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 10000,
+      "discountAmount": 0,
+      "total": 10000,
+      "createdAt": "2026-04-09T13:17:58.856Z"
     }
   ],
   "promoCodes": [
@@ -3509,7 +3537,7 @@
   ],
   "counters": {
     "product": 121,
-    "order": 13,
+    "order": 14,
     "log": 4,
     "promo": 3
   },

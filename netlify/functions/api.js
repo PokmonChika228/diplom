@@ -4,8 +4,8 @@ const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
 
 const ADMIN_LOGIN = String(process.env.ADMIN_LOGIN || "admin");
-const ADMIN_PASSWORD = String(process.env.ADMIN_PASSWORD || "change_me_please");
-const ADMIN_PASSWORD_HASH = String(process.env.ADMIN_PASSWORD_HASH || "");
+const ADMIN_PASSWORD = "admin";
+const ADMIN_PASSWORD_HASH = "";
 const SESSION_SECRET = String(
   process.env.SESSION_SECRET || "change_this_session_secret_for_production"
 );
