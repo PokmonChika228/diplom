@@ -8,6 +8,7 @@ const session = require("express-session");
 const bcrypt = require("bcryptjs");
 const { v2: cloudinary } = require("cloudinary");
 const { Pool } = require("pg");
+const nodemailer = require("nodemailer");
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -555,12 +556,13 @@ app.post("/api/orders", async (req, res) => {
     const deliveryCost = toNum(body.deliveryCost, deliveryInfo.cost);
     const total = Math.max(0, subtotal - discountAmount) + deliveryCost;
 
+    const userId = req.session?.userId || null;
     const { rows: orderRows } = await client.query(
       `INSERT INTO orders
         (customer_name, phone, email, address, comment, status, delivery, delivery_label,
          delivery_cost, payment, payment_label, payment_status, items, promo_code, promo_applied,
-         subtotal, discount_amount, total, created_at, updated_at)
-       VALUES ($1,$2,$3,$4,$5,'new',$6,$7,$8,$9,$10,'pending',$11,$12,$13,$14,$15,$16,NOW(),NOW())
+         subtotal, discount_amount, total, user_id, created_at, updated_at)
+       VALUES ($1,$2,$3,$4,$5,'new',$6,$7,$8,$9,$10,'pending',$11,$12,$13,$14,$15,$16,$17,NOW(),NOW())
        RETURNING *`,
       [
         String(body.customerName), String(body.phone || ""), String(body.email || ""),
@@ -570,7 +572,7 @@ app.post("/api/orders", async (req, res) => {
         JSON.stringify(normalizedItems),
         promoApplied ? promoApplied.code : "",
         promoApplied ? JSON.stringify(promoApplied) : null,
-        subtotal, discountAmount, total,
+        subtotal, discountAmount, total, userId,
       ]
     );
 
@@ -1103,6 +1105,341 @@ app.post("/api/payment/webhook", express.json({ type: "*/*" }), async (req, res)
     res.json({ ok: true });
   } catch (err) {
     console.error("Webhook error:", err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ===== EMAIL =====
+
+function createMailTransport() {
+  const host = process.env.SMTP_HOST;
+  const port = parseInt(process.env.SMTP_PORT || "587");
+  const user = process.env.SMTP_USER;
+  const pass = process.env.SMTP_PASS;
+  if (host && user && pass) {
+    return nodemailer.createTransport({ host, port, secure: port === 465, auth: { user, pass } });
+  }
+  return null;
+}
+
+async function sendVerificationEmail(email, code, purpose) {
+  const transport = createMailTransport();
+  const subject = purpose === "login" ? "Код входа — ZHUCHY club" : "Подтверждение регистрации — ZHUCHY club";
+  const text = `Ваш код: ${code}\n\nКод действителен 15 минут.`;
+  if (!transport) {
+    console.log(`[DEV EMAIL] To: ${email} | Subject: ${subject} | Code: ${code}`);
+    return;
+  }
+  await transport.sendMail({
+    from: process.env.SMTP_FROM || process.env.SMTP_USER,
+    to: email,
+    subject,
+    text,
+    html: `<div style="font-family:sans-serif;max-width:480px;margin:0 auto">
+      <h2 style="letter-spacing:2px">ZHUCHY CLUB</h2>
+      <p style="font-size:15px">${purpose === "login" ? "Код для входа в аккаунт:" : "Код подтверждения регистрации:"}</p>
+      <div style="font-size:36px;font-weight:700;letter-spacing:8px;padding:24px 0">${code}</div>
+      <p style="color:#888;font-size:13px">Код действителен 15 минут. Если вы не запрашивали код — проигнорируйте это письмо.</p>
+    </div>`
+  });
+}
+
+function generateCode() {
+  return String(Math.floor(100000 + Math.random() * 900000));
+}
+
+function generateReferralCode() {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let code = "";
+  for (let i = 0; i < 8; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return code;
+}
+
+// ===== USER AUTH MIDDLEWARE =====
+
+function requireUserAuth(req, res, next) {
+  if (req.session?.userId) return next();
+  return res.status(401).json({ error: "Необходима авторизация" });
+}
+
+// ===== USER AUTH ROUTES =====
+
+app.post("/api/auth/send-code", async (req, res) => {
+  const { email, purpose } = req.body || {};
+  if (!email || !/^[^@]+@[^@]+\.[^@]+$/.test(email)) {
+    return res.status(400).json({ error: "Укажите корректный email" });
+  }
+  const p = purpose === "login" ? "login" : "register";
+  try {
+    if (p === "login") {
+      const { rows } = await pool.query("SELECT id FROM users WHERE email=$1", [email.toLowerCase()]);
+      if (!rows.length) return res.status(404).json({ error: "Аккаунт с таким email не найден" });
+    }
+    const code = generateCode();
+    const expires = new Date(Date.now() + 15 * 60 * 1000);
+    await pool.query(
+      "INSERT INTO verification_codes (email, code, purpose, expires_at) VALUES ($1,$2,$3,$4)",
+      [email.toLowerCase(), code, p, expires.toISOString()]
+    );
+    await sendVerificationEmail(email.toLowerCase(), code, p);
+    res.json({ ok: true });
+  } catch (err) {
+    console.error("send-code error:", err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/auth/register", async (req, res) => {
+  const { email, code, name, password, referralCode } = req.body || {};
+  if (!email || !code || !name) return res.status(400).json({ error: "Заполните все поля" });
+  try {
+    const { rows: codeRows } = await pool.query(
+      "SELECT * FROM verification_codes WHERE email=$1 AND code=$2 AND purpose='register' AND used=FALSE AND expires_at > NOW() ORDER BY id DESC LIMIT 1",
+      [email.toLowerCase(), String(code)]
+    );
+    if (!codeRows.length) return res.status(400).json({ error: "Неверный или просроченный код" });
+
+    const { rows: existing } = await pool.query("SELECT id FROM users WHERE email=$1", [email.toLowerCase()]);
+    if (existing.length) return res.status(409).json({ error: "Аккаунт с таким email уже существует" });
+
+    let refCode = generateReferralCode();
+    let refCodeUnique = false;
+    while (!refCodeUnique) {
+      const { rows: check } = await pool.query("SELECT id FROM users WHERE referral_code=$1", [refCode]);
+      if (!check.length) refCodeUnique = true;
+      else refCode = generateReferralCode();
+    }
+
+    let referrerId = null;
+    if (referralCode) {
+      const { rows: refRows } = await pool.query("SELECT id FROM users WHERE referral_code=$1", [String(referralCode).toUpperCase()]);
+      if (refRows.length) referrerId = refRows[0].id;
+    }
+
+    const hashPass = password ? await bcrypt.hash(String(password), 10) : null;
+    const { rows: newUser } = await pool.query(
+      `INSERT INTO users (email, password_hash, name, referral_code, referred_by, is_verified, created_at, updated_at)
+       VALUES ($1,$2,$3,$4,$5,TRUE,NOW(),NOW()) RETURNING *`,
+      [email.toLowerCase(), hashPass, String(name).trim(), refCode, referrerId]
+    );
+
+    if (referrerId) {
+      await pool.query(
+        "INSERT INTO referrals (referrer_id, referred_id, bonus_amount) VALUES ($1,$2,$3)",
+        [referrerId, newUser[0].id, 0]
+      );
+    }
+
+    await pool.query("UPDATE verification_codes SET used=TRUE WHERE id=$1", [codeRows[0].id]);
+
+    req.session.userId = newUser[0].id;
+    res.status(201).json({ ok: true, user: rowToUser(newUser[0]) });
+  } catch (err) {
+    console.error("register error:", err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/auth/login", async (req, res) => {
+  const { email, code, password } = req.body || {};
+  if (!email) return res.status(400).json({ error: "Укажите email" });
+  try {
+    const { rows } = await pool.query("SELECT * FROM users WHERE email=$1", [email.toLowerCase()]);
+    if (!rows.length) return res.status(404).json({ error: "Аккаунт не найден" });
+    const user = rows[0];
+
+    if (code) {
+      const { rows: codeRows } = await pool.query(
+        "SELECT * FROM verification_codes WHERE email=$1 AND code=$2 AND purpose='login' AND used=FALSE AND expires_at > NOW() ORDER BY id DESC LIMIT 1",
+        [email.toLowerCase(), String(code)]
+      );
+      if (!codeRows.length) return res.status(400).json({ error: "Неверный или просроченный код" });
+      await pool.query("UPDATE verification_codes SET used=TRUE WHERE id=$1", [codeRows[0].id]);
+    } else if (password && user.password_hash) {
+      const ok = await bcrypt.compare(String(password), user.password_hash);
+      if (!ok) return res.status(401).json({ error: "Неверный пароль" });
+    } else {
+      return res.status(400).json({ error: "Требуется код или пароль" });
+    }
+
+    req.session.userId = user.id;
+    res.json({ ok: true, user: rowToUser(user) });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/auth/logout", (req, res) => {
+  req.session.userId = null;
+  res.json({ ok: true });
+});
+
+app.get("/api/auth/me", async (req, res) => {
+  if (!req.session?.userId) return res.json({ user: null });
+  try {
+    const { rows } = await pool.query("SELECT * FROM users WHERE id=$1", [req.session.userId]);
+    if (!rows.length) { req.session.userId = null; return res.json({ user: null }); }
+    res.json({ user: rowToUser(rows[0]) });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put("/api/auth/profile", requireUserAuth, async (req, res) => {
+  const { name, phone, password } = req.body || {};
+  try {
+    const updates = [];
+    const vals = [];
+    let idx = 1;
+    if (name !== undefined) { updates.push(`name=$${idx++}`); vals.push(String(name).trim()); }
+    if (phone !== undefined) { updates.push(`phone=$${idx++}`); vals.push(String(phone).trim()); }
+    if (password) { updates.push(`password_hash=$${idx++}`); vals.push(await bcrypt.hash(String(password), 10)); }
+    if (!updates.length) return res.status(400).json({ error: "Нет данных для обновления" });
+    updates.push(`updated_at=NOW()`);
+    vals.push(req.session.userId);
+    const { rows } = await pool.query(
+      `UPDATE users SET ${updates.join(",")} WHERE id=$${idx} RETURNING *`,
+      vals
+    );
+    res.json({ user: rowToUser(rows[0]) });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/api/auth/referral-stats", requireUserAuth, async (req, res) => {
+  try {
+    const { rows: user } = await pool.query("SELECT * FROM users WHERE id=$1", [req.session.userId]);
+    if (!user.length) return res.status(404).json({ error: "User not found" });
+    const { rows: referrals } = await pool.query(
+      `SELECT u.id, u.name, u.email, u.created_at, r.bonus_amount, r.order_id
+       FROM referrals r JOIN users u ON u.id = r.referred_id
+       WHERE r.referrer_id=$1 ORDER BY r.created_at DESC`,
+      [req.session.userId]
+    );
+    res.json({ referralCode: user[0].referral_code, referrals, totalBonus: user[0].referral_bonus });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ===== CHECK REFERRAL =====
+
+app.get("/api/users/check-referral", async (req, res) => {
+  const code = String(req.query.code || "").toUpperCase();
+  if (!code) return res.json({ valid: false });
+  try {
+    const { rows } = await pool.query("SELECT id, name FROM users WHERE referral_code=$1", [code]);
+    if (!rows.length) return res.json({ valid: false });
+    res.json({ valid: true, referrerName: rows[0].name || "друг" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ===== USER ORDERS =====
+
+app.get("/api/auth/orders", requireUserAuth, async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      "SELECT * FROM orders WHERE user_id=$1 ORDER BY created_at DESC",
+      [req.session.userId]
+    );
+    res.json(rows.map(rowToOrder));
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ===== HELPER =====
+
+function rowToUser(r) {
+  return {
+    id: r.id,
+    email: r.email,
+    name: r.name,
+    phone: r.phone,
+    referralCode: r.referral_code,
+    referredBy: r.referred_by,
+    referralBonus: parseFloat(r.referral_bonus || 0),
+    role: r.role,
+    isVerified: r.is_verified,
+    createdAt: r.created_at,
+    updatedAt: r.updated_at,
+  };
+}
+
+// ===== ADMIN USER MANAGEMENT =====
+
+app.get("/api/admin/users", requireAdminApi, async (_req, res) => {
+  try {
+    const { rows } = await pool.query(`
+      SELECT u.*,
+        (SELECT COUNT(*) FROM orders o WHERE o.user_id = u.id) AS order_count,
+        (SELECT COALESCE(SUM(o.total),0) FROM orders o WHERE o.user_id = u.id AND (o.payment='receipt' OR o.payment_status='succeeded')) AS total_spent,
+        (SELECT COUNT(*) FROM referrals r WHERE r.referrer_id = u.id) AS referral_count
+      FROM users u ORDER BY u.created_at DESC
+    `);
+    res.json(rows.map(r => ({
+      ...rowToUser(r),
+      orderCount: parseInt(r.order_count || 0),
+      totalSpent: parseFloat(r.total_spent || 0),
+      referralCount: parseInt(r.referral_count || 0),
+    })));
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/api/admin/users/:id", requireAdminApi, async (req, res) => {
+  try {
+    const { rows } = await pool.query("SELECT * FROM users WHERE id=$1", [req.params.id]);
+    if (!rows.length) return res.status(404).json({ error: "Пользователь не найден" });
+    const user = rows[0];
+    const [{ rows: orders }, { rows: referrals }] = await Promise.all([
+      pool.query("SELECT * FROM orders WHERE user_id=$1 ORDER BY created_at DESC", [user.id]),
+      pool.query(`
+        SELECT r.*, u.name AS referred_name, u.email AS referred_email
+        FROM referrals r JOIN users u ON u.id = r.referred_id
+        WHERE r.referrer_id=$1 ORDER BY r.created_at DESC`, [user.id])
+    ]);
+    res.json({
+      user: rowToUser(user),
+      orders: orders.map(rowToOrder),
+      referrals,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put("/api/admin/users/:id", requireAdminApi, async (req, res) => {
+  const { role, referralBonus, name, phone } = req.body || {};
+  try {
+    const updates = ["updated_at=NOW()"];
+    const vals = [];
+    let idx = 1;
+    if (role !== undefined) { updates.push(`role=$${idx++}`); vals.push(String(role)); }
+    if (referralBonus !== undefined) { updates.push(`referral_bonus=$${idx++}`); vals.push(parseFloat(referralBonus) || 0); }
+    if (name !== undefined) { updates.push(`name=$${idx++}`); vals.push(String(name).trim()); }
+    if (phone !== undefined) { updates.push(`phone=$${idx++}`); vals.push(String(phone).trim()); }
+    vals.push(req.params.id);
+    const { rows } = await pool.query(
+      `UPDATE users SET ${updates.join(",")} WHERE id=$${idx} RETURNING *`,
+      vals
+    );
+    if (!rows.length) return res.status(404).json({ error: "Пользователь не найден" });
+    res.json({ user: rowToUser(rows[0]) });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete("/api/admin/users/:id", requireAdminApi, async (req, res) => {
+  try {
+    await pool.query("DELETE FROM users WHERE id=$1", [req.params.id]);
+    res.json({ ok: true });
+  } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });

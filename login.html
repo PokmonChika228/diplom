@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Вход — ZHUCHY club</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <style>
+      .auth-wrap { min-height: 100vh; display: grid; place-items: center; padding: var(--space-xl) var(--space-md); }
+      .auth-card { width: min(100%, 460px); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-xl); box-shadow: var(--shadow-card); }
+      .auth-logo { font-size: 1.1rem; letter-spacing: 0.12em; font-weight: 700; margin-bottom: var(--space-lg); display: block; }
+      .auth-title { margin: 0 0 var(--space-sm); font-size: 1.5rem; }
+      .auth-sub { color: var(--color-text-muted); font-size: 0.875rem; margin: 0 0 var(--space-xl); }
+      .step { display: flex; flex-direction: column; gap: var(--space-md); }
+      .step[hidden] { display: none; }
+      .field { display: flex; flex-direction: column; gap: 6px; }
+      .field-label { font-size: 0.8125rem; color: var(--color-text-muted); font-weight: 500; }
+      .err-msg { color: var(--color-sale); font-size: 0.875rem; display: none; }
+      .err-msg.visible { display: block; }
+      .method-tabs { display: flex; gap: 8px; margin-bottom: 4px; }
+      .method-tab { flex: 1; padding: 8px; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: none; color: var(--color-text-muted); font-size: 0.875rem; cursor: pointer; transition: all 0.2s; }
+      .method-tab.active { border-color: var(--color-text); color: var(--color-text); background: var(--color-surface-raised, rgba(255,255,255,.05)); }
+      .countdown { font-size: 0.8rem; color: var(--color-text-muted); }
+    </style>
+  </head>
+  <body class="page-enter">
+    <main class="auth-wrap">
+      <div class="auth-card">
+        <a class="auth-logo" href="index.html">ZHUCHY club</a>
+        <h1 class="auth-title">Войти в аккаунт</h1>
+        <p class="auth-sub">Введите email для входа</p>
+
+        <div id="err-global" class="err-msg"></div>
+
+        <!-- Step 1: email + method -->
+        <div class="step" id="step-email">
+          <div class="field">
+            <label class="field-label" for="login-email">Email</label>
+            <input class="input" id="login-email" type="email" autocomplete="email" placeholder="you@example.com" />
+          </div>
+          <div>
+            <p class="field-label" style="margin-bottom:8px">Способ входа</p>
+            <div class="method-tabs">
+              <button type="button" class="method-tab active" data-method="code">Код на почту</button>
+              <button type="button" class="method-tab" data-method="password">Пароль</button>
+            </div>
+          </div>
+          <div id="password-field" class="field" hidden>
+            <label class="field-label" for="login-password">Пароль</label>
+            <input class="input" id="login-password" type="password" autocomplete="current-password" placeholder="Ваш пароль" />
+          </div>
+          <button class="btn btn--secondary btn--block" id="btn-continue" type="button">Продолжить</button>
+          <p style="font-size:0.8rem;color:var(--color-text-muted);text-align:center">
+            Нет аккаунта? <a href="register.html" style="text-decoration:underline">Зарегистрироваться</a>
+          </p>
+        </div>
+
+        <!-- Step 2: code entry -->
+        <div class="step" id="step-code" hidden>
+          <p style="font-size:0.875rem;color:var(--color-text-muted)">Код отправлен на <strong id="code-email-disp"></strong></p>
+          <div class="field">
+            <label class="field-label" for="login-code">Код из письма</label>
+            <input class="input" id="login-code" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="6 цифр" autocomplete="one-time-code" />
+          </div>
+          <button class="btn btn--secondary btn--block" id="btn-login-code" type="button">Войти</button>
+          <p class="countdown" id="resend-row">
+            <span id="resend-timer">Повторно отправить через <strong id="resend-count">60</strong> сек.</span>
+            <a href="#" id="btn-resend" style="text-decoration:underline;display:none">Отправить код ещё раз</a>
+          </p>
+          <a href="#" id="btn-back" style="font-size:0.8rem;text-decoration:underline">← Назад</a>
+        </div>
+      </div>
+    </main>
+    <script>
+      (function () {
+        var email = "";
+        var method = "code";
+        var timer;
+
+        function showErr(msg) {
+          var el = document.getElementById("err-global");
+          el.textContent = msg;
+          el.classList.toggle("visible", !!msg);
+        }
+
+        document.querySelectorAll(".method-tab").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            method = this.dataset.method;
+            document.querySelectorAll(".method-tab").forEach(function (b) { b.classList.toggle("active", b === btn); });
+            document.getElementById("password-field").hidden = method !== "password";
+          });
+        });
+
+        document.getElementById("btn-continue").addEventListener("click", async function () {
+          showErr("");
+          email = document.getElementById("login-email").value.trim();
+          if (!email) return showErr("Введите email");
+          this.disabled = true; this.textContent = "...";
+          if (method === "password") {
+            var pw = document.getElementById("login-password").value;
+            if (!pw) { showErr("Введите пароль"); this.disabled = false; this.textContent = "Продолжить"; return; }
+            try {
+              const r = await fetch("/api/auth/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, password: pw }) });
+              const d = await r.json();
+              if (!r.ok) { showErr(d.error || "Неверные данные"); this.disabled = false; this.textContent = "Продолжить"; return; }
+              window.location.href = "account.html";
+            } catch (e) { showErr("Ошибка сети"); this.disabled = false; this.textContent = "Продолжить"; }
+            return;
+          }
+          try {
+            const r = await fetch("/api/auth/send-code", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, purpose: "login" }) });
+            const d = await r.json();
+            if (!r.ok) { showErr(d.error || "Ошибка"); this.disabled = false; this.textContent = "Продолжить"; return; }
+            document.getElementById("step-email").hidden = true;
+            document.getElementById("step-code").hidden = false;
+            document.getElementById("code-email-disp").textContent = email;
+            startResendTimer();
+          } catch (e) { showErr("Ошибка сети"); }
+          this.disabled = false; this.textContent = "Продолжить";
+        });
+
+        function startResendTimer() {
+          clearInterval(timer);
+          var secs = 60;
+          document.getElementById("resend-count").textContent = secs;
+          document.getElementById("resend-timer").style.display = "";
+          document.getElementById("btn-resend").style.display = "none";
+          timer = setInterval(function () {
+            secs--;
+            document.getElementById("resend-count").textContent = secs;
+            if (secs <= 0) {
+              clearInterval(timer);
+              document.getElementById("resend-timer").style.display = "none";
+              document.getElementById("btn-resend").style.display = "";
+            }
+          }, 1000);
+        }
+
+        document.getElementById("btn-resend").addEventListener("click", async function (e) {
+          e.preventDefault();
+          this.style.display = "none";
+          await fetch("/api/auth/send-code", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, purpose: "login" }) });
+          startResendTimer();
+        });
+
+        document.getElementById("btn-login-code").addEventListener("click", async function () {
+          showErr("");
+          var code = document.getElementById("login-code").value.trim();
+          if (!code || code.length !== 6) return showErr("Введите 6-значный код");
+          this.disabled = true; this.textContent = "Вход…";
+          try {
+            const r = await fetch("/api/auth/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, code }) });
+            const d = await r.json();
+            if (!r.ok) { showErr(d.error || "Неверный код"); this.disabled = false; this.textContent = "Войти"; return; }
+            window.location.href = "account.html";
+          } catch (e) { showErr("Ошибка сети"); this.disabled = false; this.textContent = "Войти"; }
+        });
+
+        document.getElementById("btn-back").addEventListener("click", function (e) {
+          e.preventDefault();
+          document.getElementById("step-code").hidden = true;
+          document.getElementById("step-email").hidden = false;
+          clearInterval(timer);
+        });
+
+        fetch("/api/auth/me").then(r => r.json()).then(d => {
+          if (d.user) window.location.href = "account.html";
+        }).catch(() => {});
+      })();
+    </script>
+  </body>
+</html>

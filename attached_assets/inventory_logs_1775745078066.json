@@ -1,0 +1,1 @@
+[{"id":1,"product_id":1,"qty":10,"type":"delivery","note":"Первая поставка","created_at":"2026-01-10T09:00:00.000Z"},{"id":2,"product_id":12,"qty":30,"type":"delivery","note":"Основная партия","created_at":"2026-02-08T09:00:00.000Z"},{"id":3,"product_id":13,"qty":50,"type":"delivery","note":"Базовая линейка","created_at":"2026-02-10T09:00:00.000Z"}]

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Мой аккаунт — ZHUCHY club</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <style>
+      .acc-wrap { max-width: 860px; margin: 0 auto; padding: var(--space-xl) var(--space-md); }
+      .acc-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: var(--space-md); margin-bottom: var(--space-xl); }
+      .acc-name { font-size: 1.75rem; font-weight: 700; margin: 0 0 4px; }
+      .acc-email { color: var(--color-text-muted); font-size: 0.875rem; margin: 0; }
+      .acc-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--color-border); margin-bottom: var(--space-xl); overflow-x: auto; }
+      .acc-tab-btn { padding: 12px 20px; background: none; border: none; border-bottom: 2px solid transparent; font-size: 0.9rem; color: var(--color-text-muted); cursor: pointer; white-space: nowrap; transition: all 0.2s; margin-bottom: -1px; }
+      .acc-tab-btn.active { color: var(--color-text); border-bottom-color: var(--color-text); font-weight: 600; }
+      .acc-panel { display: none; }
+      .acc-panel.active { display: block; }
+      .card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-lg); margin-bottom: var(--space-md); }
+      .card-title { font-size: 1rem; font-weight: 600; margin: 0 0 var(--space-md); }
+      .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: var(--space-md); }
+      .field-label { font-size: 0.8125rem; color: var(--color-text-muted); font-weight: 500; }
+      .ref-code-box { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+      .ref-code { font-size: 1.5rem; font-weight: 700; letter-spacing: 4px; padding: 12px 20px; background: rgba(255,255,255,.05); border: 1px solid var(--color-border); border-radius: var(--radius-md); }
+      .ref-link-box { font-size: 0.8rem; color: var(--color-text-muted); margin-top: 8px; word-break: break-all; }
+      .order-row { padding: 16px 0; border-bottom: 1px solid var(--color-border); }
+      .order-row:last-child { border-bottom: none; }
+      .order-id { font-weight: 600; font-size: 0.9rem; }
+      .order-meta { font-size: 0.8rem; color: var(--color-text-muted); margin-top: 4px; }
+      .status-badge { display: inline-block; padding: 2px 10px; border-radius: 100px; font-size: 0.75rem; font-weight: 600; }
+      .status-new { background: rgba(234,179,8,.15); color: #ca8a04; }
+      .status-processing { background: rgba(59,130,246,.15); color: #3b82f6; }
+      .status-shipped { background: rgba(168,85,247,.15); color: #a855f7; }
+      .status-done { background: rgba(34,197,94,.15); color: #16a34a; }
+      .status-cancelled { background: rgba(239,68,68,.15); color: #dc2626; }
+      .ref-invited { display: flex; flex-direction: column; gap: 8px; }
+      .ref-person { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--color-border); font-size: 0.875rem; }
+      .ref-person:last-child { border-bottom: none; }
+      .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--space-md); margin-bottom: var(--space-md); }
+      .stat-item { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-md); text-align: center; }
+      .stat-val { font-size: 1.5rem; font-weight: 700; }
+      .stat-label { font-size: 0.75rem; color: var(--color-text-muted); margin-top: 4px; }
+      .success-msg { color: #16a34a; font-size: 0.875rem; }
+      .err-msg { color: var(--color-sale); font-size: 0.875rem; }
+    </style>
+  </head>
+  <body class="page-enter">
+    <header class="site-header" role="banner">
+      <div class="header-inner">
+        <a class="logo" href="index.html">ZHUCHY club</a>
+        <nav class="nav-desktop">
+          <a href="catalog.html#mens">Man</a>
+          <a href="catalog.html#womens">Woman</a>
+          <a href="catalog.html#accessories">Accessories</a>
+          <a href="catalog.html#sale" class="is-sale">Sale</a>
+        </nav>
+        <div class="header-actions">
+          <a href="cart.html" class="icon-btn cart-btn" aria-label="Корзина">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M6 6h15l-1.5 9h-12z" stroke-linejoin="round" />
+              <path d="M6 6 5 3H2" stroke-linecap="round" />
+              <circle cx="9" cy="20" r="1" fill="currentColor" />
+              <circle cx="18" cy="20" r="1" fill="currentColor" />
+            </svg>
+            <span class="cart-badge" data-cart-count hidden>0</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main class="acc-wrap" id="main">
+      <div id="loading" style="text-align:center;padding:60px 0;color:var(--color-text-muted)">Загрузка…</div>
+      <div id="acc-content" hidden>
+        <div class="acc-header">
+          <div>
+            <h1 class="acc-name" id="acc-name-display"></h1>
+            <p class="acc-email" id="acc-email-display"></p>
+          </div>
+          <button class="btn btn--outline" id="btn-logout" type="button">Выйти</button>
+        </div>
+
+        <div class="acc-tabs">
+          <button class="acc-tab-btn active" data-panel="orders">Заказы</button>
+          <button class="acc-tab-btn" data-panel="referral">Реферальная программа</button>
+          <button class="acc-tab-btn" data-panel="profile">Профиль</button>
+        </div>
+
+        <!-- ORDERS -->
+        <div class="acc-panel active" id="panel-orders">
+          <div class="card">
+            <h2 class="card-title">Мои заказы</h2>
+            <div id="orders-list"><p style="color:var(--color-text-muted);font-size:0.875rem">Загрузка…</p></div>
+          </div>
+        </div>
+
+        <!-- REFERRAL -->
+        <div class="acc-panel" id="panel-referral">
+          <div class="stat-grid" id="ref-stats"></div>
+          <div class="card">
+            <h2 class="card-title">Ваш реферальный код</h2>
+            <div class="ref-code-box">
+              <span class="ref-code" id="ref-code-display"></span>
+              <button class="btn btn--outline" id="btn-copy-code" type="button">Копировать</button>
+            </div>
+            <div class="ref-link-box">
+              Ссылка: <span id="ref-link-display"></span>
+              <button class="btn btn--outline" id="btn-copy-link" type="button" style="margin-left:8px;padding:2px 10px;font-size:0.75rem">Копировать ссылку</button>
+            </div>
+            <p style="margin-top:16px;font-size:0.875rem;color:var(--color-text-muted)">
+              Поделитесь кодом с друзьями. Когда они зарегистрируются по вашей ссылке, вы будете связаны как реферальная пара. Бонусы начисляются при первой покупке приглашённого.
+            </p>
+          </div>
+          <div class="card">
+            <h2 class="card-title">Приглашённые друзья</h2>
+            <div id="ref-list" class="ref-invited"></div>
+          </div>
+        </div>
+
+        <!-- PROFILE -->
+        <div class="acc-panel" id="panel-profile">
+          <div class="card">
+            <h2 class="card-title">Личные данные</h2>
+            <div class="field">
+              <label class="field-label" for="pf-name">Имя</label>
+              <input class="input" id="pf-name" type="text" />
+            </div>
+            <div class="field">
+              <label class="field-label" for="pf-phone">Телефон</label>
+              <input class="input" id="pf-phone" type="tel" placeholder="+7..." />
+            </div>
+            <div class="field">
+              <label class="field-label" for="pf-email">Email</label>
+              <input class="input" id="pf-email" type="email" disabled style="opacity:.6" />
+            </div>
+            <button class="btn btn--secondary" id="btn-save-profile" type="button">Сохранить</button>
+            <p id="profile-msg" style="margin-top:8px;font-size:0.875rem"></p>
+          </div>
+          <div class="card">
+            <h2 class="card-title">Изменить пароль</h2>
+            <div class="field">
+              <label class="field-label" for="pf-password">Новый пароль</label>
+              <input class="input" id="pf-password" type="password" placeholder="Минимум 8 символов" />
+            </div>
+            <button class="btn btn--outline" id="btn-save-password" type="button">Обновить пароль</button>
+            <p id="password-msg" style="margin-top:8px;font-size:0.875rem"></p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="js/cart-badge.js" defer></script>
+    <script src="js/currency.js" defer></script>
+    <script>
+      (function () {
+        var user = null;
+
+        function statusLabel(s) {
+          const map = { new: "Новый", processing: "В обработке", shipped: "Отправлен", done: "Выполнен", cancelled: "Отменён" };
+          return map[s] || s;
+        }
+        function statusClass(s) {
+          const map = { new: "status-new", processing: "status-processing", shipped: "status-shipped", done: "status-done", cancelled: "status-cancelled" };
+          return map[s] || "";
+        }
+        function fmt(n) { return Math.round(Number(n) || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "\u00a0") + "\u00a0₽"; }
+        function fmtDate(iso) {
+          if (!iso) return "—";
+          return new Date(iso).toLocaleDateString("ru-RU", { day: "2-digit", month: "2-digit", year: "2-digit" });
+        }
+
+        async function init() {
+          const r = await fetch("/api/auth/me");
+          const d = await r.json();
+          if (!d.user) { window.location.href = "login.html"; return; }
+          user = d.user;
+          document.getElementById("loading").hidden = true;
+          document.getElementById("acc-content").hidden = false;
+          document.getElementById("acc-name-display").textContent = user.name || "Аккаунт";
+          document.getElementById("acc-email-display").textContent = user.email;
+          document.getElementById("pf-name").value = user.name || "";
+          document.getElementById("pf-phone").value = user.phone || "";
+          document.getElementById("pf-email").value = user.email;
+
+          loadOrders();
+          loadReferral();
+        }
+
+        async function loadOrders() {
+          const r = await fetch("/api/auth/orders");
+          const orders = await r.json();
+          const el = document.getElementById("orders-list");
+          if (!orders.length) { el.innerHTML = '<p style="color:var(--color-text-muted);font-size:0.875rem">У вас пока нет заказов.</p>'; return; }
+          el.innerHTML = orders.map(function (o) {
+            return '<div class="order-row">' +
+              '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">' +
+                '<span class="order-id">Заказ #' + o.id + '</span>' +
+                '<span class="status-badge ' + statusClass(o.status) + '">' + statusLabel(o.status) + '</span>' +
+              '</div>' +
+              '<div class="order-meta">' + fmtDate(o.createdAt) + ' · ' + fmt(o.total) +
+                (o.promoCode ? ' · промокод: ' + o.promoCode : '') +
+              '</div>' +
+              '<div style="margin-top:8px;font-size:0.8rem;color:var(--color-text-muted)">' +
+                (o.items || []).map(function (it) { return it.productName + ' × ' + it.qty + (it.size && it.size !== 'ONE SIZE' ? ' (' + it.size + ')' : ''); }).join(', ') +
+              '</div>' +
+            '</div>';
+          }).join('');
+        }
+
+        async function loadReferral() {
+          const r = await fetch("/api/auth/referral-stats");
+          const d = await r.json();
+          document.getElementById("ref-code-display").textContent = d.referralCode;
+          var link = location.origin + "/register.html?ref=" + d.referralCode;
+          document.getElementById("ref-link-display").textContent = link;
+
+          document.getElementById("btn-copy-code").onclick = function () {
+            navigator.clipboard.writeText(d.referralCode);
+            this.textContent = "Скопировано!"; var self = this; setTimeout(function () { self.textContent = "Копировать"; }, 2000);
+          };
+          document.getElementById("btn-copy-link").onclick = function () {
+            navigator.clipboard.writeText(link);
+            this.textContent = "Скопировано!"; var self = this; setTimeout(function () { self.textContent = "Копировать ссылку"; }, 2000);
+          };
+
+          var statsEl = document.getElementById("ref-stats");
+          statsEl.innerHTML =
+            '<div class="stat-item"><div class="stat-val">' + (d.referrals || []).length + '</div><div class="stat-label">Приглашено</div></div>' +
+            '<div class="stat-item"><div class="stat-val">' + fmt(d.totalBonus || 0) + '</div><div class="stat-label">Бонусов заработано</div></div>';
+
+          var refEl = document.getElementById("ref-list");
+          if (!d.referrals || !d.referrals.length) {
+            refEl.innerHTML = '<p style="color:var(--color-text-muted);font-size:0.875rem">Пока никто не зарегистрировался по вашей ссылке.</p>';
+          } else {
+            refEl.innerHTML = d.referrals.map(function (r) {
+              return '<div class="ref-person">' +
+                '<span>' + (r.name || r.email) + '</span>' +
+                '<span style="color:var(--color-text-muted);font-size:0.8rem">' + fmtDate(r.created_at) + '</span>' +
+              '</div>';
+            }).join('');
+          }
+        }
+
+        document.querySelectorAll(".acc-tab-btn").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            document.querySelectorAll(".acc-tab-btn").forEach(function (b) { b.classList.toggle("active", b === btn); });
+            document.querySelectorAll(".acc-panel").forEach(function (p) { p.classList.toggle("active", p.id === "panel-" + btn.dataset.panel); });
+          });
+        });
+
+        document.getElementById("btn-logout").addEventListener("click", async function () {
+          await fetch("/api/auth/logout", { method: "POST" });
+          window.location.href = "index.html";
+        });
+
+        document.getElementById("btn-save-profile").addEventListener("click", async function () {
+          var msg = document.getElementById("profile-msg");
+          msg.textContent = "";
+          var name = document.getElementById("pf-name").value.trim();
+          var phone = document.getElementById("pf-phone").value.trim();
+          try {
+            const r = await fetch("/api/auth/profile", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, phone }) });
+            const d = await r.json();
+            if (!r.ok) { msg.className = "err-msg"; msg.textContent = d.error || "Ошибка"; return; }
+            msg.className = "success-msg"; msg.textContent = "Сохранено!";
+            document.getElementById("acc-name-display").textContent = d.user.name || "Аккаунт";
+          } catch (e) { msg.className = "err-msg"; msg.textContent = "Ошибка сети"; }
+        });
+
+        document.getElementById("btn-save-password").addEventListener("click", async function () {
+          var msg = document.getElementById("password-msg");
+          msg.textContent = "";
+          var pw = document.getElementById("pf-password").value;
+          if (!pw || pw.length < 8) { msg.className = "err-msg"; msg.textContent = "Пароль минимум 8 символов"; return; }
+          try {
+            const r = await fetch("/api/auth/profile", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ password: pw }) });
+            const d = await r.json();
+            if (!r.ok) { msg.className = "err-msg"; msg.textContent = d.error || "Ошибка"; return; }
+            msg.className = "success-msg"; msg.textContent = "Пароль обновлён!";
+            document.getElementById("pf-password").value = "";
+          } catch (e) { msg.className = "err-msg"; msg.textContent = "Ошибка сети"; }
+        });
+
+        var params = new URLSearchParams(location.search);
+        if (params.get("ref")) {
+          sessionStorage.setItem("pendingRef", params.get("ref"));
+        }
+
+        init();
+      })();
+    </script>
+  </body>
+</html>

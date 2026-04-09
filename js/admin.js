@@ -54,6 +54,7 @@
     if (name === "orders") loadOrders();
     if (name === "promocodes") loadPromos();
     if (name === "interface") loadUiSettings();
+    if (name === "users") loadUsers();
   }
 
   tabLinks.forEach(function (l) {
@@ -1249,6 +1250,191 @@
   document.querySelectorAll(".nav-tab[data-tab='database']").forEach(function (link) {
     link.addEventListener("click", function () { initDatabaseTab(); });
   });
+
+  /* ===================== USERS ===================== */
+  var usersData = [];
+
+  function loadUsers() {
+    var tbody = document.querySelector("#users-table tbody");
+    if (!tbody) return;
+    authFetch("/api/admin/users").then(function (r) { return r.json(); }).then(function (users) {
+      usersData = users || [];
+      renderUsersTable(usersData);
+    }).catch(function () {
+      if (tbody) tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--color-sale)">Ошибка загрузки</td></tr>';
+    });
+
+    var searchInput = document.getElementById("user-search");
+    if (searchInput && !searchInput._bound) {
+      searchInput._bound = true;
+      searchInput.addEventListener("input", function () {
+        var q = this.value.toLowerCase();
+        var filtered = q ? usersData.filter(function (u) {
+          return (u.name || "").toLowerCase().includes(q) || (u.email || "").toLowerCase().includes(q);
+        }) : usersData;
+        renderUsersTable(filtered);
+      });
+    }
+
+    var btnClose = document.getElementById("btn-close-user");
+    if (btnClose && !btnClose._bound) {
+      btnClose._bound = true;
+      btnClose.addEventListener("click", function () {
+        document.getElementById("user-detail-panel").style.display = "none";
+        document.getElementById("user-list-panel").style.display = "";
+      });
+    }
+  }
+
+  function renderUsersTable(users) {
+    var tbody = document.querySelector("#users-table tbody");
+    if (!tbody) return;
+    if (!users.length) {
+      tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--color-text-muted);padding:24px">Пользователей нет</td></tr>';
+      return;
+    }
+    tbody.innerHTML = "";
+    users.forEach(function (u) {
+      var tr = document.createElement("tr");
+      var roleColor = u.role === "admin" ? "color:var(--color-sale)" : "";
+      tr.innerHTML =
+        "<td>" + u.id + "</td>" +
+        "<td><strong>" + esc(u.name || "—") + "</strong></td>" +
+        "<td style='font-size:0.8rem'>" + esc(u.email) + "</td>" +
+        "<td style='" + roleColor + "'>" + esc(u.role || "customer") + "</td>" +
+        "<td style='text-align:center'>" + (u.isVerified ? "✓" : "—") + "</td>" +
+        "<td style='font-size:0.8rem;letter-spacing:1px'>" + esc(u.referralCode || "—") + "</td>" +
+        "<td style='text-align:center'>" + (u.orderCount || 0) + "</td>" +
+        "<td>" + fmt(u.totalSpent || 0) + "</td>" +
+        "<td style='font-size:0.8rem'>" + fmtDate(u.createdAt) + "</td>" +
+        '<td><button class="btn btn--outline" style="padding:4px 10px;font-size:0.75rem" onclick="viewUser(' + u.id + ')">Открыть</button></td>';
+      tbody.appendChild(tr);
+    });
+  }
+
+  window.viewUser = function (id) {
+    authFetch("/api/admin/users/" + id).then(function (r) { return r.json(); }).then(function (data) {
+      var u = data.user;
+      var orders = data.orders || [];
+      var refs = data.referrals || [];
+      document.getElementById("udp-title").textContent = (u.name || "Аккаунт") + " — " + u.email;
+      document.getElementById("udp-body").innerHTML = renderUserDetail(u, orders, refs);
+      document.getElementById("user-list-panel").style.display = "none";
+      document.getElementById("user-detail-panel").style.display = "";
+      bindUserDetailEvents(u);
+    }).catch(function () { alert("Ошибка загрузки пользователя"); });
+  };
+
+  function renderUserDetail(u, orders, refs) {
+    var statusMap = { new: "Новый", processing: "В обработке", shipped: "Отправлен", done: "Выполнен", cancelled: "Отменён" };
+    var html = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;flex-wrap:wrap">' +
+      '<div>' +
+        '<h4 style="margin:0 0 12px;font-size:0.875rem;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:1px">Профиль</h4>' +
+        infoRow("ID", u.id) +
+        infoRow("Email", u.email) +
+        infoRow("Имя", u.name || "—") +
+        infoRow("Телефон", u.phone || "—") +
+        infoRow("Дата регистрации", fmtDate(u.createdAt)) +
+        infoRow("Верифицирован", u.isVerified ? "✓ Да" : "✕ Нет") +
+        infoRow("Реферальный код", '<span style="font-weight:700;letter-spacing:2px">' + esc(u.referralCode || "—") + '</span>') +
+        infoRow("Пришёл по реферальному", u.referredBy ? "Да (ID: " + u.referredBy + ")" : "—") +
+        infoRow("Бонусный баланс", fmt(u.referralBonus || 0)) +
+      '</div>' +
+      '<div>' +
+        '<h4 style="margin:0 0 12px;font-size:0.875rem;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:1px">Права доступа</h4>' +
+        '<div style="display:flex;flex-direction:column;gap:10px">' +
+          '<div style="display:flex;flex-direction:column;gap:6px">' +
+            '<label style="font-size:0.8125rem;color:var(--color-text-muted)">Роль</label>' +
+            '<select class="select" id="udp-role" style="max-width:200px">' +
+              '<option value="customer"' + (u.role==="customer"?" selected":"") + '>customer</option>' +
+              '<option value="admin"' + (u.role==="admin"?" selected":"") + '>admin</option>' +
+            '</select>' +
+          '</div>' +
+          '<div style="display:flex;flex-direction:column;gap:6px">' +
+            '<label style="font-size:0.8125rem;color:var(--color-text-muted)">Реферальный бонус (₽)</label>' +
+            '<input class="input" id="udp-bonus" type="number" value="' + (u.referralBonus || 0) + '" style="max-width:200px" />' +
+          '</div>' +
+          '<button class="btn btn--secondary" id="udp-save" type="button" data-uid="' + u.id + '" style="width:fit-content">Сохранить</button>' +
+          '<span id="udp-save-msg" style="font-size:0.875rem"></span>' +
+        '</div>' +
+        '<div style="margin-top:16px">' +
+          '<button class="btn btn--outline" id="udp-delete" type="button" data-uid="' + u.id + '" style="color:var(--color-sale);border-color:var(--color-sale)">Удалить аккаунт</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+    html += '<h4 style="margin:0 0 12px;font-size:0.875rem;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:1px">Заказы (' + orders.length + ')</h4>';
+    if (!orders.length) {
+      html += '<p style="color:var(--color-text-muted);font-size:0.875rem;margin-bottom:24px">Заказов нет.</p>';
+    } else {
+      html += '<div class="table-wrap" style="margin-bottom:24px"><table class="admin-table"><thead><tr><th>ID</th><th>Дата</th><th>Статус</th><th>Доставка</th><th>Сумма</th><th>Состав</th></tr></thead><tbody>';
+      orders.forEach(function (o) {
+        html += '<tr>' +
+          '<td>#' + o.id + '</td>' +
+          '<td style="font-size:0.8rem">' + fmtDate(o.createdAt) + '</td>' +
+          '<td>' + esc(statusMap[o.status] || o.status) + '</td>' +
+          '<td style="font-size:0.8rem">' + esc(o.deliveryLabel || o.delivery || "—") + '</td>' +
+          '<td>' + fmt(o.total) + '</td>' +
+          '<td style="font-size:0.75rem;max-width:200px">' + (o.items || []).map(function (it) { return esc(it.productName || "?") + " ×" + it.qty; }).join(", ") + '</td>' +
+        '</tr>';
+      });
+      html += '</tbody></table></div>';
+    }
+
+    html += '<h4 style="margin:0 0 12px;font-size:0.875rem;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:1px">Реферальные приглашения (' + refs.length + ')</h4>';
+    if (!refs.length) {
+      html += '<p style="color:var(--color-text-muted);font-size:0.875rem">Никого не пригласил.</p>';
+    } else {
+      html += '<div class="table-wrap"><table class="admin-table"><thead><tr><th>Имя</th><th>Email</th><th>Дата</th></tr></thead><tbody>';
+      refs.forEach(function (r) {
+        html += '<tr><td>' + esc(r.referred_name || "—") + '</td><td style="font-size:0.8rem">' + esc(r.referred_email || "—") + '</td><td style="font-size:0.8rem">' + fmtDate(r.created_at) + '</td></tr>';
+      });
+      html += '</tbody></table></div>';
+    }
+
+    return html;
+  }
+
+  function infoRow(label, value) {
+    return '<div style="display:flex;gap:8px;margin-bottom:8px;font-size:0.875rem">' +
+      '<span style="color:var(--color-text-muted);min-width:160px;flex-shrink:0">' + esc(label) + '</span>' +
+      '<span>' + (typeof value === 'number' ? value : (value || "—")) + '</span></div>';
+  }
+
+  function bindUserDetailEvents(u) {
+    var saveBtn = document.getElementById("udp-save");
+    if (saveBtn) {
+      saveBtn.addEventListener("click", async function () {
+        var role = document.getElementById("udp-role").value;
+        var bonus = parseFloat(document.getElementById("udp-bonus").value) || 0;
+        var msg = document.getElementById("udp-save-msg");
+        try {
+          const r = await authFetch("/api/admin/users/" + u.id, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ role, referralBonus: bonus })
+          });
+          const d = await r.json();
+          if (!r.ok) { msg.style.color = "var(--color-sale)"; msg.textContent = d.error || "Ошибка"; return; }
+          msg.style.color = "#16a34a"; msg.textContent = "Сохранено!";
+          loadUsers();
+        } catch (e) { msg.style.color = "var(--color-sale)"; msg.textContent = "Ошибка сети"; }
+      });
+    }
+
+    var deleteBtn = document.getElementById("udp-delete");
+    if (deleteBtn) {
+      deleteBtn.addEventListener("click", async function () {
+        if (!confirm("Удалить аккаунт " + u.email + "? Это действие необратимо.")) return;
+        try {
+          await authFetch("/api/admin/users/" + u.id, { method: "DELETE" });
+          document.getElementById("user-detail-panel").style.display = "none";
+          document.getElementById("user-list-panel").style.display = "";
+          loadUsers();
+        } catch (e) { alert("Ошибка удаления"); }
+      });
+    }
+  }
 
   /* ===================== START ===================== */
   loadAll();

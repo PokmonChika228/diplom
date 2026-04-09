@@ -18,6 +18,7 @@
     "express": "^5.2.1",
     "express-session": "^1.19.0",
     "multer": "^2.1.1",
+    "nodemailer": "^8.0.5",
     "pg": "^8.20.0",
     "yookassa": "^0.1.1"
   },

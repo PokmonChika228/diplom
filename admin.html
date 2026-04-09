@@ -24,6 +24,7 @@
           <a href="#" data-tab="simulation" class="nav-tab">Симуляция</a>
           <a href="#" data-tab="cleanup" class="nav-tab">Очистка</a>
           <a href="#" data-tab="interface" class="nav-tab">Интерфейс</a>
+          <a href="#" data-tab="users" class="nav-tab">Пользователи</a>
           <a href="#" data-tab="database" class="nav-tab">База данных</a>
           <a href="index.html" style="margin-top:12px;border-top:1px solid var(--color-border);padding-top:12px">На сайт →</a>
         </nav>
@@ -450,6 +451,42 @@
               <div id="db-error-card" class="admin-card" style="display:none;border-color:#c0392b">
                 <div style="font-size:0.875rem;font-weight:600;color:#c0392b;margin-bottom:6px">Ошибка выполнения</div>
                 <pre id="db-error-text" style="font-size:0.8rem;color:#e74c3c;white-space:pre-wrap;margin:0;font-family:monospace"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: users -->
+        <div class="admin-tab" id="tab-users" hidden>
+          <div class="admin-header">
+            <h2>Пользователи</h2>
+            <p>Управление аккаунтами покупателей и правами доступа.</p>
+          </div>
+
+          <!-- User detail modal -->
+          <div id="user-detail-panel" class="admin-card" style="display:none;margin-bottom:16px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px">
+              <h3 id="udp-title" style="margin:0">Пользователь</h3>
+              <button class="btn btn--outline" id="btn-close-user" type="button">← Назад к списку</button>
+            </div>
+            <div id="udp-body"></div>
+          </div>
+
+          <!-- User list -->
+          <div id="user-list-panel">
+            <div class="admin-card" style="margin-bottom:16px">
+              <input class="input" id="user-search" type="text" placeholder="Поиск по имени или email…" style="max-width:380px;width:100%" />
+            </div>
+            <div class="admin-card">
+              <div class="table-wrap">
+                <table class="admin-table" id="users-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th><th>Имя</th><th>Email</th><th>Роль</th><th>Верифицирован</th><th>Реф. код</th><th>Заказов</th><th>Потратил</th><th>Дата рег.</th><th>Действия</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
               </div>
             </div>
           </div>
