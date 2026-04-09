@@ -2727,7 +2727,7 @@
       "sale": false,
       "price": 21000,
       "oldPrice": 0,
-      "stock": 39,
+      "stock": 40,
       "sizes": [
         "XS",
         "S",
@@ -3438,7 +3438,7 @@
       "email": "ndsd@gmail.com",
       "address": "das",
       "comment": "",
-      "status": "new",
+      "status": "cancelled",
       "delivery": "pickup",
       "deliveryLabel": "Самовывоз",
       "deliveryCost": 0,
@@ -3457,7 +3457,9 @@
       "subtotal": 21000,
       "discountAmount": 0,
       "total": 21000,
-      "createdAt": "2026-04-09T12:51:53.047Z"
+      "createdAt": "2026-04-09T12:51:53.047Z",
+      "_stockRestored": true,
+      "cancelReason": "payment_timeout"
     },
     {
       "id": 12,

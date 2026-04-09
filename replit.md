@@ -46,8 +46,7 @@ A full-stack fashion e-commerce platform with a dark avant-garde aesthetic. Feat
 ├── js/                   # Frontend JavaScript modules
 ├── css/                  # CSS stylesheets
 ├── data/db.json          # JSON database (auto-created on first run)
-├── uploads/              # Local image upload storage
-└── netlify/functions/    # Netlify serverless function (alternative deployment)
+└── uploads/              # Local image upload storage
 ```
 
 ## Running the App
@@ -57,19 +56,16 @@ A full-stack fashion e-commerce platform with a dark avant-garde aesthetic. Feat
 
 ## Environment Variables
 
-| Variable              | Default                  | Description                              |
-|-----------------------|--------------------------|------------------------------------------|
-| `PORT`                | `5000`                   | Server port                              |
-| `ADMIN_LOGIN`         | `admin`                  | Admin username                           |
-| `ADMIN_PASSWORD`      | `change_me_please`       | Admin password (plaintext fallback)      |
-| `ADMIN_PASSWORD_HASH` | *(empty)*                | Bcrypt hash of admin password (preferred)|
-| `SESSION_SECRET`      | *(insecure default)*     | Session signing secret                   |
-| `CLOUDINARY_URL`      | *(empty)*                | Optional Cloudinary connection URL       |
+| Variable              | Default          | Description                          |
+|-----------------------|------------------|--------------------------------------|
+| `PORT`                | `5000`           | Server port                          |
+| `SESSION_SECRET`      | *(dev default)*  | Session signing secret               |
+| `CLOUDINARY_URL`      | *(empty)*        | Optional Cloudinary connection URL   |
 
 ## Admin Access
 
 - Login URL: `/admin-login.html`
-- Default credentials: `admin` / `change_me_please`
+- Credentials: `admin` / `admin`
 
 ## Deployment
 

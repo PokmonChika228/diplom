@@ -1,11 +1,6 @@
 # Dependencies
 node_modules/
 
-# Environment and secrets
-.env
-.env.*
-!.env.example
-
 # Runtime and logs
 *.log
 npm-debug.log*
@@ -23,6 +18,3 @@ pnpm-debug.log*
 .pid.lock
 tmp/
 temp/
-
-# Local uploads (optional: keep user-generated files out of git)
-uploads/
