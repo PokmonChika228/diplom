@@ -8,7 +8,7 @@ A full-stack fashion e-commerce platform with a dark avant-garde aesthetic. Feat
 
 - **Backend**: Node.js + Express (v5) serving both the API and static frontend files from the same server
 - **Frontend**: Vanilla HTML/CSS/JavaScript (multi-page application, no build step)
-- **Database**: JSON file (`data/db.json`) — local file-based persistence
+- **Database**: PostgreSQL (Replit built-in) via `pg` connection pool — replaced the old `data/db.json` file
 - **Image Uploads**: Local `/uploads` directory (optional Cloudinary integration for cloud hosting)
 - **Auth**: `express-session` + `bcryptjs` for admin authentication
 
@@ -42,10 +42,11 @@ A full-stack fashion e-commerce platform with a dark avant-garde aesthetic. Feat
 ├── checkout.html         # Checkout with promo code support
 ├── admin.html            # Admin dashboard (protected)
 ├── admin-login.html      # Admin login page
-├── server.js             # Express server (API + static file serving)
+├── server.js             # Express server (API + static file serving, PostgreSQL)
+├── scripts/migrate-to-pg.js  # One-time migration script from db.json to PostgreSQL
 ├── js/                   # Frontend JavaScript modules
 ├── css/                  # CSS stylesheets
-├── data/db.json          # JSON database (auto-created on first run)
+├── data/db.json          # Legacy JSON database (kept as backup, no longer used)
 └── uploads/              # Local image upload storage
 ```
 
