@@ -63,6 +63,7 @@ app.use((req, res, next) => {
   if (req.session?.isAdmin === true) return next();
   return res.redirect("/admin-login.html");
 });
+app.get("/admin", (_req, res) => res.sendFile(path.join(__dirname, "admin.html")));
 app.use(express.static(__dirname));
 if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
 app.use("/uploads", express.static(UPLOADS_DIR));
