@@ -97,10 +97,13 @@
             <p>Управление заказами клиентов, изменение статусов.</p>
           </div>
           <div class="admin-card">
-            <form id="order-search-form" class="inline-form" style="grid-template-columns:1fr auto;margin-bottom:0">
-              <input class="input" name="orderId" placeholder="Поиск по номеру заказа" />
-              <button class="btn btn--outline" type="submit">Найти</button>
-            </form>
+            <div style="display:flex;gap:var(--space-md);align-items:center;flex-wrap:wrap">
+              <form id="order-search-form" class="inline-form" style="grid-template-columns:1fr auto;margin-bottom:0;flex:1;min-width:200px">
+                <input class="input" name="orderId" placeholder="Поиск по номеру заказа" />
+                <button class="btn btn--outline" type="submit">Найти</button>
+              </form>
+              <button class="btn btn--outline" id="check-all-payments-btn" type="button" onclick="checkAllUnpaid(this)">Проверить все неоплаченные</button>
+            </div>
           </div>
           <div class="admin-card">
             <div class="table-wrap">

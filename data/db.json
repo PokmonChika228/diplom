@@ -7,7 +7,7 @@
       "sale": true,
       "price": 19000,
       "oldPrice": 24500,
-      "stock": 26,
+      "stock": 0,
       "sizes": [
         "ONE SIZE"
       ],
@@ -1473,7 +1473,7 @@
       "sale": true,
       "price": 14900,
       "oldPrice": 18900,
-      "stock": 37,
+      "stock": 36,
       "sizes": [
         "ONE SIZE"
       ],
@@ -3178,7 +3178,7 @@
       "email": "dsa@gmail.com",
       "address": "d",
       "comment": "",
-      "status": "new",
+      "status": "processing",
       "delivery": "pickup",
       "deliveryLabel": "Самовывоз",
       "deliveryCost": 0,
@@ -3205,7 +3205,7 @@
       "total": 22000,
       "createdAt": "2026-04-09T10:00:27.979Z",
       "paymentId": "31698c7c-000f-5001-9000-1d4d29d49571",
-      "paymentStatus": "pending"
+      "paymentStatus": "succeeded"
     },
     {
       "id": 4,
@@ -3244,7 +3244,7 @@
       "email": "dssa@gmail.com",
       "address": "dsadasdsa",
       "comment": "",
-      "status": "new",
+      "status": "processing",
       "delivery": "pickup",
       "deliveryLabel": "Самовывоз",
       "deliveryCost": 0,
@@ -3265,7 +3265,7 @@
       "total": 12000,
       "createdAt": "2026-04-09T10:06:38.233Z",
       "paymentId": "31698dee-000f-5000-b000-10aab31200e6",
-      "paymentStatus": "pending"
+      "paymentStatus": "succeeded"
     },
     {
       "id": 6,
@@ -3334,7 +3334,7 @@
       "email": "dda@gmail.com",
       "address": "dsad",
       "comment": "",
-      "status": "new",
+      "status": "processing",
       "delivery": "pickup",
       "deliveryLabel": "Самовывоз",
       "deliveryCost": 0,
@@ -3355,6 +3355,66 @@
       "total": 5000,
       "createdAt": "2026-04-09T10:20:50.856Z",
       "paymentId": "31699143-000f-5000-b000-198567b3b1ea",
+      "paymentStatus": "succeeded"
+    },
+    {
+      "id": 9,
+      "customerName": "sada dsad",
+      "phone": "+79999999999",
+      "email": "sdsad@gmail.com",
+      "address": "dsadasd",
+      "comment": "",
+      "status": "new",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 1,
+          "productName": "Кольцо WABI-SABI KOSTYL",
+          "qty": 26,
+          "price": 19000
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 494000,
+      "discountAmount": 0,
+      "total": 494000,
+      "createdAt": "2026-04-09T10:26:19.865Z",
+      "paymentId": "3169928c-000f-5000-8000-11bcad731b39",
+      "paymentStatus": "pending"
+    },
+    {
+      "id": 10,
+      "customerName": "ee eea",
+      "phone": "+79999999999",
+      "email": "dda@gmail.com",
+      "address": "dsads",
+      "comment": "",
+      "status": "new",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 58,
+          "productName": "Кольцо Blue Flower Ring",
+          "qty": 1,
+          "price": 14900
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 14900,
+      "discountAmount": 0,
+      "total": 14900,
+      "createdAt": "2026-04-09T10:27:18.418Z",
+      "paymentId": "316992c7-000f-5000-8000-1093067314b7",
       "paymentStatus": "pending"
     }
   ],
@@ -3378,7 +3438,7 @@
   ],
   "counters": {
     "product": 121,
-    "order": 9,
+    "order": 11,
     "log": 4,
     "promo": 3
   },

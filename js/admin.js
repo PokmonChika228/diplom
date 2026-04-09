@@ -302,8 +302,7 @@
       var isPaid = o.paymentConfirmed;
       var paymentBadge = isPaid
         ? "<br><span style='color:#4caf50;font-size:0.75rem;font-weight:600'>✓ Оплачено</span>"
-        : "<br><span style='color:var(--color-sale);font-size:0.75rem'>⏳ Ожидает оплаты</span>" +
-          "<br><button class='btn btn--sm' style='margin-top:4px;font-size:0.7rem;padding:2px 8px' onclick='checkPayment(" + o.id + ", this)'>Проверить оплату</button>";
+        : "<br><span style='color:var(--color-sale);font-size:0.75rem'>⏳ Ожидает оплаты</span>";
 
       var tr = document.createElement("tr");
       if (!isPaid) tr.style.opacity = "0.65";
@@ -322,29 +321,41 @@
     });
   }
 
-  window.checkPayment = function (id, btn) {
+  window.checkAllUnpaid = function (btn) {
+    var unpaid = (DB.orders || []).filter(function (o) { return !o.paymentConfirmed && o.paymentId; });
+    if (!unpaid.length) {
+      btn.textContent = "Нет неоплаченных";
+      setTimeout(function () { btn.textContent = "Проверить все неоплаченные"; }, 2000);
+      return;
+    }
     btn.disabled = true;
-    btn.textContent = "Проверяем…";
-    fetch("/api/payment/check-order/" + id, { method: "POST" })
-      .then(function (r) { return r.json(); })
-      .then(function (data) {
-        if (data.status === "succeeded") {
-          var order = (DB.orders || []).find(function (o) { return o.id === id; });
-          if (order) { order.paymentStatus = "succeeded"; order.paymentConfirmed = true; }
-          loadOrders();
-        } else {
-          btn.disabled = false;
-          btn.textContent = "Проверить оплату";
-          var msg = data.status === "pending" ? "Оплата ещё не поступила" :
-                    data.status === "canceled" ? "Платёж отменён" :
-                    "Статус: " + (data.status || "неизвестно");
-          btn.insertAdjacentHTML("afterend", "<br><span style='color:var(--color-sale);font-size:0.7rem'>" + msg + "</span>");
-        }
-      })
-      .catch(function () {
-        btn.disabled = false;
-        btn.textContent = "Проверить оплату";
-      });
+    btn.textContent = "Проверяем 0 / " + unpaid.length + "…";
+    var done = 0;
+    var updated = 0;
+    unpaid.forEach(function (o) {
+      fetch("/api/payment/check-order/" + o.id, { method: "POST" })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (data.status === "succeeded") {
+            o.paymentStatus = "succeeded";
+            o.paymentConfirmed = true;
+            updated++;
+          }
+        })
+        .catch(function () {})
+        .finally(function () {
+          done++;
+          btn.textContent = "Проверяем " + done + " / " + unpaid.length + "…";
+          if (done === unpaid.length) {
+            btn.disabled = false;
+            btn.textContent = "Проверить все неоплаченные";
+            if (updated > 0) loadOrders();
+            var result = updated > 0 ? ("Оплачено: " + updated) : "Новых оплат нет";
+            btn.insertAdjacentHTML("afterend", "<span id='check-result' style='margin-left:8px;font-size:0.8rem;color:var(--color-text-muted)'>" + result + "</span>");
+            setTimeout(function () { var el = document.getElementById("check-result"); if (el) el.remove(); }, 4000);
+          }
+        });
+    });
   };
 
   function loadOrders() {
