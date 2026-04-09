@@ -230,49 +230,116 @@
   function loadInventory() {
     var inv = DB.inventory || {};
     var products = inv.products || DB.products || [];
-    var logs = inv.logs || [];
+    var grid = document.getElementById("inventory-grid");
+    if (!grid) return;
+    grid.innerHTML = "";
 
-    var tbody = document.querySelector("#inventory-table tbody");
-    if (tbody) {
-      tbody.innerHTML = "";
-      products.forEach(function (p) {
-        var cls = p.stock === 0 ? "status-badge cancelled" : (p.stock <= 5 ? "status-badge processing" : "status-badge done");
-        var label = p.stock === 0 ? "Нет" : (p.stock <= 5 ? "Мало" : "ОК");
-        var tr = document.createElement("tr");
-        tr.innerHTML = "<td>" + p.id + "</td><td>" + esc(p.name) + "</td><td>" + esc(catLabel(p.category)) + "</td><td><strong>" + p.stock + "</strong></td><td><span class='" + cls + "'>" + label + "</span></td>";
-        tbody.appendChild(tr);
-      });
-    }
+    products.forEach(function (p) {
+      var sizes = (p.sizes && p.sizes.length > 0) ? p.sizes : ["ONE SIZE"];
+      var stockBySizes = p.stockBySizes || {};
 
-    var ltbody = document.querySelector("#logs-table tbody");
-    if (ltbody) {
-      ltbody.innerHTML = "";
-      logs.forEach(function (l) {
-        var product = (DB.products || []).find(function (p) { return p.id === l.productId; }) || {};
-        var tr = document.createElement("tr");
-        tr.innerHTML = "<td>" + fmtDate(l.createdAt) + "</td><td>" + esc(product.name || ("ID " + l.productId)) + "</td><td>+" + l.qty + "</td><td>" + esc(l.note || "—") + "</td>";
-        ltbody.appendChild(tr);
-      });
-    }
+      var sizeHeaders = sizes.map(function (s) {
+        return "<th style='min-width:72px;text-align:center;font-weight:600'>" + esc(s) + "</th>";
+      }).join("");
+
+      var total = sizes.reduce(function (sum, s) {
+        return sum + (stockBySizes[s] !== undefined ? parseInt(stockBySizes[s], 10) : 0);
+      }, 0);
+
+      var sizeCells = sizes.map(function (s) {
+        var qty = stockBySizes[s] !== undefined ? parseInt(stockBySizes[s], 10) : 0;
+        var col = qty === 0 ? "var(--color-sale)" : (qty <= 3 ? "#f4a261" : "var(--color-text)");
+        return "<td style='text-align:center;padding:8px 4px'>"
+          + "<input type='number' min='0' data-pid='" + p.id + "' data-size='" + esc(s) + "' value='" + qty + "'"
+          + " style='width:64px;text-align:center;background:var(--color-bg-card);border:1px solid var(--color-border);"
+          + "color:" + col + ";border-radius:6px;padding:4px 6px;font-size:.9rem;font-family:inherit' />"
+          + "</td>";
+      }).join("");
+
+      var totalCls = total === 0 ? "cancelled" : (total <= 10 ? "processing" : "done");
+      var totalLabel = total === 0 ? "Нет в наличии" : (total <= 10 ? "Мало (" + total + " шт.)" : "В наличии (" + total + " шт.)");
+
+      var card = document.createElement("div");
+      card.className = "admin-card";
+      card.style.marginBottom = "0";
+      card.innerHTML =
+        "<div style='display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px'>"
+        + "<div><strong>" + esc(p.name) + "</strong>"
+        + " <span style='color:var(--color-text-muted);font-size:.8rem'>" + esc(catLabel(p.category)) + " · ID " + p.id + "</span></div>"
+        + "<span class='status-badge " + totalCls + "' id='inv-badge-" + p.id + "'>" + totalLabel + "</span>"
+        + "</div>"
+        + "<div class='table-wrap'><table class='admin-table' style='min-width:0'>"
+        + "<thead><tr>" + sizeHeaders + "<th style='text-align:center'>Итого</th></tr></thead>"
+        + "<tbody><tr>" + sizeCells
+        + "<td style='text-align:center;font-weight:600' id='inv-total-" + p.id + "'>" + total + "</td>"
+        + "</tr></tbody></table></div>";
+      grid.appendChild(card);
+    });
+
+    grid.addEventListener("input", function (e) {
+      var inp = e.target;
+      if (!inp.dataset.pid) return;
+      var pid = inp.dataset.pid;
+      var inputs = grid.querySelectorAll("[data-pid='" + pid + "']");
+      var sum = 0;
+      inputs.forEach(function (i) { sum += parseInt(i.value, 10) || 0; i.style.color = (parseInt(i.value, 10) || 0) === 0 ? "var(--color-sale)" : (parseInt(i.value, 10) <= 3 ? "#f4a261" : "var(--color-text)"); });
+      var totalCell = document.getElementById("inv-total-" + pid);
+      var badge = document.getElementById("inv-badge-" + pid);
+      if (totalCell) totalCell.textContent = sum;
+      if (badge) {
+        badge.className = "status-badge " + (sum === 0 ? "cancelled" : (sum <= 10 ? "processing" : "done"));
+        badge.textContent = sum === 0 ? "Нет в наличии" : (sum <= 10 ? "Мало (" + sum + " шт.)" : "В наличии (" + sum + " шт.)");
+      }
+    });
   }
 
-  var deliveryForm = document.getElementById("delivery-form");
-  if (deliveryForm) {
-    deliveryForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var fd = new FormData(e.target);
-      authFetch("/api/inventory/delivery", {
-        method: "POST",
-        body: JSON.stringify({
-          productId: parseInt(fd.get("productId"), 10),
-          qty: parseInt(fd.get("qty"), 10),
-          note: fd.get("note"),
-        }),
-      }).then(function (r) {
-        if (!r.ok) { alert("Ошибка"); return; }
-        e.target.reset();
+  var btnGenStock = document.getElementById("btn-gen-stock");
+  if (btnGenStock) {
+    btnGenStock.addEventListener("click", function () {
+      if (!confirm("Сгенерировать случайные остатки для всех товаров? Текущие данные будут заменены.")) return;
+      btnGenStock.disabled = true;
+      btnGenStock.textContent = "Генерация…";
+      authFetch("/api/admin/generate-stock", { method: "POST" }).then(function (r) {
+        if (!r.ok) { alert("Ошибка генерации"); btnGenStock.disabled = false; btnGenStock.textContent = "Генерировать случайно"; return; }
         authFetch("/api/admin/dashboard").then(function (fr) {
-          if (fr.ok) return fr.json().then(function (d) { DB = d; syncProductSelect(); loadInventory(); });
+          if (fr.ok) return fr.json().then(function (d) { DB = d; loadInventory(); });
+        }).finally(function () { btnGenStock.disabled = false; btnGenStock.textContent = "Генерировать случайно"; });
+      });
+    });
+  }
+
+  var btnSaveStock = document.getElementById("btn-save-stock");
+  if (btnSaveStock) {
+    btnSaveStock.addEventListener("click", function () {
+      var grid = document.getElementById("inventory-grid");
+      if (!grid) return;
+      var inputs = grid.querySelectorAll("input[data-pid]");
+      var byProduct = {};
+      inputs.forEach(function (inp) {
+        var pid = inp.dataset.pid;
+        var size = inp.dataset.size;
+        if (!byProduct[pid]) byProduct[pid] = {};
+        byProduct[pid][size] = parseInt(inp.value, 10) || 0;
+      });
+      var pids = Object.keys(byProduct);
+      btnSaveStock.disabled = true;
+      btnSaveStock.textContent = "Сохранение…";
+      var done = 0;
+      var errors = 0;
+      pids.forEach(function (pid) {
+        authFetch("/api/products/" + pid + "/stock-by-sizes", {
+          method: "PUT",
+          body: JSON.stringify({ stockBySizes: byProduct[pid] }),
+        }).then(function (r) {
+          if (!r.ok) errors++;
+        }).finally(function () {
+          done++;
+          if (done === pids.length) {
+            btnSaveStock.disabled = false;
+            btnSaveStock.textContent = "Сохранить изменения";
+            if (errors > 0) alert("Сохранено с ошибками: " + errors + " товаров не удалось обновить.");
+            else alert("Остатки сохранены!");
+          }
         });
       });
     });

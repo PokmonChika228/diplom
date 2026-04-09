@@ -338,6 +338,8 @@ app.get("/api/inventory", requireAdminApi, (_req, res) => {
       stock: p.stock,
       category: p.category,
       sale: !!p.sale,
+      sizes: p.sizes || [],
+      stockBySizes: p.stockBySizes || null,
     })),
     logs: db.inventoryLogs.slice().sort((a, b) => b.id - a.id).slice(0, 50),
   });
@@ -364,6 +366,37 @@ app.post("/api/inventory/delivery", requireAdminApi, (req, res) => {
   db.inventoryLogs.push(log);
   writeDb(db);
   res.status(201).json({ ok: true, product, log });
+});
+
+app.put("/api/products/:id/stock-by-sizes", requireAdminApi, (req, res) => {
+  const db = readDb();
+  const product = findProduct(db, req.params.id);
+  if (!product) return res.status(404).json({ error: "Product not found" });
+  const stockBySizes = req.body?.stockBySizes;
+  if (!stockBySizes || typeof stockBySizes !== "object") return res.status(400).json({ error: "Invalid stockBySizes" });
+  product.stockBySizes = {};
+  for (const [size, qty] of Object.entries(stockBySizes)) {
+    product.stockBySizes[size] = Math.max(0, toNum(qty, 0));
+  }
+  product.stock = Object.values(product.stockBySizes).reduce((a, b) => a + b, 0);
+  product.updatedAt = nowIso();
+  writeDb(db);
+  res.json({ ok: true, product });
+});
+
+app.post("/api/admin/generate-stock", requireAdminApi, (req, res) => {
+  const db = readDb();
+  db.products.forEach((product) => {
+    const sizes = product.sizes && product.sizes.length > 0 ? product.sizes : ["ONE SIZE"];
+    product.stockBySizes = {};
+    sizes.forEach((size) => {
+      product.stockBySizes[size] = Math.floor(Math.random() * 28) + 3;
+    });
+    product.stock = Object.values(product.stockBySizes).reduce((a, b) => a + b, 0);
+    product.updatedAt = nowIso();
+  });
+  writeDb(db);
+  res.json({ ok: true, count: db.products.length });
 });
 
 app.get("/api/orders", requireAdminApi, (_req, res) => {
@@ -454,8 +487,6 @@ app.post("/api/orders", (req, res) => {
   };
   const PAYMENT_OPTIONS = {
     card: "ЮKassa",
-    sbp: "СБП",
-    receipt: "При получении",
   };
 
   const deliveryKey = String(body.delivery || "pickup");
@@ -469,13 +500,23 @@ app.post("/api/orders", (req, res) => {
     const product = findProduct(db, item.productId);
     if (!product) return res.status(400).json({ error: `Product ${item.productId} not found` });
     const qty = Math.max(1, toNum(item.qty, 1));
-    if (product.stock < qty) {
-      return res.status(400).json({ error: `Not enough stock for ${product.name}` });
+    const size = String(item.size || "");
+    if (product.stockBySizes && size && product.stockBySizes[size] !== undefined) {
+      if (product.stockBySizes[size] < qty) {
+        return res.status(400).json({ error: `Not enough stock for ${product.name} (${size})` });
+      }
+      product.stockBySizes[size] -= qty;
+      product.stock = Object.values(product.stockBySizes).reduce((a, b) => a + b, 0);
+    } else {
+      if (product.stock < qty) {
+        return res.status(400).json({ error: `Not enough stock for ${product.name}` });
+      }
+      product.stock -= qty;
     }
-    product.stock -= qty;
     normalizedItems.push({
       productId: product.id,
       productName: product.name,
+      size,
       qty,
       price: product.price,
     });
@@ -539,7 +580,14 @@ function restoreOrderStock(db, order) {
   if (order._stockRestored) return;
   (order.items || []).forEach((item) => {
     const product = findProduct(db, item.productId);
-    if (product) product.stock = toNum(product.stock, 0) + toNum(item.qty, 0);
+    if (!product) return;
+    const size = item.size || "";
+    if (product.stockBySizes && size && product.stockBySizes[size] !== undefined) {
+      product.stockBySizes[size] = toNum(product.stockBySizes[size], 0) + toNum(item.qty, 0);
+      product.stock = Object.values(product.stockBySizes).reduce((a, b) => a + b, 0);
+    } else {
+      product.stock = toNum(product.stock, 0) + toNum(item.qty, 0);
+    }
   });
   order._stockRestored = true;
 }

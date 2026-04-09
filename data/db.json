@@ -3171,7 +3171,7 @@
       "total": 19000,
       "createdAt": "2026-04-09T10:00:04.694Z",
       "paymentId": "31698c65-000f-5000-b000-1cf51ae9e5ee",
-      "paymentStatus": "pending",
+      "paymentStatus": "canceled",
       "_stockRestored": true,
       "cancelReason": "payment_timeout"
     },
@@ -3239,7 +3239,7 @@
       "total": 21000,
       "createdAt": "2026-04-09T10:03:23.125Z",
       "paymentId": "31698d2b-000f-5001-9000-193aa8ea1418",
-      "paymentStatus": "pending",
+      "paymentStatus": "canceled",
       "_stockRestored": true,
       "cancelReason": "payment_timeout"
     },
@@ -3301,7 +3301,7 @@
       "total": 5000,
       "createdAt": "2026-04-09T10:08:15.960Z",
       "paymentId": "31698e50-000f-5000-8000-1659185cb19b",
-      "paymentStatus": "pending",
+      "paymentStatus": "succeeded",
       "_stockRestored": true,
       "cancelReason": "payment_timeout"
     },
@@ -3456,6 +3456,37 @@
       "discountAmount": 0,
       "total": 21000,
       "createdAt": "2026-04-09T12:51:53.047Z"
+    },
+    {
+      "id": 12,
+      "customerName": "das das",
+      "phone": "+79999999999",
+      "email": "dsa@gmail.com",
+      "address": "fsdfs",
+      "comment": "",
+      "status": "new",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "card",
+      "paymentLabel": "ЮKassa",
+      "items": [
+        {
+          "productId": 107,
+          "productName": "Толстовка Донор",
+          "qty": 1,
+          "price": 21000
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 21000,
+      "discountAmount": 0,
+      "total": 21000,
+      "createdAt": "2026-04-09T13:06:49.132Z",
+      "paymentId": "3169b82a-000f-5000-b000-1fba6711eb6f",
+      "paymentStatus": "pending",
+      "_stockRestored": true
     }
   ],
   "promoCodes": [
@@ -3478,7 +3509,7 @@
   ],
   "counters": {
     "product": 121,
-    "order": 12,
+    "order": 13,
     "log": 4,
     "promo": 3
   },

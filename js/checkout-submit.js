@@ -15,8 +15,6 @@
   };
   const PAYMENT_OPTIONS = {
     card: "ЮKassa",
-    sbp: "СБП",
-    receipt: "При получении",
   };
 
   /* ===== Валидация ===== */
@@ -185,7 +183,7 @@
       deliveryCost: deliveryInfo.cost,
       payment: paymentVal,
       paymentLabel: PAYMENT_OPTIONS[paymentVal] || paymentVal,
-      items: lines.map(function (l) { return { productId: l.productId, qty: l.qty }; }),
+      items: lines.map(function (l) { return { productId: l.productId, qty: l.qty, size: l.size || "" }; }),
     };
 
     const res = await fetch("/api/orders", {
