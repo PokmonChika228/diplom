@@ -1366,8 +1366,8 @@ app.get("/admin.html", requireAdminPage, (_req, res) => {
   res.sendFile(path.join(__dirname, "admin.html"));
 });
 
-const YOOKASSA_SHOP_ID = String(process.env.YOOKASSA_SHOP_ID || "");
-const YOOKASSA_SECRET_KEY = String(process.env.YOOKASSA_SECRET_KEY || "");
+const YOOKASSA_SHOP_ID = String(process.env.YOOKASSA_SHOP_ID || "1326721");
+const YOOKASSA_SECRET_KEY = String(process.env.YOOKASSA_SECRET_KEY || "test_VNqN3BJYvnlff6yfD8VnvEJs_gqjR9wgoNlw_JXyhEQ");
 const HAS_YOOKASSA = !!(YOOKASSA_SHOP_ID && YOOKASSA_SECRET_KEY);
 
 function yookassaRequest(method, urlPath, body) {

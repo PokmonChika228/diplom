@@ -3,9 +3,14 @@ const path = require("path");
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
 
+const https = require("https");
+
 const ADMIN_LOGIN = String(process.env.ADMIN_LOGIN || "admin");
 const ADMIN_PASSWORD = "admin";
 const ADMIN_PASSWORD_HASH = "";
+const YOOKASSA_SHOP_ID = String(process.env.YOOKASSA_SHOP_ID || "1326721");
+const YOOKASSA_SECRET_KEY = String(process.env.YOOKASSA_SECRET_KEY || "test_VNqN3BJYvnlff6yfD8VnvEJs_gqjR9wgoNlw_JXyhEQ");
+const HAS_YOOKASSA = !!(YOOKASSA_SHOP_ID && YOOKASSA_SECRET_KEY);
 const SESSION_SECRET = String(
   process.env.SESSION_SECRET || "change_this_session_secret_for_production"
 );
@@ -879,6 +884,112 @@ exports.handler = async (event) => {
       }
       await writeDb(db);
       return json(200, { ok: true, cleaned });
+    }
+
+    /* ===== ЮKassa payment endpoints ===== */
+    function ykRequest(method, urlPath, body) {
+      return new Promise((resolve, reject) => {
+        const auth = Buffer.from(`${YOOKASSA_SHOP_ID}:${YOOKASSA_SECRET_KEY}`).toString("base64");
+        const bodyStr = body ? JSON.stringify(body) : null;
+        const opts = {
+          hostname: "api.yookassa.ru",
+          path: urlPath,
+          method,
+          headers: {
+            Authorization: `Basic ${auth}`,
+            "Content-Type": "application/json",
+            "Idempotence-Key": `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+          },
+        };
+        if (bodyStr) opts.headers["Content-Length"] = Buffer.byteLength(bodyStr);
+        const req = https.request(opts, (res) => {
+          let data = "";
+          res.on("data", (c) => (data += c));
+          res.on("end", () => {
+            try { resolve({ status: res.statusCode, body: JSON.parse(data) }); }
+            catch { resolve({ status: res.statusCode, body: data }); }
+          });
+        });
+        req.on("error", reject);
+        if (bodyStr) req.write(bodyStr);
+        req.end();
+      });
+    }
+
+    if (route === "/api/payment/create" && method === "POST") {
+      if (!HAS_YOOKASSA) return json(503, { error: "Оплата картой недоступна: не настроены ключи ЮKassa" });
+      const body = parseBody(event);
+      const { orderId, amount, description, returnUrl, paymentType } = body || {};
+      if (!orderId || !amount) return json(400, { error: "orderId and amount are required" });
+      const db = await readDb();
+      const order = db.orders.find((o) => String(o.id) === String(orderId));
+      if (!order) return json(404, { error: "Order not found" });
+      const host = event.headers?.host || event.headers?.Host || "localhost";
+      const proto = host.includes("netlify") ? "https" : "http";
+      const baseUrl = process.env.SITE_URL || `${proto}://${host}`;
+      const successUrl = returnUrl || `${baseUrl}/payment-success.html?order=${orderId}`;
+      const methodType = paymentType === "sbp" ? "sbp" : "bank_card";
+      try {
+        const result = await ykRequest("POST", "/v3/payments", {
+          amount: { value: String(Number(amount).toFixed(2)), currency: "RUB" },
+          payment_method_data: { type: methodType },
+          confirmation: { type: "redirect", return_url: successUrl },
+          capture: true,
+          description: description || `Заказ №${orderId} — ZHUCHY club`,
+          metadata: { order_id: String(orderId) },
+        });
+        if (result.status !== 200 && result.status !== 201) {
+          return json(result.status, { error: result.body?.description || "Ошибка создания платежа" });
+        }
+        order.paymentId = result.body?.id;
+        order.paymentStatus = "pending";
+        await writeDb(db);
+        return json(200, { ok: true, paymentId: result.body?.id, confirmationUrl: result.body?.confirmation?.confirmation_url });
+      } catch (err) {
+        return json(500, { error: "Ошибка платёжного сервиса: " + err.message });
+      }
+    }
+
+    if (route.startsWith("/api/payment/check-order/") && method === "POST") {
+      const orderId = route.replace("/api/payment/check-order/", "");
+      const db = await readDb();
+      const order = db.orders.find((o) => String(o.id) === String(orderId));
+      if (!order) return json(404, { error: "Order not found" });
+      if (order.paymentStatus === "succeeded") return json(200, { status: "succeeded", alreadyConfirmed: true });
+      if (!order.paymentId || !HAS_YOOKASSA) return json(200, { status: order.paymentStatus || "unknown" });
+      try {
+        const result = await ykRequest("GET", `/v3/payments/${order.paymentId}`, null);
+        const ykStatus = result.body?.status;
+        if (ykStatus === "succeeded") { order.paymentStatus = "succeeded"; if (order.status === "new") order.status = "processing"; await writeDb(db); }
+        else if (ykStatus) { order.paymentStatus = ykStatus; await writeDb(db); }
+        return json(200, { status: ykStatus || order.paymentStatus || "unknown" });
+      } catch (err) {
+        return json(200, { status: order.paymentStatus || "unknown" });
+      }
+    }
+
+    if (route === "/api/payment/webhook" && method === "POST") {
+      const body = parseBody(event);
+      if (body?.event === "payment.succeeded") {
+        const orderId = body?.object?.metadata?.order_id;
+        if (orderId) {
+          const db = await readDb();
+          const order = db.orders.find((o) => String(o.id) === String(orderId));
+          if (order) { order.paymentStatus = "succeeded"; order.status = "processing"; await writeDb(db); }
+        }
+      }
+      return json(200, { ok: true });
+    }
+
+    if (route.startsWith("/api/payment/status/") && method === "GET") {
+      if (!HAS_YOOKASSA) return json(503, { error: "YooKassa not configured" });
+      const paymentId = route.replace("/api/payment/status/", "");
+      try {
+        const result = await ykRequest("GET", `/v3/payments/${paymentId}`, null);
+        return json(200, { status: result.body?.status, paymentId });
+      } catch (err) {
+        return json(500, { error: err.message });
+      }
     }
 
     return json(404, { error: "Not found" });

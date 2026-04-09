@@ -3141,7 +3141,9 @@
       "total": 12000,
       "createdAt": "2026-04-08T19:37:07.752Z",
       "_stockRestored": true,
-      "cancelReason": "payment_timeout"
+      "cancelReason": "payment_timeout",
+      "paymentId": "3169bb65-000f-5000-8000-1d44fc71ae47",
+      "paymentStatus": "pending"
     },
     {
       "id": 2,
