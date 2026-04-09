@@ -101,6 +101,17 @@
   border-color: transparent;
 }
 
+.badge--oos {
+  background: var(--color-sale);
+  color: #fff;
+  border-color: transparent;
+}
+
+.product-card.is-out-of-stock .product-card__media img {
+  opacity: 0.55;
+  filter: grayscale(30%);
+}
+
 /* Прямоугольное фото: единое соотношение на всех страницах */
 .product-card__media {
   display: block;

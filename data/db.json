@@ -2727,7 +2727,7 @@
       "sale": false,
       "price": 21000,
       "oldPrice": 0,
-      "stock": 39,
+      "stock": 38,
       "sizes": [
         "XS",
         "S",
@@ -3416,6 +3416,34 @@
       "createdAt": "2026-04-09T10:27:18.418Z",
       "paymentId": "316992c7-000f-5000-8000-1093067314b7",
       "paymentStatus": "pending"
+    },
+    {
+      "id": 11,
+      "customerName": "asda. dasdas",
+      "phone": "+79999999999",
+      "email": "ndsd@gmail.com",
+      "address": "das",
+      "comment": "",
+      "status": "new",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 107,
+          "productName": "Толстовка Донор",
+          "qty": 1,
+          "price": 21000
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 21000,
+      "discountAmount": 0,
+      "total": 21000,
+      "createdAt": "2026-04-09T12:51:53.047Z"
     }
   ],
   "promoCodes": [
@@ -3438,7 +3466,7 @@
   ],
   "counters": {
     "product": 121,
-    "order": 11,
+    "order": 12,
     "log": 4,
     "promo": 3
   },

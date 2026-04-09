@@ -14,7 +14,7 @@
     cdek: { label: "СДЭК / ПВЗ", cost: 350 },
   };
   const PAYMENT_OPTIONS = {
-    card: "Картой онлайн",
+    card: "ЮKassa",
     sbp: "СБП",
     receipt: "При получении",
   };

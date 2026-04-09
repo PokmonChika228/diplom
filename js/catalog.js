@@ -58,8 +58,9 @@
     const img = product.image || "https://placehold.co/800x600?text=Product";
     const id = product.id;
 
+    const isOutOfStock = Number(product.stock || 0) === 0;
     const article = document.createElement("article");
-    article.className = "product-card";
+    article.className = "product-card" + (isOutOfStock ? " is-out-of-stock" : "");
     article.setAttribute("data-category", categoryTokens);
     article.setAttribute("data-sale", String(isSale));
     article.setAttribute("data-name", product.name || "");
@@ -70,9 +71,13 @@
     const priceHtml = hasOldPrice
       ? `<del>${fop(oldPrice, 0)}</del> <strong>${fp(price, priceUsd)}</strong>`
       : fp(price, priceUsd);
+    const badgesHtml = [
+      isSale ? '<span class="badge badge--sale">Sale</span>' : "",
+      isOutOfStock ? '<span class="badge badge--oos">Нет в наличии</span>' : "",
+    ].filter(Boolean).join("");
     article.innerHTML = `
       <div class="product-card__top">
-        ${isSale ? '<div class="product-card__badges"><span class="badge badge--sale">Sale</span></div>' : ""}
+        ${badgesHtml ? `<div class="product-card__badges">${badgesHtml}</div>` : ""}
         <div class="product-card__media">
           <img src="${img}" alt="" width="800" height="600" loading="lazy" />
         </div>

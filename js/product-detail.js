@@ -187,7 +187,11 @@
       const price = document.querySelector("[data-pdp-price]");
       if (price) price.innerHTML = productPriceHtml(product);
       const stock = document.querySelector(".pdp-buy__stock");
-      if (stock) stock.textContent = product.stock > 0 ? "В наличии" : "Нет в наличии";
+      const inStock = product.stock > 0;
+      if (stock) {
+        stock.textContent = inStock ? "В наличии" : "Нет в наличии";
+        stock.style.color = inStock ? "" : "var(--color-sale)";
+      }
       const desc = document.querySelector("[data-pdp-desc]");
       const comp = document.querySelector("[data-pdp-composition]");
       const care = document.querySelector("[data-pdp-care]");
@@ -201,16 +205,23 @@
       renderRelated(Array.isArray(allProducts) ? allProducts : [], product.id);
       setupLightbox();
 
-      if (addBtn && typeof window.addToCart === "function") {
-        addBtn.addEventListener("click", () => {
-          const size = selectedSize() || "ONE";
-          window.addToCart(String(product.id), size, 1);
-          if (toast) {
-            toast.hidden = false;
-            clearTimeout(addBtn._toastT);
-            addBtn._toastT = setTimeout(() => (toast.hidden = true), 2200);
-          }
-        });
+      if (addBtn) {
+        if (!inStock) {
+          addBtn.disabled = true;
+          addBtn.textContent = "Нет в наличии";
+          addBtn.style.opacity = "0.45";
+          addBtn.style.cursor = "not-allowed";
+        } else if (typeof window.addToCart === "function") {
+          addBtn.addEventListener("click", () => {
+            const size = selectedSize() || "ONE";
+            window.addToCart(String(product.id), size, 1);
+            if (toast) {
+              toast.hidden = false;
+              clearTimeout(addBtn._toastT);
+              addBtn._toastT = setTimeout(() => (toast.hidden = true), 2200);
+            }
+          });
+        }
       }
     } catch (e) {
       const h1 = document.querySelector(".pdp-buy__title");
