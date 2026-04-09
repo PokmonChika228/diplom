@@ -1119,6 +1119,137 @@
     });
   });
 
+  /* ===================== DATABASE VIEWER ===================== */
+  var _dbLastRows = [];
+  var _dbLastFields = [];
+
+  function initDatabaseTab() {
+    var tablesList = document.getElementById("db-tables-list");
+    var queryInput = document.getElementById("db-query-input");
+    var btnRun = document.getElementById("btn-db-run");
+    var btnClear = document.getElementById("btn-db-clear");
+    var btnCsv = document.getElementById("btn-db-csv");
+    var queryStatus = document.getElementById("db-query-status");
+    var resultsCard = document.getElementById("db-results-card");
+    var errorCard = document.getElementById("db-error-card");
+    var errorText = document.getElementById("db-error-text");
+    var resultsMeta = document.getElementById("db-results-meta");
+    var resultsHead = document.getElementById("db-results-head");
+    var resultsBody = document.getElementById("db-results-body");
+
+    if (!tablesList) return;
+
+    fetch("/api/admin/db/tables").then(function (r) { return r.json(); }).then(function (tables) {
+      tablesList.innerHTML = "";
+      tables.forEach(function (t) {
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.style.cssText = "display:flex;align-items:center;justify-content:space-between;width:100%;text-align:left;padding:6px 8px;border-radius:6px;border:none;background:none;cursor:pointer;font-size:0.8125rem;color:var(--color-text);gap:6px;transition:background .15s";
+        btn.innerHTML = "<span style='font-weight:500'>" + t.table_name + "</span><span style='font-size:0.75rem;color:var(--color-text-muted);background:var(--color-border);border-radius:999px;padding:1px 7px'>" + (t.row_count || 0) + "</span>";
+        btn.addEventListener("mouseenter", function () { btn.style.background = "var(--color-border)"; });
+        btn.addEventListener("mouseleave", function () { btn.style.background = "none"; });
+        btn.addEventListener("click", function () {
+          queryInput.value = "SELECT *\nFROM " + t.table_name + "\nLIMIT 50;";
+          runQuery();
+        });
+        tablesList.appendChild(btn);
+      });
+    }).catch(function () {
+      tablesList.innerHTML = "<div style='font-size:0.8125rem;color:#c0392b'>Ошибка загрузки</div>";
+    });
+
+    function showError(msg) {
+      resultsCard.style.display = "none";
+      errorCard.style.display = "block";
+      errorText.textContent = msg;
+    }
+
+    function showResults(fields, rows, ms) {
+      errorCard.style.display = "none";
+      _dbLastFields = fields;
+      _dbLastRows = rows;
+
+      resultsHead.innerHTML = "<tr>" + fields.map(function (f) { return "<th>" + f + "</th>"; }).join("") + "</tr>";
+      resultsBody.innerHTML = rows.map(function (row) {
+        return "<tr>" + fields.map(function (f) {
+          var val = row[f];
+          if (val === null || val === undefined) return "<td style='color:var(--color-text-muted);font-style:italic'>NULL</td>";
+          if (typeof val === "object") val = JSON.stringify(val);
+          var str = String(val);
+          var short = str.length > 120 ? str.slice(0, 120) + "…" : str;
+          return "<td title='" + str.replace(/'/g, "&#39;") + "'>" + short + "</td>";
+        }).join("") + "</tr>";
+      }).join("");
+
+      resultsMeta.textContent = rows.length + " строк · " + ms + " мс";
+      resultsCard.style.display = "block";
+    }
+
+    function runQuery() {
+      var sql = queryInput.value.trim();
+      if (!sql) return;
+      queryStatus.textContent = "Выполняется…";
+      btnRun.disabled = true;
+      resultsCard.style.display = "none";
+      errorCard.style.display = "none";
+
+      fetch("/api/admin/db/query", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sql: sql })
+      }).then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); }).then(function (res) {
+        btnRun.disabled = false;
+        if (!res.ok) {
+          queryStatus.textContent = "";
+          showError(res.data.error || "Неизвестная ошибка");
+        } else {
+          queryStatus.textContent = "";
+          showResults(res.data.fields, res.data.rows, res.data.ms);
+        }
+      }).catch(function (err) {
+        btnRun.disabled = false;
+        queryStatus.textContent = "";
+        showError(err.message);
+      });
+    }
+
+    btnRun.addEventListener("click", runQuery);
+    btnClear.addEventListener("click", function () {
+      queryInput.value = "";
+      resultsCard.style.display = "none";
+      errorCard.style.display = "none";
+      queryStatus.textContent = "";
+    });
+
+    queryInput.addEventListener("keydown", function (e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); runQuery(); }
+    });
+
+    btnCsv.addEventListener("click", function () {
+      if (!_dbLastFields.length) return;
+      var lines = [_dbLastFields.join(",")].concat(
+        _dbLastRows.map(function (row) {
+          return _dbLastFields.map(function (f) {
+            var v = row[f];
+            if (v === null || v === undefined) return "";
+            if (typeof v === "object") v = JSON.stringify(v);
+            v = String(v).replace(/"/g, '""');
+            return v.includes(",") || v.includes("\n") || v.includes('"') ? '"' + v + '"' : v;
+          }).join(",");
+        })
+      );
+      var blob = new Blob(["\uFEFF" + lines.join("\r\n")], { type: "text/csv;charset=utf-8;" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url; a.download = "db-export.csv"; a.click();
+      URL.revokeObjectURL(url);
+    });
+  }
+
+  document.querySelectorAll(".nav-tab[data-tab='database']").forEach(function (link) {
+    link.addEventListener("click", function () { initDatabaseTab(); });
+  });
+
   /* ===================== START ===================== */
   loadAll();
   initOrderPolling();

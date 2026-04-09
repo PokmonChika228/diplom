@@ -24,6 +24,7 @@
           <a href="#" data-tab="simulation" class="nav-tab">Симуляция</a>
           <a href="#" data-tab="cleanup" class="nav-tab">Очистка</a>
           <a href="#" data-tab="interface" class="nav-tab">Интерфейс</a>
+          <a href="#" data-tab="database" class="nav-tab">База данных</a>
           <a href="index.html" style="margin-top:12px;border-top:1px solid var(--color-border);padding-top:12px">На сайт →</a>
         </nav>
         <button id="admin-logout" class="btn btn--outline" type="button" style="margin-top:auto;width:100%">Выйти</button>
@@ -391,6 +392,64 @@
               <div id="hero-preview-wrap" style="display:none;margin-top:4px">
                 <p style="font-size:0.8125rem;color:var(--color-text-muted);margin-bottom:6px">Текущее изображение:</p>
                 <img id="hero-preview-img" src="" alt="Hero preview" style="max-width:100%;max-height:220px;object-fit:cover;border-radius:6px;border:1px solid var(--color-border)" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Database Tab -->
+        <div class="admin-tab" id="tab-database" hidden>
+          <div class="admin-header">
+            <h2>База данных</h2>
+            <p>Просмотр таблиц и выполнение SQL-запросов. Только для чтения — INSERT/UPDATE/DELETE заблокированы.</p>
+          </div>
+
+          <div style="display:grid;grid-template-columns:220px 1fr;gap:16px;align-items:start">
+            <!-- Tables sidebar -->
+            <div class="admin-card" style="padding:12px">
+              <div style="font-size:0.75rem;font-weight:600;letter-spacing:0.08em;color:var(--color-text-muted);text-transform:uppercase;margin-bottom:10px">Таблицы</div>
+              <div id="db-tables-list" style="display:flex;flex-direction:column;gap:2px">
+                <div style="font-size:0.8125rem;color:var(--color-text-muted)">Загрузка...</div>
+              </div>
+            </div>
+
+            <!-- Query editor + results -->
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div class="admin-card">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+                  <span style="font-size:0.875rem;font-weight:600">SQL-запрос</span>
+                  <div style="display:flex;gap:8px;align-items:center">
+                    <span id="db-query-status" style="font-size:0.8125rem;color:var(--color-text-muted)"></span>
+                    <button class="btn btn--outline" id="btn-db-clear" type="button" style="padding:4px 12px;font-size:0.8rem">Очистить</button>
+                    <button class="btn btn--secondary" id="btn-db-run" type="button" style="padding:4px 14px;font-size:0.8rem">▶ Выполнить</button>
+                  </div>
+                </div>
+                <textarea id="db-query-input" rows="6"
+                  style="width:100%;box-sizing:border-box;background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--radius);padding:10px 12px;font-family:monospace;font-size:0.85rem;color:var(--color-text);resize:vertical;outline:none;line-height:1.55"
+                  placeholder="SELECT * FROM products LIMIT 10;"
+                  spellcheck="false"></textarea>
+                <div style="margin-top:8px;font-size:0.78rem;color:var(--color-text-muted)">
+                  Только SELECT-запросы. Нажмите на таблицу слева — запрос подставится автоматически.
+                </div>
+              </div>
+
+              <!-- Results -->
+              <div class="admin-card" id="db-results-card" style="display:none">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+                  <span id="db-results-meta" style="font-size:0.8125rem;color:var(--color-text-muted)"></span>
+                  <button class="btn btn--outline" id="btn-db-csv" type="button" style="padding:4px 12px;font-size:0.8rem">⬇ Скачать CSV</button>
+                </div>
+                <div class="table-wrap" style="overflow-x:auto;max-height:420px;overflow-y:auto">
+                  <table class="admin-table" id="db-results-table">
+                    <thead id="db-results-head"></thead>
+                    <tbody id="db-results-body"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div id="db-error-card" class="admin-card" style="display:none;border-color:#c0392b">
+                <div style="font-size:0.875rem;font-weight:600;color:#c0392b;margin-bottom:6px">Ошибка выполнения</div>
+                <pre id="db-error-text" style="font-size:0.8rem;color:#e74c3c;white-space:pre-wrap;margin:0;font-family:monospace"></pre>
               </div>
             </div>
           </div>

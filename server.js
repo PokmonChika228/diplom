@@ -913,6 +913,69 @@ app.post("/api/admin/parse-vitrine", requireAdminApi, async (req, res) => {
   res.json({ added: added.length, products: added });
 });
 
+// ===== DATABASE VIEWER =====
+
+const DB_READONLY_TABLES = ["products", "inventory_logs", "orders", "promo_codes", "ui_settings"];
+
+app.get("/api/admin/db/tables", requireAdminApi, async (_req, res) => {
+  try {
+    const { rows } = await pool.query(`
+      SELECT
+        t.table_name,
+        (SELECT COUNT(*) FROM information_schema.columns c WHERE c.table_name = t.table_name AND c.table_schema = 'public') AS col_count,
+        pg_stat_user_tables.n_live_tup AS row_count
+      FROM information_schema.tables t
+      LEFT JOIN pg_stat_user_tables ON pg_stat_user_tables.relname = t.table_name
+      WHERE t.table_schema = 'public' AND t.table_type = 'BASE TABLE'
+      ORDER BY t.table_name
+    `);
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/api/admin/db/schema/:table", requireAdminApi, async (req, res) => {
+  const table = req.params.table;
+  if (!/^[a-z_]+$/.test(table)) return res.status(400).json({ error: "Invalid table name" });
+  try {
+    const { rows } = await pool.query(`
+      SELECT column_name, data_type, is_nullable, column_default
+      FROM information_schema.columns
+      WHERE table_schema = 'public' AND table_name = $1
+      ORDER BY ordinal_position
+    `, [table]);
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/admin/db/query", requireAdminApi, async (req, res) => {
+  const sql = String(req.body?.sql || "").trim();
+  if (!sql) return res.status(400).json({ error: "Query is required" });
+
+  const upper = sql.replace(/--[^\n]*/g, "").replace(/\/\*[\s\S]*?\*\//g, "").toUpperCase();
+  const forbidden = /\b(INSERT|UPDATE|DELETE|DROP|TRUNCATE|ALTER|CREATE|GRANT|REVOKE|COPY|VACUUM|ANALYZE|REINDEX|CLUSTER|LOCK|CALL|DO)\b/;
+  if (forbidden.test(upper)) {
+    return res.status(403).json({ error: "Разрешены только SELECT-запросы. Изменение данных через эту панель заблокировано." });
+  }
+
+  try {
+    const start = Date.now();
+    const { rows, fields } = await pool.query(sql);
+    const ms = Date.now() - start;
+    res.json({
+      rows,
+      fields: (fields || []).map((f) => f.name),
+      count: rows.length,
+      ms,
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
 // ===== CLEANUP =====
 
 app.delete("/api/admin/cleanup/products", requireAdminApi, async (_req, res) => {
