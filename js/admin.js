@@ -96,6 +96,7 @@
         "<td>" + saleLabel + "</td>" +
         "<td>" + (p.oldPrice > 0 ? fmt(p.oldPrice) : "—") + "</td>" +
         "<td>" + fmt(p.price) + "</td>" +
+        "<td>" + (p.priceUsd > 0 ? "$" + Number(p.priceUsd).toLocaleString("en-US") : "—") + "</td>" +
         "<td" + (p.stock <= 5 ? ' style="color:var(--color-sale)"' : "") + ">" + p.stock + "</td>" +
         '<td class="actions" style="white-space:nowrap">' +
           '<button class="btn btn--outline" style="padding:4px 10px;font-size:0.75rem;margin-right:4px" onclick="editProduct(' + p.id + ')">✎ Изменить</button>' +
@@ -256,11 +257,15 @@
     card.className = "admin-card";
     card.style.marginBottom = "0";
     card.dataset.name = String(p.name).toLowerCase();
+    card.dataset.pid = p.id;
     card.innerHTML =
       "<div style='display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px'>"
       + "<div><strong>" + esc(p.name) + "</strong>"
       + " <span style='color:var(--color-text-muted);font-size:.8rem'>" + esc(catLabel(p.category)) + " · ID " + p.id + "</span></div>"
+      + "<div style='display:flex;gap:8px;align-items:center;flex-wrap:wrap'>"
       + "<span class='status-badge " + totalCls + "' id='inv-badge-" + p.id + "'>" + totalLabel + "</span>"
+      + "<button class='btn btn--outline btn-save-product-stock' data-pid='" + p.id + "' type='button' style='padding:4px 12px;font-size:.8rem'>Сохранить</button>"
+      + "</div>"
       + "</div>"
       + "<div class='table-wrap' style='overflow-x:auto'><table class='admin-table' style='min-width:0'>"
       + "<thead><tr>" + sizeHeaders + "<th style='text-align:center;min-width:60px'>Итого</th></tr></thead>"
@@ -301,6 +306,32 @@
       searchInput.oninput = function () { filterInventory(searchInput.value); };
       filterInventory(searchInput.value);
     }
+
+    grid.addEventListener("click", function (e) {
+      var btn = e.target.closest(".btn-save-product-stock");
+      if (!btn) return;
+      var pid = btn.dataset.pid;
+      if (!pid) return;
+      var inputs = grid.querySelectorAll("input[data-pid='" + pid + "']");
+      var stockBySizes = {};
+      inputs.forEach(function (inp) {
+        stockBySizes[inp.dataset.size] = parseInt(inp.value, 10) || 0;
+      });
+      btn.disabled = true;
+      btn.textContent = "Сохранение…";
+      authFetch("/api/products/" + pid + "/stock-by-sizes", {
+        method: "PUT",
+        body: JSON.stringify({ stockBySizes: stockBySizes }),
+      }).then(function (r) {
+        if (!r.ok) { alert("Ошибка сохранения остатков товара " + pid); }
+        else { btn.textContent = "Сохранено ✓"; setTimeout(function () { btn.textContent = "Сохранить"; }, 1500); }
+      }).catch(function () {
+        alert("Ошибка сети при сохранении");
+      }).finally(function () {
+        btn.disabled = false;
+        if (btn.textContent === "Сохранение…") btn.textContent = "Сохранить";
+      });
+    });
 
     grid.addEventListener("input", function (e) {
       var inp = e.target;

@@ -14,7 +14,9 @@
     cdek: { label: "СДЭК / ПВЗ", cost: 350 },
   };
   const PAYMENT_OPTIONS = {
-    card: "ЮKassa",
+    card: "ЮKassa — Банковская карта",
+    sbp: "СБП — Система быстрых платежей",
+    receipt: "Оплата при получении",
   };
 
   /* ===== Валидация ===== */
@@ -203,6 +205,9 @@
       const payData = await payRes.json().catch(function () { return {}; });
       if (payRes.ok && payData.confirmationUrl) {
         data._redirectUrl = payData.confirmationUrl;
+      } else {
+        const errMsg = payData.error || "Не удалось создать платёж через ЮKassa. Попробуйте выбрать другой способ оплаты.";
+        throw new Error(errMsg);
       }
     }
 
