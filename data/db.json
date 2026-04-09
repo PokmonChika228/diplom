@@ -598,7 +598,7 @@
       "sale": true,
       "price": 5000,
       "oldPrice": 6900,
-      "stock": 35,
+      "stock": 34,
       "sizes": [
         "S",
         "M",
@@ -2568,7 +2568,7 @@
       "sale": false,
       "price": 12000,
       "oldPrice": 0,
-      "stock": 19,
+      "stock": 18,
       "sizes": [
         "XS",
         "S",
@@ -3236,6 +3236,66 @@
       "createdAt": "2026-04-09T10:03:23.125Z",
       "paymentId": "31698d2b-000f-5001-9000-193aa8ea1418",
       "paymentStatus": "pending"
+    },
+    {
+      "id": 5,
+      "customerName": "dsada",
+      "phone": "dsada",
+      "email": "dssa@gmail.com",
+      "address": "dsadasdsa",
+      "comment": "",
+      "status": "new",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 101,
+          "productName": "YX BOMBER",
+          "qty": 1,
+          "price": 12000
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 12000,
+      "discountAmount": 0,
+      "total": 12000,
+      "createdAt": "2026-04-09T10:06:38.233Z",
+      "paymentId": "31698dee-000f-5000-b000-10aab31200e6",
+      "paymentStatus": "pending"
+    },
+    {
+      "id": 6,
+      "customerName": "dsad",
+      "phone": "dsas",
+      "email": "dsas@gmail.com",
+      "address": "dsa",
+      "comment": "",
+      "status": "new",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 24,
+          "productName": "CAMO PANTS/SHORTS",
+          "qty": 1,
+          "price": 5000
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 5000,
+      "discountAmount": 0,
+      "total": 5000,
+      "createdAt": "2026-04-09T10:08:15.960Z",
+      "paymentId": "31698e50-000f-5000-8000-1659185cb19b",
+      "paymentStatus": "pending"
     }
   ],
   "promoCodes": [
@@ -3250,7 +3310,7 @@
   ],
   "counters": {
     "product": 121,
-    "order": 5,
+    "order": 7,
     "log": 4,
     "promo": 2
   },
