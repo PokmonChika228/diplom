@@ -978,37 +978,57 @@ app.post("/api/admin/db/query", requireAdminApi, async (req, res) => {
 
 // ===== CLEANUP =====
 
+app.post("/api/admin/cleanup", requireAdminApi, async (req, res) => {
+  const target = String(req.body?.target || "");
+  try {
+    switch (target) {
+      case "orders":
+        await pool.query("DELETE FROM orders");
+        break;
+      case "inventory":
+        await pool.query("DELETE FROM inventory_logs");
+        break;
+      case "reports":
+        // analytics are derived from orders — clear orders to reset
+        await pool.query("DELETE FROM orders");
+        break;
+      case "products":
+        await pool.query("DELETE FROM inventory_logs");
+        await pool.query("DELETE FROM products");
+        break;
+      case "promocodes":
+        await pool.query("DELETE FROM promo_codes");
+        break;
+      case "all":
+        await pool.query("DELETE FROM orders");
+        await pool.query("DELETE FROM inventory_logs");
+        await pool.query("DELETE FROM products");
+        await pool.query("DELETE FROM promo_codes");
+        break;
+      default:
+        return res.status(400).json({ error: "Unknown cleanup target: " + target });
+    }
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Legacy DELETE aliases kept for compatibility
 app.delete("/api/admin/cleanup/products", requireAdminApi, async (_req, res) => {
-  try {
-    await pool.query("DELETE FROM inventory_logs");
-    await pool.query("DELETE FROM order_items_backup WHERE TRUE") .catch(() => {});
-    await pool.query("DELETE FROM products");
-    res.json({ ok: true });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  try { await pool.query("DELETE FROM inventory_logs"); await pool.query("DELETE FROM products"); res.json({ ok: true }); }
+  catch (err) { res.status(500).json({ error: err.message }); }
 });
-
 app.delete("/api/admin/cleanup/orders", requireAdminApi, async (_req, res) => {
-  try {
-    await pool.query("DELETE FROM orders");
-    res.json({ ok: true });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  try { await pool.query("DELETE FROM orders"); res.json({ ok: true }); }
+  catch (err) { res.status(500).json({ error: err.message }); }
 });
-
 app.delete("/api/admin/cleanup/all", requireAdminApi, async (_req, res) => {
   try {
-    await pool.query("DELETE FROM orders");
-    await pool.query("DELETE FROM inventory_logs");
-    await pool.query("DELETE FROM products");
-    await pool.query("DELETE FROM promo_codes");
-    await pool.query("UPDATE ui_settings SET value='{}' WHERE TRUE");
+    await pool.query("DELETE FROM orders"); await pool.query("DELETE FROM inventory_logs");
+    await pool.query("DELETE FROM products"); await pool.query("DELETE FROM promo_codes");
     res.json({ ok: true });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
 // ===== PAYMENT (YooKassa stubs) =====
