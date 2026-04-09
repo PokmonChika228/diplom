@@ -299,14 +299,21 @@
         return "<option value='" + s + "'" + (o.status === s ? " selected" : "") + ">" + STATUS_MAP[s] + "</option>";
       }).join("");
 
+      var isPaid = o.paymentConfirmed;
+      var paymentBadge = isPaid
+        ? "<br><span style='color:#4caf50;font-size:0.75rem;font-weight:600'>✓ Оплачено</span>"
+        : "<br><span style='color:var(--color-sale);font-size:0.75rem'>⏳ Ожидает оплаты</span>" +
+          "<br><button class='btn btn--sm' style='margin-top:4px;font-size:0.7rem;padding:2px 8px' onclick='markAsPaid(" + o.id + ", this)'>Отметить как оплачено</button>";
+
       var tr = document.createElement("tr");
+      if (!isPaid) tr.style.opacity = "0.65";
       tr.innerHTML =
         "<td><strong>#" + o.id + "</strong></td>" +
         "<td style='white-space:nowrap'>" + fmtDate(o.createdAt) + "</td>" +
         "<td>" + esc(o.customerName) + "</td>" +
         "<td style='font-size:0.8rem'>" + esc(o.phone || "") + "<br>" + esc(o.email || "") + "<br><span style='color:var(--color-text-muted)'>" + esc(o.address || "") + "</span></td>" +
         "<td>" + esc(o.deliveryLabel || o.delivery || "—") + "<br><span style='color:var(--color-text-muted);font-size:0.8rem'>" + (o.deliveryCost === 0 ? "Бесплатно" : fmt(o.deliveryCost || 0)) + "</span></td>" +
-        "<td>" + esc(o.paymentLabel || o.payment || "—") + "</td>" +
+        "<td style='font-size:0.8rem'>" + esc(o.paymentLabel || o.payment || "—") + paymentBadge + "</td>" +
         "<td style='font-size:0.8rem'>" + items + "</td>" +
         "<td style='font-size:0.8rem'>" + promoInfo + "</td>" +
         "<td style='font-size:0.8rem'>" + totalInfo + "</td>" +
@@ -314,6 +321,21 @@
       tbody.appendChild(tr);
     });
   }
+
+  window.markAsPaid = function (id, btn) {
+    if (!confirm("Отметить заказ #" + id + " как оплаченный?")) return;
+    btn.disabled = true;
+    btn.textContent = "...";
+    authFetch("/api/orders/" + id + "/mark-paid", { method: "PUT" })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (!data.ok) { alert("Ошибка"); btn.disabled = false; btn.textContent = "Отметить как оплачено"; return; }
+        var order = (DB.orders || []).find(function (o) { return o.id === id; });
+        if (order) { order.paymentStatus = "succeeded"; order.paymentConfirmed = true; }
+        loadOrders();
+      })
+      .catch(function () { btn.disabled = false; btn.textContent = "Отметить как оплачено"; });
+  };
 
   function loadOrders() {
     var orders = (DB.orders || []).slice();

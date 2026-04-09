@@ -370,19 +370,27 @@ app.get("/api/orders", requireAdminApi, (_req, res) => {
   const db = readDb();
   const orders = db.orders
     .slice()
-    .filter((o) => {
-      const isCash = o.payment === "receipt";
-      const isPaid = o.paymentStatus === "succeeded";
-      return isCash || isPaid;
-    })
     .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
     .map((o) => {
       const subtotal = o.items.reduce((sum, it) => sum + toNum(it.qty) * toNum(it.price), 0);
       const discount = toNum(o.discountAmount, 0);
       const total = Math.max(0, subtotal - discount);
-      return { ...o, subtotal, discount, total };
+      const isCash = o.payment === "receipt";
+      const isPaid = o.paymentStatus === "succeeded";
+      const paymentConfirmed = isCash || isPaid;
+      return { ...o, subtotal, discount, total, paymentConfirmed };
     });
   res.json(orders);
+});
+
+app.put("/api/orders/:id/mark-paid", requireAdminApi, (req, res) => {
+  const db = readDb();
+  const order = db.orders.find((o) => String(o.id) === String(req.params.id));
+  if (!order) return res.status(404).json({ error: "Order not found" });
+  order.paymentStatus = "succeeded";
+  if (order.status === "new") order.status = "processing";
+  writeDb(db);
+  res.json({ ok: true, order });
 });
 
 app.get("/api/promocodes", (_req, res) => {
@@ -693,7 +701,7 @@ app.get("/api/admin/dashboard", requireAdminApi, (_req, res) => {
     .map(([date, revenue]) => ({ date, revenue }))
     .sort((a, b) => (a.date > b.date ? 1 : -1));
 
-  const orders = paidOrders
+  const orders = db.orders
     .slice()
     .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
     .map((o) => {
@@ -701,7 +709,10 @@ app.get("/api/admin/dashboard", requireAdminApi, (_req, res) => {
       const discount = toNum(o.discountAmount, 0);
       const deliveryCost = toNum(o.deliveryCost, 0);
       const total = toNum(o.total, 0) || Math.max(0, subtotal - discount) + deliveryCost;
-      return { ...o, subtotal, discount, deliveryCost, total };
+      const isCash = o.payment === "receipt";
+      const isPaid = o.paymentStatus === "succeeded";
+      const paymentConfirmed = isCash || isPaid;
+      return { ...o, subtotal, discount, deliveryCost, total, paymentConfirmed };
     });
 
   res.json({
