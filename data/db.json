@@ -33,7 +33,7 @@
       "sale": true,
       "price": 9900,
       "oldPrice": 12300,
-      "stock": 7,
+      "stock": 6,
       "sizes": [
         "ONE SIZE"
       ],
@@ -1364,7 +1364,7 @@
       "sale": false,
       "price": 10000,
       "oldPrice": 0,
-      "stock": 54,
+      "stock": 53,
       "sizes": [
         "XS",
         "S",
@@ -2992,7 +2992,7 @@
       "sale": true,
       "price": 7900,
       "oldPrice": 10600,
-      "stock": 18,
+      "stock": 17,
       "sizes": [
         "ONE SIZE"
       ],
@@ -3270,7 +3270,7 @@
       "sale": false,
       "price": 21000,
       "oldPrice": 0,
-      "stock": 74,
+      "stock": 73,
       "sizes": [
         "XS",
         "S",
@@ -4170,6 +4170,52 @@
       "paymentId": "3169be5c-000f-5000-8000-15548b032509",
       "paymentStatus": "pending",
       "_stockRestored": true
+    },
+    {
+      "id": 15,
+      "customerName": "asd sa",
+      "phone": "+79999999999",
+      "email": "dsa@gmail.com",
+      "address": "cx",
+      "comment": "",
+      "status": "new",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 45,
+          "productName": "Худи RVR Hoodie",
+          "qty": 1,
+          "price": 10000
+        },
+        {
+          "productId": 107,
+          "productName": "Толстовка Донор",
+          "qty": 1,
+          "price": 21000
+        },
+        {
+          "productId": 98,
+          "productName": "LUSTER ZIP-FLARE JEANS",
+          "qty": 1,
+          "price": 7900
+        },
+        {
+          "productId": 2,
+          "productName": "Браслет Circle Brass",
+          "qty": 1,
+          "price": 9900
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 48800,
+      "discountAmount": 0,
+      "total": 48800,
+      "createdAt": "2026-04-09T13:40:50.859Z"
     }
   ],
   "promoCodes": [
@@ -4192,7 +4238,7 @@
   ],
   "counters": {
     "product": 121,
-    "order": 15,
+    "order": 16,
     "log": 4,
     "promo": 3
   },
