@@ -10,6 +10,8 @@ channel = "stable-25_05"
 [userenv.shared]
 PORT = "5000"
 ADMIN_PASSWORD = "admin"
+YOOKASSA_SHOP_ID = "1326721"
+YOOKASSA_SECRET_KEY = "test_VNqN3BJYvnlff6yfD8VnvEJs_gqjR9wgoNlw_JXyhEQ"
 
 [workflows]
 runButton = "Project"

@@ -453,7 +453,7 @@ app.post("/api/orders", (req, res) => {
     cdek: { label: "СДЭК / ПВЗ", cost: 350 },
   };
   const PAYMENT_OPTIONS = {
-    card: "Картой онлайн",
+    card: "ЮKassa",
     sbp: "СБП",
     receipt: "При получении",
   };
@@ -534,11 +534,25 @@ app.post("/api/orders", (req, res) => {
   res.status(201).json(order);
 });
 
+/* ===== Восстановление остатков при отмене заказа ===== */
+function restoreOrderStock(db, order) {
+  if (order._stockRestored) return;
+  (order.items || []).forEach((item) => {
+    const product = findProduct(db, item.productId);
+    if (product) product.stock = toNum(product.stock, 0) + toNum(item.qty, 0);
+  });
+  order._stockRestored = true;
+}
+
 app.put("/api/orders/:id/status", requireAdminApi, (req, res) => {
   const db = readDb();
   const order = db.orders.find((o) => String(o.id) === String(req.params.id));
   if (!order) return res.status(404).json({ error: "Order not found" });
-  order.status = String(req.body?.status || "new");
+  const newStatus = String(req.body?.status || "new");
+  if (newStatus === "cancelled" && order.status !== "cancelled") {
+    restoreOrderStock(db, order);
+  }
+  order.status = newStatus;
   writeDb(db);
   res.json(order);
 });
@@ -1437,7 +1451,38 @@ app.get("/api/payment/status/:paymentId", async (req, res) => {
   }
 });
 
+/* ===== Автоотмена неоплаченных заказов через 30 минут ===== */
+const PAYMENT_TIMEOUT_MS = 30 * 60 * 1000;
+const ONLINE_PAYMENTS = new Set(["card", "sbp"]);
+const FINAL_STATUSES = new Set(["cancelled", "done", "delivered"]);
+
+function runPaymentTimeoutJob() {
+  try {
+    const db = readDb();
+    const now = Date.now();
+    let changed = false;
+    db.orders.forEach((order) => {
+      if (FINAL_STATUSES.has(order.status)) return;
+      if (!ONLINE_PAYMENTS.has(order.payment)) return;
+      if (order.paymentStatus === "succeeded") return;
+      const created = order.createdAt ? new Date(order.createdAt).getTime() : 0;
+      if (!created || now - created < PAYMENT_TIMEOUT_MS) return;
+      console.log(`[auto-cancel] Order #${order.id} expired (no payment in 30 min), cancelling.`);
+      restoreOrderStock(db, order);
+      order.status = "cancelled";
+      order.cancelReason = "payment_timeout";
+      changed = true;
+    });
+    if (changed) writeDb(db);
+  } catch (err) {
+    console.error("[auto-cancel] Error:", err.message);
+  }
+}
+
 ensureDb();
+setInterval(runPaymentTimeoutJob, 60 * 1000);
+runPaymentTimeoutJob();
+
 app.listen(PORT, () => {
   if (!ADMIN_PASSWORD_HASH && ADMIN_PASSWORD === "change_me_please") {
     console.warn(
