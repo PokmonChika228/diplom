@@ -62,15 +62,16 @@
             <p>Детальный учёт по размерам каждого товара.</p>
           </div>
           <div class="admin-card" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
-            <div>
-              <h3 style="margin:0 0 4px">Управление остатками</h3>
-              <p style="margin:0;color:var(--color-text-muted);font-size:.85rem">Редактируйте количество прямо в ячейках и нажмите «Сохранить»</p>
+            <div style="flex:1;min-width:220px">
+              <h3 style="margin:0 0 8px">Управление остатками</h3>
+              <input class="input" id="inventory-search" type="text" placeholder="Поиск по названию товара…" style="max-width:380px;width:100%" />
             </div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
               <button class="btn btn--outline" id="btn-gen-stock" type="button">Генерировать случайно</button>
               <button class="btn btn--secondary" id="btn-save-stock" type="button">Сохранить изменения</button>
             </div>
           </div>
+          <div id="inventory-empty" style="display:none;text-align:center;padding:32px;color:var(--color-text-muted)">Товары не найдены</div>
           <div id="inventory-grid" style="display:grid;gap:16px"></div>
         </div>
 

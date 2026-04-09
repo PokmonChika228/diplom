@@ -227,6 +227,64 @@
     if (prev) sel.value = prev;
   }
 
+  function buildInventoryCard(p) {
+    var sizes = (p.sizes && p.sizes.length > 0) ? p.sizes : ["ONE SIZE"];
+    var stockBySizes = p.stockBySizes || {};
+
+    var sizeHeaders = sizes.map(function (s) {
+      return "<th style='min-width:72px;text-align:center;font-weight:600'>" + esc(s) + "</th>";
+    }).join("");
+
+    var total = sizes.reduce(function (sum, s) {
+      return sum + (stockBySizes[s] !== undefined ? parseInt(stockBySizes[s], 10) : 0);
+    }, 0);
+
+    var sizeCells = sizes.map(function (s) {
+      var qty = stockBySizes[s] !== undefined ? parseInt(stockBySizes[s], 10) : 0;
+      var col = qty === 0 ? "var(--color-sale)" : (qty <= 3 ? "#f4a261" : "var(--color-text)");
+      return "<td style='text-align:center;padding:8px 4px'>"
+        + "<input type='number' min='0' data-pid='" + p.id + "' data-size='" + esc(s) + "' value='" + qty + "'"
+        + " style='width:64px;text-align:center;background:var(--color-bg-card);border:1px solid var(--color-border);"
+        + "color:" + col + ";border-radius:6px;padding:4px 6px;font-size:.9rem;font-family:inherit' />"
+        + "</td>";
+    }).join("");
+
+    var totalCls = total === 0 ? "cancelled" : (total <= 10 ? "processing" : "done");
+    var totalLabel = total === 0 ? "Нет в наличии" : (total <= 10 ? "Мало (" + total + " шт.)" : "В наличии (" + total + " шт.)");
+
+    var card = document.createElement("div");
+    card.className = "admin-card";
+    card.style.marginBottom = "0";
+    card.dataset.name = String(p.name).toLowerCase();
+    card.innerHTML =
+      "<div style='display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px'>"
+      + "<div><strong>" + esc(p.name) + "</strong>"
+      + " <span style='color:var(--color-text-muted);font-size:.8rem'>" + esc(catLabel(p.category)) + " · ID " + p.id + "</span></div>"
+      + "<span class='status-badge " + totalCls + "' id='inv-badge-" + p.id + "'>" + totalLabel + "</span>"
+      + "</div>"
+      + "<div class='table-wrap' style='overflow-x:auto'><table class='admin-table' style='min-width:0'>"
+      + "<thead><tr>" + sizeHeaders + "<th style='text-align:center;min-width:60px'>Итого</th></tr></thead>"
+      + "<tbody><tr>" + sizeCells
+      + "<td style='text-align:center;font-weight:600' id='inv-total-" + p.id + "'>" + total + "</td>"
+      + "</tr></tbody></table></div>";
+    return card;
+  }
+
+  function filterInventory(query) {
+    var grid = document.getElementById("inventory-grid");
+    var emptyMsg = document.getElementById("inventory-empty");
+    if (!grid) return;
+    var cards = grid.querySelectorAll(".admin-card[data-name]");
+    var q = (query || "").toLowerCase().trim();
+    var visible = 0;
+    cards.forEach(function (card) {
+      var match = !q || card.dataset.name.indexOf(q) !== -1;
+      card.style.display = match ? "" : "none";
+      if (match) visible++;
+    });
+    if (emptyMsg) emptyMsg.style.display = (visible === 0 && cards.length > 0) ? "" : "none";
+  }
+
   function loadInventory() {
     var inv = DB.inventory || {};
     var products = inv.products || DB.products || [];
@@ -235,54 +293,26 @@
     grid.innerHTML = "";
 
     products.forEach(function (p) {
-      var sizes = (p.sizes && p.sizes.length > 0) ? p.sizes : ["ONE SIZE"];
-      var stockBySizes = p.stockBySizes || {};
-
-      var sizeHeaders = sizes.map(function (s) {
-        return "<th style='min-width:72px;text-align:center;font-weight:600'>" + esc(s) + "</th>";
-      }).join("");
-
-      var total = sizes.reduce(function (sum, s) {
-        return sum + (stockBySizes[s] !== undefined ? parseInt(stockBySizes[s], 10) : 0);
-      }, 0);
-
-      var sizeCells = sizes.map(function (s) {
-        var qty = stockBySizes[s] !== undefined ? parseInt(stockBySizes[s], 10) : 0;
-        var col = qty === 0 ? "var(--color-sale)" : (qty <= 3 ? "#f4a261" : "var(--color-text)");
-        return "<td style='text-align:center;padding:8px 4px'>"
-          + "<input type='number' min='0' data-pid='" + p.id + "' data-size='" + esc(s) + "' value='" + qty + "'"
-          + " style='width:64px;text-align:center;background:var(--color-bg-card);border:1px solid var(--color-border);"
-          + "color:" + col + ";border-radius:6px;padding:4px 6px;font-size:.9rem;font-family:inherit' />"
-          + "</td>";
-      }).join("");
-
-      var totalCls = total === 0 ? "cancelled" : (total <= 10 ? "processing" : "done");
-      var totalLabel = total === 0 ? "Нет в наличии" : (total <= 10 ? "Мало (" + total + " шт.)" : "В наличии (" + total + " шт.)");
-
-      var card = document.createElement("div");
-      card.className = "admin-card";
-      card.style.marginBottom = "0";
-      card.innerHTML =
-        "<div style='display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px'>"
-        + "<div><strong>" + esc(p.name) + "</strong>"
-        + " <span style='color:var(--color-text-muted);font-size:.8rem'>" + esc(catLabel(p.category)) + " · ID " + p.id + "</span></div>"
-        + "<span class='status-badge " + totalCls + "' id='inv-badge-" + p.id + "'>" + totalLabel + "</span>"
-        + "</div>"
-        + "<div class='table-wrap'><table class='admin-table' style='min-width:0'>"
-        + "<thead><tr>" + sizeHeaders + "<th style='text-align:center'>Итого</th></tr></thead>"
-        + "<tbody><tr>" + sizeCells
-        + "<td style='text-align:center;font-weight:600' id='inv-total-" + p.id + "'>" + total + "</td>"
-        + "</tr></tbody></table></div>";
-      grid.appendChild(card);
+      grid.appendChild(buildInventoryCard(p));
     });
+
+    var searchInput = document.getElementById("inventory-search");
+    if (searchInput) {
+      searchInput.oninput = function () { filterInventory(searchInput.value); };
+      filterInventory(searchInput.value);
+    }
 
     grid.addEventListener("input", function (e) {
       var inp = e.target;
       if (!inp.dataset.pid) return;
       var pid = inp.dataset.pid;
-      var inputs = grid.querySelectorAll("[data-pid='" + pid + "']");
+      var inputs = grid.querySelectorAll("input[data-pid='" + pid + "']");
       var sum = 0;
-      inputs.forEach(function (i) { sum += parseInt(i.value, 10) || 0; i.style.color = (parseInt(i.value, 10) || 0) === 0 ? "var(--color-sale)" : (parseInt(i.value, 10) <= 3 ? "#f4a261" : "var(--color-text)"); });
+      inputs.forEach(function (i) {
+        var v = parseInt(i.value, 10) || 0;
+        sum += v;
+        i.style.color = v === 0 ? "var(--color-sale)" : (v <= 3 ? "#f4a261" : "var(--color-text)");
+      });
       var totalCell = document.getElementById("inv-total-" + pid);
       var badge = document.getElementById("inv-badge-" + pid);
       if (totalCell) totalCell.textContent = sum;
