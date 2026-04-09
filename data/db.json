@@ -7,7 +7,7 @@
       "sale": true,
       "price": 19000,
       "oldPrice": 24500,
-      "stock": 27,
+      "stock": 26,
       "sizes": [
         "ONE SIZE"
       ],
@@ -1137,7 +1137,7 @@
       "sale": false,
       "price": 10000,
       "oldPrice": 0,
-      "stock": 18,
+      "stock": 17,
       "sizes": [
         "XS",
         "S",
@@ -2568,7 +2568,7 @@
       "sale": false,
       "price": 12000,
       "oldPrice": 0,
-      "stock": 20,
+      "stock": 19,
       "sizes": [
         "XS",
         "S",
@@ -2727,7 +2727,7 @@
       "sale": false,
       "price": 21000,
       "oldPrice": 0,
-      "stock": 40,
+      "stock": 39,
       "sizes": [
         "XS",
         "S",
@@ -3140,6 +3140,102 @@
       "discountAmount": 0,
       "total": 12000,
       "createdAt": "2026-04-08T19:37:07.752Z"
+    },
+    {
+      "id": 2,
+      "customerName": "dsa",
+      "phone": "da",
+      "email": "ds@gmail.com",
+      "address": "d",
+      "comment": "",
+      "status": "new",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 1,
+          "productName": "Кольцо WABI-SABI KOSTYL",
+          "qty": 1,
+          "price": 19000
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 19000,
+      "discountAmount": 0,
+      "total": 19000,
+      "createdAt": "2026-04-09T10:00:04.694Z",
+      "paymentId": "31698c65-000f-5000-b000-1cf51ae9e5ee",
+      "paymentStatus": "pending"
+    },
+    {
+      "id": 3,
+      "customerName": "das",
+      "phone": "das",
+      "email": "dsa@gmail.com",
+      "address": "d",
+      "comment": "",
+      "status": "new",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 101,
+          "productName": "YX BOMBER",
+          "qty": 1,
+          "price": 12000
+        },
+        {
+          "productId": 45,
+          "productName": "Худи RVR Hoodie",
+          "qty": 1,
+          "price": 10000
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 22000,
+      "discountAmount": 0,
+      "total": 22000,
+      "createdAt": "2026-04-09T10:00:27.979Z",
+      "paymentId": "31698c7c-000f-5001-9000-1d4d29d49571",
+      "paymentStatus": "pending"
+    },
+    {
+      "id": 4,
+      "customerName": "da",
+      "phone": "das",
+      "email": "dss@gmail.com",
+      "address": "dsa",
+      "comment": "",
+      "status": "new",
+      "delivery": "pickup",
+      "deliveryLabel": "Самовывоз",
+      "deliveryCost": 0,
+      "payment": "card",
+      "paymentLabel": "Картой онлайн",
+      "items": [
+        {
+          "productId": 107,
+          "productName": "Толстовка Донор",
+          "qty": 1,
+          "price": 21000
+        }
+      ],
+      "promoCode": "",
+      "promoApplied": null,
+      "subtotal": 21000,
+      "discountAmount": 0,
+      "total": 21000,
+      "createdAt": "2026-04-09T10:03:23.125Z",
+      "paymentId": "31698d2b-000f-5001-9000-193aa8ea1418",
+      "paymentStatus": "pending"
     }
   ],
   "promoCodes": [
@@ -3154,7 +3250,7 @@
   ],
   "counters": {
     "product": 121,
-    "order": 2,
+    "order": 5,
     "log": 4,
     "promo": 2
   },

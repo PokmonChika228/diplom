@@ -370,6 +370,11 @@ app.get("/api/orders", requireAdminApi, (_req, res) => {
   const db = readDb();
   const orders = db.orders
     .slice()
+    .filter((o) => {
+      const isCash = o.payment === "receipt";
+      const isPaid = o.paymentStatus === "succeeded";
+      return isCash || isPaid;
+    })
     .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
     .map((o) => {
       const subtotal = o.items.reduce((sum, it) => sum + toNum(it.qty) * toNum(it.price), 0);
@@ -532,6 +537,7 @@ app.put("/api/orders/:id/status", requireAdminApi, (req, res) => {
 
 app.get("/api/analytics", requireAdminApi, (_req, res) => {
   const db = readDb();
+  const paidOrders = db.orders.filter((o) => o.payment === "receipt" || o.paymentStatus === "succeeded");
 
   const byDayMap = new Map();
   const salesByProduct = new Map();
@@ -545,7 +551,7 @@ app.get("/api/analytics", requireAdminApi, (_req, res) => {
   let ordersWithPromo = 0;
   let totalItemsSold = 0;
 
-  db.orders.forEach((o) => {
+  paidOrders.forEach((o) => {
     const day = String(o.createdAt || "").slice(0, 10);
     const orderTotal = toNum(o.total, 0) ||
       (o.items.reduce((s, it) => s + toNum(it.qty) * toNum(it.price), 0) - toNum(o.discountAmount, 0));
@@ -605,14 +611,14 @@ app.get("/api/analytics", requireAdminApi, (_req, res) => {
     .sort((a, b) => b.revenue - a.revenue)
     .slice(0, 10);
 
-  const avgOrderValue = db.orders.length ? Math.round(totalRevenue / db.orders.length) : 0;
+  const avgOrderValue = paidOrders.length ? Math.round(totalRevenue / paidOrders.length) : 0;
   const totalStock = db.products.reduce((s, p) => s + toNum(p.stock, 0), 0);
   const lowStockProducts = db.products
     .filter((p) => toNum(p.stock, 0) <= 5)
     .map((p) => ({ id: p.id, name: p.name, stock: p.stock, category: p.category }));
 
   res.json({
-    totalOrders: db.orders.length,
+    totalOrders: paidOrders.length,
     totalProducts: db.products.length,
     totalRevenue,
     totalDiscounts,
@@ -634,6 +640,7 @@ app.get("/api/analytics", requireAdminApi, (_req, res) => {
 // Дашборд — все данные в одном запросе
 app.get("/api/admin/dashboard", requireAdminApi, (_req, res) => {
   const db = readDb();
+  const paidOrders = db.orders.filter((o) => o.payment === "receipt" || o.paymentStatus === "succeeded");
 
   const salesByProduct = new Map();
   let totalRevenue = 0;
@@ -646,7 +653,7 @@ app.get("/api/admin/dashboard", requireAdminApi, (_req, res) => {
   const byPayment = new Map();
   const byStatus = { new: 0, processing: 0, shipped: 0, done: 0, cancelled: 0 };
 
-  db.orders.forEach((o) => {
+  paidOrders.forEach((o) => {
     const orderTotal = toNum(o.total, 0) ||
       (o.items.reduce((s, it) => s + toNum(it.qty) * toNum(it.price), 0) - toNum(o.discountAmount, 0));
     totalRevenue += orderTotal;
@@ -686,7 +693,7 @@ app.get("/api/admin/dashboard", requireAdminApi, (_req, res) => {
     .map(([date, revenue]) => ({ date, revenue }))
     .sort((a, b) => (a.date > b.date ? 1 : -1));
 
-  const orders = db.orders
+  const orders = paidOrders
     .slice()
     .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
     .map((o) => {
@@ -706,11 +713,11 @@ app.get("/api/admin/dashboard", requireAdminApi, (_req, res) => {
     orders,
     promos: db.promoCodes || [],
     analytics: {
-      totalOrders: db.orders.length,
+      totalOrders: paidOrders.length,
       totalProducts: db.products.length,
       totalRevenue,
       totalDiscounts,
-      avgOrderValue: db.orders.length ? Math.round(totalRevenue / db.orders.length) : 0,
+      avgOrderValue: paidOrders.length ? Math.round(totalRevenue / paidOrders.length) : 0,
       ordersWithPromo,
       totalItemsSold,
       totalStock: db.products.reduce((s, p) => s + toNum(p.stock, 0), 0),
