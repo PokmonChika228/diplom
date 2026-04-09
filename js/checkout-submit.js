@@ -86,6 +86,19 @@
     });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.error || "Не удалось оформить заказ");
+
+    if ((paymentVal === "card" || paymentVal === "sbp") && data.total > 0) {
+      const payRes = await fetch("/api/payment/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderId: data.id, amount: data.total }),
+      });
+      const payData = await payRes.json().catch(() => ({}));
+      if (payRes.ok && payData.confirmationUrl) {
+        data._redirectUrl = payData.confirmationUrl;
+      }
+    }
+
     return data;
   }
 
@@ -106,8 +119,14 @@
       const order = await submitOrder();
       if (typeof window.saveCartLines === "function") window.saveCartLines([]);
       sessionStorage.removeItem("brandPromoCode");
-      _orderSuccess = true;
       if (typeof window.syncCartBadges === "function") window.syncCartBadges();
+
+      if (order._redirectUrl) {
+        window.location.href = order._redirectUrl;
+        return;
+      }
+
+      _orderSuccess = true;
       const p = modal.querySelector("p");
       if (p) {
         p.textContent = `Спасибо! Заказ №${order.id} успешно принят. Мы свяжемся с вами для подтверждения.`;

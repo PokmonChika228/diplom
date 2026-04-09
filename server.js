@@ -7,6 +7,7 @@ const multer = require("multer");
 const session = require("express-session");
 const bcrypt = require("bcryptjs");
 const { v2: cloudinary } = require("cloudinary");
+const https = require("https");
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -1283,6 +1284,105 @@ app.get("/admin", requireAdminPage, (_req, res) => {
 
 app.get("/admin.html", requireAdminPage, (_req, res) => {
   res.sendFile(path.join(__dirname, "admin.html"));
+});
+
+const YOOKASSA_SHOP_ID = String(process.env.YOOKASSA_SHOP_ID || "");
+const YOOKASSA_SECRET_KEY = String(process.env.YOOKASSA_SECRET_KEY || "");
+const HAS_YOOKASSA = !!(YOOKASSA_SHOP_ID && YOOKASSA_SECRET_KEY);
+
+function yookassaRequest(method, urlPath, body) {
+  return new Promise((resolve, reject) => {
+    const auth = Buffer.from(`${YOOKASSA_SHOP_ID}:${YOOKASSA_SECRET_KEY}`).toString("base64");
+    const bodyStr = body ? JSON.stringify(body) : null;
+    const options = {
+      hostname: "api.yookassa.ru",
+      path: urlPath,
+      method,
+      headers: {
+        Authorization: `Basic ${auth}`,
+        "Content-Type": "application/json",
+        "Idempotence-Key": `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+      },
+    };
+    if (bodyStr) options.headers["Content-Length"] = Buffer.byteLength(bodyStr);
+    const req = https.request(options, (res) => {
+      let data = "";
+      res.on("data", (chunk) => (data += chunk));
+      res.on("end", () => {
+        try { resolve({ status: res.statusCode, body: JSON.parse(data) }); }
+        catch { resolve({ status: res.statusCode, body: data }); }
+      });
+    });
+    req.on("error", reject);
+    if (bodyStr) req.write(bodyStr);
+    req.end();
+  });
+}
+
+app.post("/api/payment/create", async (req, res) => {
+  if (!HAS_YOOKASSA) {
+    return res.status(503).json({ error: "Оплата картой недоступна: не настроены ключи ЮKassa" });
+  }
+  const { orderId, amount, description, returnUrl } = req.body || {};
+  if (!orderId || !amount) {
+    return res.status(400).json({ error: "orderId and amount are required" });
+  }
+  const db = readDb();
+  const order = db.orders.find((o) => String(o.id) === String(orderId));
+  if (!order) return res.status(404).json({ error: "Order not found" });
+
+  const baseUrl = process.env.SITE_URL || `${req.protocol}://${req.get("host")}`;
+  const successUrl = returnUrl || `${baseUrl}/payment-success.html?order=${orderId}`;
+
+  try {
+    const result = await yookassaRequest("POST", "/v3/payments", {
+      amount: { value: String(Number(amount).toFixed(2)), currency: "RUB" },
+      payment_method_data: { type: "bank_card" },
+      confirmation: { type: "redirect", return_url: successUrl },
+      capture: true,
+      description: description || `Заказ №${orderId} — ZHUCHY club`,
+      metadata: { order_id: String(orderId) },
+    });
+    if (result.status !== 200 && result.status !== 201) {
+      return res.status(result.status).json({ error: result.body?.description || "Ошибка создания платежа" });
+    }
+    const confirmationUrl = result.body?.confirmation?.confirmation_url;
+    order.paymentId = result.body?.id;
+    order.paymentStatus = "pending";
+    writeDb(db);
+    return res.json({ ok: true, paymentId: result.body?.id, confirmationUrl });
+  } catch (err) {
+    console.error("YooKassa error:", err.message);
+    return res.status(500).json({ error: "Ошибка платёжного сервиса" });
+  }
+});
+
+app.post("/api/payment/webhook", express.json(), async (req, res) => {
+  if (!HAS_YOOKASSA) return res.sendStatus(200);
+  const event = req.body;
+  if (event?.event === "payment.succeeded") {
+    const orderId = event?.object?.metadata?.order_id;
+    if (orderId) {
+      const db = readDb();
+      const order = db.orders.find((o) => String(o.id) === String(orderId));
+      if (order) {
+        order.paymentStatus = "succeeded";
+        order.status = "processing";
+        writeDb(db);
+      }
+    }
+  }
+  res.sendStatus(200);
+});
+
+app.get("/api/payment/status/:paymentId", async (req, res) => {
+  if (!HAS_YOOKASSA) return res.status(503).json({ error: "YooKassa not configured" });
+  try {
+    const result = await yookassaRequest("GET", `/v3/payments/${req.params.paymentId}`, null);
+    return res.json({ status: result.body?.status, paymentId: req.params.paymentId });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
 });
 
 ensureDb();

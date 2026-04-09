@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Оплата прошла — ZHUCHY club</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/pages.css" />
+  </head>
+  <body class="page-enter">
+    <header class="site-header" role="banner">
+      <div class="header-inner">
+        <a class="logo" href="index.html" aria-label="ZHUCHY club — на главную">ZHUCHY club</a>
+        <nav class="nav-desktop" aria-label="Категории">
+          <a href="catalog.html#mens">Man</a>
+          <a href="catalog.html#womens">Woman</a>
+          <a href="catalog.html#accessories">Accessories</a>
+          <a href="catalog.html#sale" class="is-sale">Sale</a>
+        </nav>
+        <div class="header-actions">
+          <div class="cur-lever-wrap" style="margin-bottom:0">
+            <span class="cur-lever-label">₽</span>
+            <button type="button" class="cur-lever" data-currency-toggle aria-label="Переключить валюту" aria-pressed="false"><span class="cur-lever__thumb"></span></button>
+            <span class="cur-lever-label">$</span>
+          </div>
+          <a href="cart.html" class="icon-btn cart-btn" aria-label="Корзина">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M6 6h15l-1.5 9h-12z" stroke-linejoin="round" />
+              <path d="M6 6 5 3H2" stroke-linecap="round" />
+              <circle cx="9" cy="20" r="1" fill="currentColor" />
+              <circle cx="18" cy="20" r="1" fill="currentColor" />
+            </svg>
+            <span class="cart-badge" data-cart-count hidden>0</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="section">
+        <div class="section__inner" style="max-width:540px;text-align:center;padding-top:var(--space-3xl)">
+          <div style="font-size:3rem;margin-bottom:var(--space-lg)">✓</div>
+          <h1 class="section__title" id="ps-title">Оплата прошла успешно</h1>
+          <p id="ps-desc" style="color:var(--color-text-muted);margin-bottom:var(--space-xl)">
+            Спасибо! Ваш заказ оплачен и принят в обработку. Мы свяжемся с вами для подтверждения.
+          </p>
+          <a class="btn btn--secondary" href="catalog.html">Продолжить покупки</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© ZHUCHY club</p>
+    </footer>
+
+    <script src="js/cart-storage.js"></script>
+    <script src="js/cart-badge.js"></script>
+    <script src="js/currency.js"></script>
+    <script src="js/site.js"></script>
+    <script>
+      (function () {
+        const params = new URLSearchParams(location.search);
+        const orderId = params.get("order");
+        if (orderId) {
+          document.getElementById("ps-desc").textContent =
+            "Спасибо! Заказ №" + orderId + " оплачен и принят в обработку. Мы свяжемся с вами для подтверждения.";
+          if (typeof window.saveCartLines === "function") window.saveCartLines([]);
+          sessionStorage.removeItem("brandPromoCode");
+        }
+      })();
+    </script>
+  </body>
+</html>
