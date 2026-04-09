@@ -7,7 +7,7 @@
       "sale": true,
       "price": 19000,
       "oldPrice": 24500,
-      "stock": 2,
+      "stock": 21,
       "sizes": [
         "ONE SIZE"
       ],
@@ -19,11 +19,11 @@
       "composition": "Сплав с чернением, латунная основа. Ручное производство.",
       "care": "Избегать контакта с водой, парфюмом и бытовой химией. Хранить в тканевом мешочке отдельно от других украшений.",
       "createdAt": "2026-03-16T17:46:12.536Z",
-      "updatedAt": "2026-04-09T13:31:55.120Z",
+      "updatedAt": "2026-04-09T13:49:51.210Z",
       "priceUsd": 235,
       "oldPriceUsd": 302,
       "stockBySizes": {
-        "ONE SIZE": 2
+        "ONE SIZE": 21
       }
     },
     {
@@ -1364,7 +1364,7 @@
       "sale": false,
       "price": 10000,
       "oldPrice": 0,
-      "stock": 54,
+      "stock": 55,
       "sizes": [
         "XS",
         "S",
@@ -4118,7 +4118,7 @@
       "email": "das@gmail.com",
       "address": "da",
       "comment": "",
-      "status": "new",
+      "status": "cancelled",
       "delivery": "pickup",
       "deliveryLabel": "Самовывоз",
       "deliveryCost": 0,
@@ -4137,7 +4137,9 @@
       "subtotal": 10000,
       "discountAmount": 0,
       "total": 10000,
-      "createdAt": "2026-04-09T13:17:58.856Z"
+      "createdAt": "2026-04-09T13:17:58.856Z",
+      "_stockRestored": true,
+      "cancelReason": "payment_timeout"
     },
     {
       "id": 14,

@@ -96,7 +96,6 @@
         "<td>" + saleLabel + "</td>" +
         "<td>" + (p.oldPrice > 0 ? fmt(p.oldPrice) : "—") + "</td>" +
         "<td>" + fmt(p.price) + "</td>" +
-        "<td>" + (p.priceUsd > 0 ? "$" + Number(p.priceUsd).toLocaleString("en-US") : "—") + "</td>" +
         "<td" + (p.stock <= 5 ? ' style="color:var(--color-sale)"' : "") + ">" + p.stock + "</td>" +
         '<td class="actions" style="white-space:nowrap">' +
           '<button class="btn btn--outline" style="padding:4px 10px;font-size:0.75rem;margin-right:4px" onclick="editProduct(' + p.id + ')">✎ Изменить</button>' +
@@ -444,7 +443,10 @@
         "<td style='font-size:0.8rem'>" + items + "</td>" +
         "<td style='font-size:0.8rem'>" + promoInfo + "</td>" +
         "<td style='font-size:0.8rem'>" + totalInfo + "</td>" +
-        "<td><select class='select status-select' onchange='updateStatus(" + o.id + ", this.value)'>" + statusOpts + "</select></td>";
+        "<td style='white-space:nowrap'>"
+        + "<select class='select status-select' onchange='updateStatus(" + o.id + ", this.value)' style='margin-bottom:6px'>" + statusOpts + "</select>"
+        + "<br><button class='btn btn--outline' style='padding:3px 10px;font-size:0.75rem;color:var(--color-sale)' onclick='deleteOrder(" + o.id + ")'>✕ Удалить</button>"
+        + "</td>";
       tbody.appendChild(tr);
     });
   }
@@ -516,6 +518,15 @@
       if (!r.ok) { alert("Ошибка смены статуса"); return; }
       var order = (DB.orders || []).find(function (o) { return o.id === id; });
       if (order) order.status = status;
+    });
+  };
+
+  window.deleteOrder = function (id) {
+    if (!confirm("Удалить заказ #" + id + "? Это действие необратимо.")) return;
+    authFetch("/api/orders/" + id, { method: "DELETE" }).then(function (r) {
+      if (!r.ok) { alert("Ошибка удаления заказа"); return; }
+      DB.orders = (DB.orders || []).filter(function (o) { return o.id !== id; });
+      loadOrders();
     });
   };
 

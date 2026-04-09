@@ -605,6 +605,15 @@ app.put("/api/orders/:id/status", requireAdminApi, (req, res) => {
   res.json(order);
 });
 
+app.delete("/api/orders/:id", requireAdminApi, (req, res) => {
+  const db = readDb();
+  const idx = db.orders.findIndex((o) => String(o.id) === String(req.params.id));
+  if (idx === -1) return res.status(404).json({ error: "Order not found" });
+  db.orders.splice(idx, 1);
+  writeDb(db);
+  res.json({ ok: true });
+});
+
 app.get("/api/analytics", requireAdminApi, (_req, res) => {
   const db = readDb();
   const paidOrders = db.orders.filter((o) => o.payment === "receipt" || o.paymentStatus === "succeeded");
