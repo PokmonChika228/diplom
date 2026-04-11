@@ -12,6 +12,10 @@ PORT = "5000"
 ADMIN_PASSWORD = "admin"
 YOOKASSA_SHOP_ID = "1326721"
 YOOKASSA_SECRET_KEY = "test_VNqN3BJYvnlff6yfD8VnvEJs_gqjR9wgoNlw_JXyhEQ"
+SMTP_HOST = "smtp.gmail.com"
+SMTP_PORT = "587"
+SMTP_USER = "zhuchymvp@gmail.com"
+SMTP_FROM = "\"ZHUCHY club\" <zhuchymvp@gmail.com>"
 
 [workflows]
 runButton = "Project"
