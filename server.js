@@ -129,6 +129,9 @@ function rowToOrder(r) {
     payment: r.payment,
     paymentLabel: r.payment_label,
     paymentStatus: r.payment_status,
+    paymentId: r.payment_id || null,
+    paymentUrl: r.payment_url || null,
+    paymentConfirmed: r.payment_status === "succeeded",
     items: r.items,
     promoCode: r.promo_code,
     promoApplied: r.promo_applied || null,
@@ -1069,6 +1072,38 @@ app.delete("/api/admin/cleanup/all", requireAdminApi, async (_req, res) => {
 
 // ===== PAYMENT (YooKassa stubs) =====
 
+// Helper: check single order status from YooKassa and update DB
+async function checkOrderPaymentStatus(orderId) {
+  const { rows } = await pool.query("SELECT * FROM orders WHERE id=$1", [orderId]);
+  if (!rows.length) return null;
+  const order = rows[0];
+  if (!order.payment_id) return { status: order.payment_status, changed: false };
+  if (order.payment_status === "succeeded" || order.payment_status === "canceled") {
+    return { status: order.payment_status, changed: false };
+  }
+  try {
+    const YooKassa = require("yookassa");
+    const yookassa = new YooKassa({ shopId: process.env.YOOKASSA_SHOP_ID, secretKey: process.env.YOOKASSA_SECRET_KEY });
+    const yk = await yookassa.getPayment(order.payment_id);
+    if (yk.status === "succeeded") {
+      await pool.query(
+        `UPDATE orders SET payment_status='succeeded', status=CASE WHEN status='new' THEN 'processing' ELSE status END, updated_at=NOW() WHERE id=$1`,
+        [orderId]
+      );
+      return { status: "succeeded", changed: true };
+    } else if (yk.status === "canceled") {
+      await pool.query(
+        "UPDATE orders SET payment_status='canceled', status='cancelled', updated_at=NOW() WHERE id=$1",
+        [orderId]
+      );
+      return { status: "canceled", changed: true };
+    }
+    return { status: yk.status, changed: false };
+  } catch (e) {
+    return { status: order.payment_status, changed: false, error: e.message };
+  }
+}
+
 app.post("/api/payment/create", async (req, res) => {
   const { orderId, amount, description, returnUrl } = req.body || {};
   try {
@@ -1084,12 +1119,63 @@ app.post("/api/payment/create", async (req, res) => {
       description: description || `Заказ #${orderId}`,
       metadata: { orderId: String(orderId) },
     });
-    await pool.query("UPDATE orders SET payment_status='pending', updated_at=NOW() WHERE id=$1", [orderId]);
+    await pool.query(
+      "UPDATE orders SET payment_status='pending', payment_id=$1, payment_url=$2, updated_at=NOW() WHERE id=$3",
+      [payment.id, payment.confirmation.confirmation_url, orderId]
+    );
     res.json({ confirmationUrl: payment.confirmation.confirmation_url, paymentId: payment.id });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
+
+app.post("/api/payment/check-order/:id", requireAdminApi, async (req, res) => {
+  try {
+    if (!process.env.YOOKASSA_SHOP_ID || !process.env.YOOKASSA_SECRET_KEY) {
+      return res.json({ status: "not_configured", changed: false });
+    }
+    const result = await checkOrderPaymentStatus(req.params.id);
+    if (!result) return res.status(404).json({ error: "Order not found" });
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/payment/check-all", requireAdminApi, async (req, res) => {
+  try {
+    if (!process.env.YOOKASSA_SHOP_ID || !process.env.YOOKASSA_SECRET_KEY) {
+      return res.json({ checked: 0, updated: 0, message: "YooKassa не настроена" });
+    }
+    const { rows } = await pool.query(
+      "SELECT id FROM orders WHERE payment_id IS NOT NULL AND payment_status NOT IN ('succeeded','canceled') ORDER BY created_at DESC LIMIT 50"
+    );
+    let updated = 0;
+    for (const row of rows) {
+      const r = await checkOrderPaymentStatus(row.id);
+      if (r?.changed) updated++;
+    }
+    res.json({ checked: rows.length, updated });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Auto-poll payment status every 30 seconds (persists across restarts — state is in DB)
+setInterval(async () => {
+  if (!process.env.YOOKASSA_SHOP_ID || !process.env.YOOKASSA_SECRET_KEY) return;
+  try {
+    const { rows } = await pool.query(
+      "SELECT id FROM orders WHERE payment_id IS NOT NULL AND payment_status NOT IN ('succeeded','canceled') AND created_at > NOW() - INTERVAL '3 days' ORDER BY created_at DESC LIMIT 20"
+    );
+    for (const row of rows) {
+      await checkOrderPaymentStatus(row.id);
+    }
+    if (rows.length) console.log(`[PAYMENT POLL] Checked ${rows.length} pending payments`);
+  } catch (e) {
+    console.error("[PAYMENT POLL ERROR]", e.message);
+  }
+}, 30_000);
 
 app.post("/api/payment/webhook", express.json({ type: "*/*" }), async (req, res) => {
   try {

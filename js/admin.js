@@ -453,41 +453,49 @@
   }
 
   window.checkAllUnpaid = function (btn) {
-    var unpaid = (DB.orders || []).filter(function (o) { return !o.paymentConfirmed && o.paymentId; });
-    if (!unpaid.length) {
-      btn.textContent = "Нет неоплаченных";
-      setTimeout(function () { btn.textContent = "Проверить все неоплаченные"; }, 2000);
-      return;
-    }
     btn.disabled = true;
-    btn.textContent = "Проверяем 0 / " + unpaid.length + "…";
-    var done = 0;
-    var updated = 0;
-    unpaid.forEach(function (o) {
-      fetch("/api/payment/check-order/" + o.id, { method: "POST" })
+    btn.textContent = "Проверяем…";
+    authFetch("/api/payment/check-all", { method: "POST" })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        btn.disabled = false;
+        btn.textContent = "Проверить все неоплаченные";
+        var msg;
+        if (data.message) {
+          msg = data.message;
+        } else if (data.checked === 0) {
+          msg = "Нет ожидающих оплат";
+        } else {
+          msg = "Проверено: " + data.checked + (data.updated > 0 ? ", оплачено: " + data.updated : ", новых оплат нет");
+        }
+        var old = document.getElementById("check-result");
+        if (old) old.remove();
+        btn.insertAdjacentHTML("afterend", "<span id='check-result' style='margin-left:8px;font-size:0.8rem;color:var(--color-text-muted)'>" + msg + "</span>");
+        setTimeout(function () { var el = document.getElementById("check-result"); if (el) el.remove(); }, 5000);
+        if (data.updated > 0) { loadAll(); loadOrders(); }
+      })
+      .catch(function () {
+        btn.disabled = false;
+        btn.textContent = "Проверить все неоплаченные";
+        alert("Ошибка при проверке платежей");
+      });
+  };
+
+  // Auto-refresh orders every 30 seconds when on the orders tab
+  setInterval(function () {
+    var ordersPanel = document.getElementById("tab-orders");
+    if (ordersPanel && !ordersPanel.hidden) {
+      authFetch("/api/admin/dashboard")
         .then(function (r) { return r.json(); })
-        .then(function (data) {
-          if (data.status === "succeeded") {
-            o.paymentStatus = "succeeded";
-            o.paymentConfirmed = true;
-            updated++;
+        .then(function (d) {
+          if (d.orders) {
+            DB.orders = d.orders;
+            loadOrders();
           }
         })
-        .catch(function () {})
-        .finally(function () {
-          done++;
-          btn.textContent = "Проверяем " + done + " / " + unpaid.length + "…";
-          if (done === unpaid.length) {
-            btn.disabled = false;
-            btn.textContent = "Проверить все неоплаченные";
-            if (updated > 0) loadOrders();
-            var result = updated > 0 ? ("Оплачено: " + updated) : "Новых оплат нет";
-            btn.insertAdjacentHTML("afterend", "<span id='check-result' style='margin-left:8px;font-size:0.8rem;color:var(--color-text-muted)'>" + result + "</span>");
-            setTimeout(function () { var el = document.getElementById("check-result"); if (el) el.remove(); }, 4000);
-          }
-        });
-    });
-  };
+        .catch(function () {});
+    }
+  }, 30000);
 
   function loadOrders() {
     var orders = (DB.orders || []).slice();
