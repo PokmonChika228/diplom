@@ -623,3 +623,102 @@ main {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
+
+/* ======================================================
+   LIGHT THEME OVERRIDES
+   ====================================================== */
+
+/* Плавный переход при смене темы */
+body,
+.site-header,
+.mobile-drawer,
+.card,
+.input, .select, .textarea,
+.btn--outline,
+.btn--secondary,
+.modal,
+.modal-backdrop,
+.radio-card {
+  transition:
+    background var(--duration) var(--ease-out),
+    border-color var(--duration) var(--ease-out),
+    color var(--duration) var(--ease-out),
+    box-shadow var(--duration) var(--ease-out);
+}
+
+/* Переключатель валюты */
+html[data-theme="light"] .cur-toggle-btn {
+  border-color: rgba(0, 0, 0, 0.16);
+}
+html[data-theme="light"] .cur-toggle-btn:hover {
+  border-color: var(--color-accent);
+}
+html[data-theme="light"] .cur-lever {
+  background: rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 0, 0, 0.18);
+}
+html[data-theme="light"] .cur-lever[aria-pressed="true"] {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+html[data-theme="light"] .cur-lever__thumb {
+  background: #fff;
+}
+
+/* Ghost-light кнопка (используется на hero поверх фото) */
+html[data-theme="light"] .btn--ghost-light {
+  border-color: rgba(0, 0, 0, 0.5);
+  color: #000;
+}
+html[data-theme="light"] .btn--ghost-light:hover:not(:disabled) {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+/* Мобильный дровер */
+html[data-theme="light"] .mobile-drawer {
+  background: var(--color-surface);
+}
+html[data-theme="light"] .mobile-drawer .drawer-nav a {
+  color: var(--color-text);
+  border-bottom-color: var(--color-border);
+}
+
+/* Модальное окно */
+html[data-theme="light"] .modal-backdrop {
+  background: rgba(0, 0, 0, 0.45);
+}
+html[data-theme="light"] .modal {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+/* Radio-карточки */
+html[data-theme="light"] .radio-card {
+  border-color: var(--color-border);
+  background: var(--color-surface);
+}
+html[data-theme="light"] .radio-card:has(input:checked) {
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
+
+/* Тикер — всегда контрастный (намеренно инвертирован) */
+html[data-theme="light"] .site-ticker {
+  background: #111111 !important;
+  color: #ffffff !important;
+}
+html[data-theme="light"] .site-ticker__track,
+html[data-theme="light"] .site-ticker__text {
+  color: #ffffff !important;
+}
+
+/* Кнопка переключения темы */
+.theme-toggle-btn {
+  color: var(--color-text-muted);
+}
+.theme-toggle-btn:hover {
+  color: var(--color-text);
+}
