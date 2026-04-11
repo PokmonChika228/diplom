@@ -84,7 +84,7 @@
 
         <div class="acc-tabs">
           <button class="acc-tab-btn active" data-panel="orders">Заказы</button>
-          <button class="acc-tab-btn" data-panel="referral">Реферальная программа</button>
+          <button class="acc-tab-btn" data-panel="loyalty">Программа лояльности</button>
           <button class="acc-tab-btn" data-panel="profile">Профиль</button>
         </div>
 
@@ -96,26 +96,33 @@
           </div>
         </div>
 
-        <!-- REFERRAL -->
-        <div class="acc-panel" id="panel-referral">
-          <div class="stat-grid" id="ref-stats"></div>
+        <!-- LOYALTY -->
+        <div class="acc-panel" id="panel-loyalty">
+          <div class="stat-grid">
+            <div class="stat-item">
+              <div class="stat-val" id="loy-points-display">—</div>
+              <div class="stat-label">Баллов на счёте</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-val" id="loy-rub-display">—</div>
+              <div class="stat-label">Рублей к оплате</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-val" id="loy-earn-display">5%</div>
+              <div class="stat-label">Кэшбэк баллами</div>
+            </div>
+          </div>
           <div class="card">
-            <h2 class="card-title">Ваш реферальный код</h2>
-            <div class="ref-code-box">
-              <span class="ref-code" id="ref-code-display"></span>
-              <button class="btn btn--outline" id="btn-copy-code" type="button">Копировать</button>
-            </div>
-            <div class="ref-link-box">
-              Ссылка: <span id="ref-link-display"></span>
-              <button class="btn btn--outline" id="btn-copy-link" type="button" style="margin-left:8px;padding:2px 10px;font-size:0.75rem">Копировать ссылку</button>
-            </div>
-            <p style="margin-top:16px;font-size:0.875rem;color:var(--color-text-muted)">
-              Поделитесь кодом с друзьями. Когда они зарегистрируются по вашей ссылке, вы будете связаны как реферальная пара. Бонусы начисляются при первой покупке приглашённого.
+            <h2 class="card-title">Как работает программа</h2>
+            <p style="font-size:0.875rem;color:var(--color-text-muted);line-height:1.7;margin:0">
+              За каждый заказ вы получаете <strong style="color:var(--color-text)">5% от суммы покупки</strong> баллами.<br>
+              <strong style="color:var(--color-text)">1 балл = 1 рубль.</strong> Баллами можно оплатить до 30% стоимости следующего заказа.<br>
+              Баллы начисляются автоматически после оформления заказа.
             </p>
           </div>
           <div class="card">
-            <h2 class="card-title">Приглашённые друзья</h2>
-            <div id="ref-list" class="ref-invited"></div>
+            <h2 class="card-title">История операций</h2>
+            <div id="loy-history"><p style="color:var(--color-text-muted);font-size:0.875rem">Загрузка…</p></div>
           </div>
         </div>
 
@@ -185,7 +192,7 @@
           document.getElementById("pf-email").value = user.email;
 
           loadOrders();
-          loadReferral();
+          loadLoyalty();
         }
 
         async function loadOrders() {
@@ -209,37 +216,34 @@
           }).join('');
         }
 
-        async function loadReferral() {
-          const r = await fetch("/api/auth/referral-stats");
-          const d = await r.json();
-          document.getElementById("ref-code-display").textContent = d.referralCode;
-          var link = location.origin + "/register.html?ref=" + d.referralCode;
-          document.getElementById("ref-link-display").textContent = link;
+        async function loadLoyalty() {
+          try {
+            var resp = await fetch("/api/auth/loyalty");
+            var d = await resp.json();
+            var pts = d.points || 0;
+            document.getElementById("loy-points-display").textContent = pts.toLocaleString("ru-RU");
+            document.getElementById("loy-rub-display").textContent = pts.toLocaleString("ru-RU") + " ₽";
+            document.getElementById("loy-earn-display").textContent = (d.earnPercent || 5) + "%";
 
-          document.getElementById("btn-copy-code").onclick = function () {
-            navigator.clipboard.writeText(d.referralCode);
-            this.textContent = "Скопировано!"; var self = this; setTimeout(function () { self.textContent = "Копировать"; }, 2000);
-          };
-          document.getElementById("btn-copy-link").onclick = function () {
-            navigator.clipboard.writeText(link);
-            this.textContent = "Скопировано!"; var self = this; setTimeout(function () { self.textContent = "Копировать ссылку"; }, 2000);
-          };
-
-          var statsEl = document.getElementById("ref-stats");
-          statsEl.innerHTML =
-            '<div class="stat-item"><div class="stat-val">' + (d.referrals || []).length + '</div><div class="stat-label">Приглашено</div></div>' +
-            '<div class="stat-item"><div class="stat-val">' + fmt(d.totalBonus || 0) + '</div><div class="stat-label">Бонусов заработано</div></div>';
-
-          var refEl = document.getElementById("ref-list");
-          if (!d.referrals || !d.referrals.length) {
-            refEl.innerHTML = '<p style="color:var(--color-text-muted);font-size:0.875rem">Пока никто не зарегистрировался по вашей ссылке.</p>';
-          } else {
-            refEl.innerHTML = d.referrals.map(function (r) {
-              return '<div class="ref-person">' +
-                '<span>' + (r.name || r.email) + '</span>' +
-                '<span style="color:var(--color-text-muted);font-size:0.8rem">' + fmtDate(r.created_at) + '</span>' +
-              '</div>';
-            }).join('');
+            var histEl = document.getElementById("loy-history");
+            var txs = d.transactions || [];
+            if (!txs.length) {
+              histEl.innerHTML = '<p style="color:var(--color-text-muted);font-size:0.875rem">Операций пока нет.</p>';
+            } else {
+              histEl.innerHTML = txs.map(function (t) {
+                var isEarn = t.points > 0;
+                var color = isEarn ? "#16a34a" : "#dc2626";
+                return '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--color-border);font-size:0.875rem">' +
+                  '<div>' +
+                    '<div>' + (t.description || (isEarn ? 'Начисление баллов' : 'Списание баллов')) + '</div>' +
+                    '<div style="font-size:0.75rem;color:var(--color-text-muted);margin-top:2px">' + fmtDate(t.created_at) + (t.order_id ? ' · Заказ #' + t.order_id : '') + '</div>' +
+                  '</div>' +
+                  '<span style="font-weight:700;color:' + color + '">' + (isEarn ? '+' : '') + t.points + ' ₽</span>' +
+                '</div>';
+              }).join('');
+            }
+          } catch (e) {
+            document.getElementById("loy-history").innerHTML = '<p style="color:var(--color-text-muted);font-size:0.875rem">Ошибка загрузки.</p>';
           }
         }
 

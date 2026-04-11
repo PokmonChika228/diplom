@@ -14,6 +14,14 @@ A full-stack fashion e-commerce platform with a dark avant-garde aesthetic. Feat
 
 ## Key Features Implemented
 
+### User System
+- **Auth pages**: `register.html`, `login.html`, `account.html`
+- **Email verification**: 6-digit codes sent via Ethereal (dev, preview URL in console) or real SMTP (via env vars `SMTP_HOST/PORT/USER/PASS/FROM`)
+- **Loyalty program**: earn 5% of order value as points (1 pt = 1₽), spend up to 30% of order at checkout; history in account tab; admin can adjust
+- **Checkout auto-fill**: logged-in users have name, phone, email pre-filled automatically
+- **Admin user panel**: view/edit role, loyalty points, order history per user
+
+### Products & Orders
 - **19 seed products** across 4 categories: mens (5), womens (6), unisex (4), accessories (4)
 - **7 sample orders** with realistic delivery/payment data; 4 orders use promo code DARK15
 - **Promo code DARK15** — 15% discount, active

@@ -20,6 +20,7 @@
     "multer": "^2.1.1",
     "nodemailer": "^8.0.5",
     "pg": "^8.20.0",
+    "uuid": "^13.0.0",
     "yookassa": "^0.1.1"
   },
   "overrides": {

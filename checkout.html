@@ -173,6 +173,26 @@
                 </div>
               </div>
 
+              <!-- LOYALTY POINTS -->
+              <div class="checkout-form-section" id="loyalty-section" hidden>
+                <h2>Баллы лояльности</h2>
+                <p style="font-size:0.875rem;color:var(--color-text-muted);margin-bottom:var(--space-md)">
+                  Доступно: <strong id="loy-available" style="color:var(--color-text)">0</strong> баллов (= рублей).
+                  Можно использовать до 30% от суммы заказа.
+                </p>
+                <label class="field" style="flex-direction:row;align-items:center;gap:12px;cursor:pointer;user-select:none">
+                  <input type="checkbox" id="loy-use-cb" style="width:18px;height:18px;accent-color:var(--color-text);cursor:pointer" />
+                  <span style="font-size:0.875rem">Списать баллы в счёт оплаты</span>
+                </label>
+                <div id="loy-spend-wrap" style="margin-top:12px;display:none">
+                  <div class="field">
+                    <label class="field-label" for="loy-spend-input">Количество баллов для списания</label>
+                    <input class="input" id="loy-spend-input" type="number" min="0" style="max-width:200px" />
+                    <span id="loy-spend-hint" style="font-size:0.75rem;color:var(--color-text-muted);margin-top:4px"></span>
+                  </div>
+                </div>
+              </div>
+
               <button type="submit" class="btn btn--secondary btn--block" style="margin-top: var(--space-md)">
                 Подтвердить заказ
               </button>
@@ -196,6 +216,10 @@
               <div class="cart-summary__row" data-checkout-discount-row hidden>
                 <span>Скидка по промокоду</span>
                 <span data-checkout-discount>0 ₽</span>
+              </div>
+              <div class="cart-summary__row" id="loy-discount-row" hidden>
+                <span>Баллы лояльности</span>
+                <span id="loy-discount-amount" style="color:#16a34a">−0 ₽</span>
               </div>
               <div class="order-mini__total">
                 <span>К оплате</span>
@@ -232,6 +256,94 @@
     <script src="js/site.js"></script>
     <script src="js/auth-header.js" defer></script>
     <script src="js/checkout-order.js"></script>
+    <script>
+      (function() {
+        var MAX_SPEND_PCT = 30;
+        var availPoints = 0;
+
+        function fmtRub(n) {
+          return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "\u00a0") + "\u00a0₽";
+        }
+
+        function getSubtotal() {
+          var el = document.querySelector("[data-checkout-subtotal]");
+          if (!el) return 0;
+          return parseInt((el.textContent || "0").replace(/\D/g, "")) || 0;
+        }
+
+        function updateLoyaltyDisplay() {
+          var subtotal = getSubtotal();
+          var maxDiscount = Math.floor(subtotal * MAX_SPEND_PCT / 100);
+          var spendEl = document.getElementById("loy-spend-input");
+          var hintEl = document.getElementById("loy-spend-hint");
+          var discountRow = document.getElementById("loy-discount-row");
+          var discountAmt = document.getElementById("loy-discount-amount");
+          if (!spendEl) return;
+          var spendVal = Math.max(0, Math.min(parseInt(spendEl.value) || 0, availPoints, maxDiscount));
+          if (hintEl) hintEl.textContent = "Максимум: " + Math.min(availPoints, maxDiscount) + " б (30% от суммы)";
+          if (discountRow) {
+            if (spendVal > 0) {
+              discountRow.hidden = false;
+              if (discountAmt) discountAmt.textContent = "−" + fmtRub(spendVal);
+            } else {
+              discountRow.hidden = true;
+            }
+          }
+          window._loyaltySpendPoints = spendVal;
+        }
+
+        async function init() {
+          try {
+            var r = await fetch("/api/auth/me");
+            var d = await r.json();
+            if (d.user) {
+              var u = d.user;
+              if (u.name) { var el = document.getElementById("co-name"); if (el && !el.value) el.value = u.name; }
+              if (u.phone) { var el = document.getElementById("co-phone"); if (el && !el.value) el.value = u.phone; }
+              if (u.email) { var el = document.getElementById("co-email"); if (el && !el.value) el.value = u.email; }
+
+              var lr = await fetch("/api/auth/loyalty/check");
+              var ld = await lr.json();
+              availPoints = ld.points || 0;
+              if (availPoints > 0) {
+                var section = document.getElementById("loyalty-section");
+                if (section) section.hidden = false;
+                var avEl = document.getElementById("loy-available");
+                if (avEl) avEl.textContent = availPoints.toLocaleString("ru-RU");
+                var spendEl = document.getElementById("loy-spend-input");
+                if (spendEl) spendEl.value = 0;
+              }
+            }
+          } catch (e) {}
+
+          var cb = document.getElementById("loy-use-cb");
+          var wrap = document.getElementById("loy-spend-wrap");
+          if (cb && wrap) {
+            cb.addEventListener("change", function() {
+              wrap.style.display = this.checked ? "" : "none";
+              if (!this.checked) {
+                var spendEl = document.getElementById("loy-spend-input");
+                if (spendEl) spendEl.value = 0;
+                var discountRow = document.getElementById("loy-discount-row");
+                if (discountRow) discountRow.hidden = true;
+                window._loyaltySpendPoints = 0;
+              }
+            });
+          }
+          var spendEl = document.getElementById("loy-spend-input");
+          if (spendEl) {
+            spendEl.addEventListener("input", updateLoyaltyDisplay);
+          }
+
+          var subtotalObs = document.querySelector("[data-checkout-subtotal]");
+          if (subtotalObs) {
+            new MutationObserver(function() { updateLoyaltyDisplay(); }).observe(subtotalObs, { childList: true, characterData: true, subtree: true });
+          }
+        }
+        window._loyaltySpendPoints = 0;
+        document.addEventListener("DOMContentLoaded", init);
+      })();
+    </script>
     <script src="js/checkout-submit.js"></script>
   </body>
 </html>

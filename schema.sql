@@ -1,0 +1,122 @@
+-- ZHUCHY club — PostgreSQL schema
+-- Run to recreate the database structure
+
+-- PRODUCTS
+CREATE TABLE IF NOT EXISTS products (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  description TEXT NOT NULL DEFAULT '',
+  price NUMERIC(10,2) NOT NULL DEFAULT 0,
+  old_price NUMERIC(10,2),
+  category TEXT NOT NULL DEFAULT 'other',
+  gender TEXT NOT NULL DEFAULT 'unisex',
+  sizes TEXT[] NOT NULL DEFAULT '{}',
+  images TEXT[] NOT NULL DEFAULT '{}',
+  tags TEXT[] NOT NULL DEFAULT '{}',
+  is_active BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ORDERS
+CREATE TABLE IF NOT EXISTS orders (
+  id SERIAL PRIMARY KEY,
+  customer_name TEXT NOT NULL,
+  phone TEXT NOT NULL DEFAULT '',
+  email TEXT NOT NULL DEFAULT '',
+  address TEXT NOT NULL DEFAULT '',
+  comment TEXT NOT NULL DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'new',
+  delivery TEXT NOT NULL DEFAULT 'pickup',
+  delivery_label TEXT NOT NULL DEFAULT '',
+  delivery_cost NUMERIC(10,2) NOT NULL DEFAULT 0,
+  payment TEXT NOT NULL DEFAULT 'card',
+  payment_label TEXT NOT NULL DEFAULT '',
+  payment_status TEXT NOT NULL DEFAULT 'pending',
+  payment_id TEXT,
+  payment_url TEXT,
+  items JSONB NOT NULL DEFAULT '[]',
+  promo_code TEXT NOT NULL DEFAULT '',
+  promo_applied JSONB,
+  subtotal NUMERIC(10,2) NOT NULL DEFAULT 0,
+  discount_amount NUMERIC(10,2) NOT NULL DEFAULT 0,
+  total NUMERIC(10,2) NOT NULL DEFAULT 0,
+  user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- INVENTORY LOGS
+CREATE TABLE IF NOT EXISTS inventory_logs (
+  id SERIAL PRIMARY KEY,
+  product_id INTEGER NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+  size TEXT NOT NULL,
+  qty_change INTEGER NOT NULL,
+  note TEXT NOT NULL DEFAULT '',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- PROMO CODES
+CREATE TABLE IF NOT EXISTS promo_codes (
+  id SERIAL PRIMARY KEY,
+  code TEXT NOT NULL UNIQUE,
+  type TEXT NOT NULL DEFAULT 'percent',
+  value NUMERIC(10,2) NOT NULL DEFAULT 0,
+  active BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- UI SETTINGS
+CREATE TABLE IF NOT EXISTS ui_settings (
+  key TEXT PRIMARY KEY,
+  value JSONB NOT NULL DEFAULT 'null',
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- USERS
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  email TEXT NOT NULL UNIQUE,
+  name TEXT NOT NULL DEFAULT '',
+  phone TEXT NOT NULL DEFAULT '',
+  password_hash TEXT,
+  role TEXT NOT NULL DEFAULT 'customer',
+  is_verified BOOLEAN NOT NULL DEFAULT FALSE,
+  referral_code TEXT UNIQUE,
+  referred_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  referral_bonus NUMERIC(10,2) NOT NULL DEFAULT 0,
+  loyalty_points INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- VERIFICATION CODES
+CREATE TABLE IF NOT EXISTS verification_codes (
+  id SERIAL PRIMARY KEY,
+  email TEXT NOT NULL,
+  code TEXT NOT NULL,
+  purpose TEXT NOT NULL DEFAULT 'register',
+  expires_at TIMESTAMPTZ NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- REFERRALS (legacy)
+CREATE TABLE IF NOT EXISTS referrals (
+  id SERIAL PRIMARY KEY,
+  referrer_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  referred_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  order_id INTEGER REFERENCES orders(id) ON DELETE SET NULL,
+  bonus_amount NUMERIC(10,2) NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- LOYALTY TRANSACTIONS
+CREATE TABLE IF NOT EXISTS loyalty_transactions (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  order_id INTEGER REFERENCES orders(id) ON DELETE SET NULL,
+  points INTEGER NOT NULL,
+  type TEXT NOT NULL DEFAULT 'earn',
+  description TEXT NOT NULL DEFAULT '',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);

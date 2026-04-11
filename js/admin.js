@@ -1303,7 +1303,7 @@
         "<td style='font-size:0.8rem'>" + esc(u.email) + "</td>" +
         "<td style='" + roleColor + "'>" + esc(u.role || "customer") + "</td>" +
         "<td style='text-align:center'>" + (u.isVerified ? "✓" : "—") + "</td>" +
-        "<td style='font-size:0.8rem;letter-spacing:1px'>" + esc(u.referralCode || "—") + "</td>" +
+        "<td style='text-align:center'>" + (u.loyaltyPoints || 0) + " б" + "</td>" +
         "<td style='text-align:center'>" + (u.orderCount || 0) + "</td>" +
         "<td>" + fmt(u.totalSpent || 0) + "</td>" +
         "<td style='font-size:0.8rem'>" + fmtDate(u.createdAt) + "</td>" +
@@ -1336,12 +1336,10 @@
         infoRow("Телефон", u.phone || "—") +
         infoRow("Дата регистрации", fmtDate(u.createdAt)) +
         infoRow("Верифицирован", u.isVerified ? "✓ Да" : "✕ Нет") +
-        infoRow("Реферальный код", '<span style="font-weight:700;letter-spacing:2px">' + esc(u.referralCode || "—") + '</span>') +
-        infoRow("Пришёл по реферальному", u.referredBy ? "Да (ID: " + u.referredBy + ")" : "—") +
-        infoRow("Бонусный баланс", fmt(u.referralBonus || 0)) +
+        infoRow("Баллов лояльности", '<strong style="color:#16a34a">' + (u.loyaltyPoints || 0) + ' б</strong>') +
       '</div>' +
       '<div>' +
-        '<h4 style="margin:0 0 12px;font-size:0.875rem;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:1px">Права доступа</h4>' +
+        '<h4 style="margin:0 0 12px;font-size:0.875rem;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:1px">Управление</h4>' +
         '<div style="display:flex;flex-direction:column;gap:10px">' +
           '<div style="display:flex;flex-direction:column;gap:6px">' +
             '<label style="font-size:0.8125rem;color:var(--color-text-muted)">Роль</label>' +
@@ -1351,8 +1349,12 @@
             '</select>' +
           '</div>' +
           '<div style="display:flex;flex-direction:column;gap:6px">' +
-            '<label style="font-size:0.8125rem;color:var(--color-text-muted)">Реферальный бонус (₽)</label>' +
-            '<input class="input" id="udp-bonus" type="number" value="' + (u.referralBonus || 0) + '" style="max-width:200px" />' +
+            '<label style="font-size:0.8125rem;color:var(--color-text-muted)">Баллы лояльности (итоговое значение)</label>' +
+            '<input class="input" id="udp-loyalty" type="number" min="0" value="' + (u.loyaltyPoints || 0) + '" style="max-width:200px" />' +
+          '</div>' +
+          '<div style="display:flex;flex-direction:column;gap:6px">' +
+            '<label style="font-size:0.8125rem;color:var(--color-text-muted)">Причина корректировки (необязательно)</label>' +
+            '<input class="input" id="udp-loyalty-reason" type="text" placeholder="Ручная корректировка" style="max-width:300px" />' +
           '</div>' +
           '<button class="btn btn--secondary" id="udp-save" type="button" data-uid="' + u.id + '" style="width:fit-content">Сохранить</button>' +
           '<span id="udp-save-msg" style="font-size:0.875rem"></span>' +
@@ -1381,17 +1383,6 @@
       html += '</tbody></table></div>';
     }
 
-    html += '<h4 style="margin:0 0 12px;font-size:0.875rem;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:1px">Реферальные приглашения (' + refs.length + ')</h4>';
-    if (!refs.length) {
-      html += '<p style="color:var(--color-text-muted);font-size:0.875rem">Никого не пригласил.</p>';
-    } else {
-      html += '<div class="table-wrap"><table class="admin-table"><thead><tr><th>Имя</th><th>Email</th><th>Дата</th></tr></thead><tbody>';
-      refs.forEach(function (r) {
-        html += '<tr><td>' + esc(r.referred_name || "—") + '</td><td style="font-size:0.8rem">' + esc(r.referred_email || "—") + '</td><td style="font-size:0.8rem">' + fmtDate(r.created_at) + '</td></tr>';
-      });
-      html += '</tbody></table></div>';
-    }
-
     return html;
   }
 
@@ -1406,17 +1397,21 @@
     if (saveBtn) {
       saveBtn.addEventListener("click", async function () {
         var role = document.getElementById("udp-role").value;
-        var bonus = parseFloat(document.getElementById("udp-bonus").value) || 0;
+        var loyaltyPoints = parseInt(document.getElementById("udp-loyalty").value) || 0;
+        var loyaltyReason = document.getElementById("udp-loyalty-reason").value.trim();
+        var oldPoints = u.loyaltyPoints || 0;
+        var loyaltyAdjust = loyaltyPoints - oldPoints;
         var msg = document.getElementById("udp-save-msg");
         try {
           const r = await authFetch("/api/admin/users/" + u.id, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ role, referralBonus: bonus })
+            body: JSON.stringify({ role, loyaltyPoints, loyaltyAdjust, loyaltyReason: loyaltyReason || undefined })
           });
           const d = await r.json();
           if (!r.ok) { msg.style.color = "var(--color-sale)"; msg.textContent = d.error || "Ошибка"; return; }
           msg.style.color = "#16a34a"; msg.textContent = "Сохранено!";
+          u.loyaltyPoints = loyaltyPoints;
           loadUsers();
         } catch (e) { msg.style.color = "var(--color-sale)"; msg.textContent = "Ошибка сети"; }
       });

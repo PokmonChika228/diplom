@@ -553,10 +553,23 @@ app.post("/api/orders", async (req, res) => {
       promoApplied = { id: promo.id, code: promo.code, type: promo.type, value: parseFloat(promo.value) };
     }
 
-    const deliveryCost = toNum(body.deliveryCost, deliveryInfo.cost);
-    const total = Math.max(0, subtotal - discountAmount) + deliveryCost;
-
+    // Loyalty points spend
     const userId = req.session?.userId || null;
+    let loyaltySpend = 0;
+    if (userId && toNum(body.spendPoints, 0) > 0) {
+      const { rows: userRows } = await client.query("SELECT loyalty_points FROM users WHERE id=$1", [userId]);
+      if (userRows.length) {
+        const available = parseInt(userRows[0].loyalty_points || 0);
+        const maxDiscount = Math.floor(subtotal * LOYALTY_MAX_SPEND_PERCENT / 100);
+        loyaltySpend = Math.min(toNum(body.spendPoints, 0), available, maxDiscount);
+        if (loyaltySpend < 0) loyaltySpend = 0;
+      }
+    }
+    const totalDiscount = discountAmount + loyaltySpend;
+
+    const deliveryCost = toNum(body.deliveryCost, deliveryInfo.cost);
+    const total = Math.max(0, subtotal - totalDiscount) + deliveryCost;
+
     const { rows: orderRows } = await client.query(
       `INSERT INTO orders
         (customer_name, phone, email, address, comment, status, delivery, delivery_label,
@@ -572,12 +585,33 @@ app.post("/api/orders", async (req, res) => {
         JSON.stringify(normalizedItems),
         promoApplied ? promoApplied.code : "",
         promoApplied ? JSON.stringify(promoApplied) : null,
-        subtotal, discountAmount, total, userId,
+        subtotal, totalDiscount, total, userId,
       ]
     );
+    const newOrder = orderRows[0];
+
+    // Apply loyalty points changes
+    if (userId) {
+      if (loyaltySpend > 0) {
+        await client.query("UPDATE users SET loyalty_points = loyalty_points - $1, updated_at=NOW() WHERE id=$2", [loyaltySpend, userId]);
+        await client.query(
+          "INSERT INTO loyalty_transactions (user_id, order_id, points, type, description) VALUES ($1,$2,$3,'spend',$4)",
+          [userId, newOrder.id, -loyaltySpend, `Списание баллов за заказ #${newOrder.id}`]
+        );
+      }
+      // Earn points: credited when order is paid (for now credit immediately for cash/receipt orders)
+      const earnedPoints = Math.floor(total * LOYALTY_EARN_PERCENT / 100);
+      if (earnedPoints > 0) {
+        await client.query("UPDATE users SET loyalty_points = loyalty_points + $1, updated_at=NOW() WHERE id=$2", [earnedPoints, userId]);
+        await client.query(
+          "INSERT INTO loyalty_transactions (user_id, order_id, points, type, description) VALUES ($1,$2,$3,'earn',$4)",
+          [userId, newOrder.id, earnedPoints, `Начисление ${LOYALTY_EARN_PERCENT}% баллов за заказ #${newOrder.id}`]
+        );
+      }
+    }
 
     await client.query("COMMIT");
-    res.status(201).json(rowToOrder(orderRows[0]));
+    res.status(201).json(rowToOrder(newOrder));
   } catch (err) {
     await client.query("ROLLBACK");
     res.status(500).json({ error: err.message });
@@ -1111,7 +1145,9 @@ app.post("/api/payment/webhook", express.json({ type: "*/*" }), async (req, res)
 
 // ===== EMAIL =====
 
-function createMailTransport() {
+let _etherealTransport = null;
+
+async function getMailTransport() {
   const host = process.env.SMTP_HOST;
   const port = parseInt(process.env.SMTP_PORT || "587");
   const user = process.env.SMTP_USER;
@@ -1119,29 +1155,63 @@ function createMailTransport() {
   if (host && user && pass) {
     return nodemailer.createTransport({ host, port, secure: port === 465, auth: { user, pass } });
   }
-  return null;
+  if (!_etherealTransport) {
+    try {
+      const testAccount = await nodemailer.createTestAccount();
+      _etherealTransport = nodemailer.createTransport({
+        host: "smtp.ethereal.email",
+        port: 587,
+        secure: false,
+        auth: { user: testAccount.user, pass: testAccount.pass },
+      });
+      console.log(`[EMAIL] Ethereal test account: ${testAccount.user} / ${testAccount.pass}`);
+    } catch (e) {
+      console.warn("[EMAIL] Failed to create Ethereal account:", e.message);
+      return null;
+    }
+  }
+  return _etherealTransport;
+}
+
+function emailHtml(title, body) {
+  return `<!DOCTYPE html><html><body style="margin:0;font-family:'Helvetica Neue',Arial,sans-serif;background:#0a0a0a;color:#f0f0f0;padding:40px 20px">
+  <div style="max-width:480px;margin:0 auto;background:#111;border:1px solid #222;border-radius:12px;padding:40px">
+    <div style="font-size:13px;letter-spacing:4px;font-weight:700;margin-bottom:32px;opacity:.5">ZHUCHY CLUB</div>
+    <h1 style="font-size:20px;margin:0 0 16px;font-weight:600">${title}</h1>
+    ${body}
+    <p style="font-size:12px;color:#555;margin-top:32px;border-top:1px solid #222;padding-top:20px">Если вы не запрашивали этот код — проигнорируйте письмо.</p>
+  </div>
+</body></html>`;
 }
 
 async function sendVerificationEmail(email, code, purpose) {
-  const transport = createMailTransport();
   const subject = purpose === "login" ? "Код входа — ZHUCHY club" : "Подтверждение регистрации — ZHUCHY club";
-  const text = `Ваш код: ${code}\n\nКод действителен 15 минут.`;
-  if (!transport) {
-    console.log(`[DEV EMAIL] To: ${email} | Subject: ${subject} | Code: ${code}`);
-    return;
+  const title = purpose === "login" ? "Код для входа" : "Подтверждение регистрации";
+  const html = emailHtml(title, `
+    <p style="font-size:15px;color:#aaa;margin:0 0 24px">Введите этот код на сайте:</p>
+    <div style="font-size:42px;font-weight:700;letter-spacing:10px;text-align:center;padding:24px 0;background:#1a1a1a;border-radius:8px;margin-bottom:24px">${code}</div>
+    <p style="font-size:13px;color:#666">Код действителен <strong style="color:#ccc">15 минут</strong>.</p>
+  `);
+  try {
+    const transport = await getMailTransport();
+    if (!transport) {
+      console.log(`[EMAIL FALLBACK] To: ${email} | Code: ${code}`);
+      return;
+    }
+    const info = await transport.sendMail({
+      from: process.env.SMTP_FROM || process.env.SMTP_USER || '"ZHUCHY club" <noreply@zhuchy.club>',
+      to: email,
+      subject,
+      text: `Ваш код: ${code}\n\nКод действителен 15 минут.`,
+      html,
+    });
+    const preview = nodemailer.getTestMessageUrl(info);
+    if (preview) console.log(`[EMAIL PREVIEW] ${preview}`);
+    console.log(`[EMAIL] Sent to: ${email}, Code: ${code}`);
+  } catch (err) {
+    console.error("[EMAIL ERROR]", err.message);
+    console.log(`[EMAIL FALLBACK] To: ${email} | Code: ${code}`);
   }
-  await transport.sendMail({
-    from: process.env.SMTP_FROM || process.env.SMTP_USER,
-    to: email,
-    subject,
-    text,
-    html: `<div style="font-family:sans-serif;max-width:480px;margin:0 auto">
-      <h2 style="letter-spacing:2px">ZHUCHY CLUB</h2>
-      <p style="font-size:15px">${purpose === "login" ? "Код для входа в аккаунт:" : "Код подтверждения регистрации:"}</p>
-      <div style="font-size:36px;font-weight:700;letter-spacing:8px;padding:24px 0">${code}</div>
-      <p style="color:#888;font-size:13px">Код действителен 15 минут. Если вы не запрашивали код — проигнорируйте это письмо.</p>
-    </div>`
-  });
 }
 
 function generateCode() {
@@ -1307,17 +1377,31 @@ app.put("/api/auth/profile", requireUserAuth, async (req, res) => {
   }
 });
 
-app.get("/api/auth/referral-stats", requireUserAuth, async (req, res) => {
+app.get("/api/auth/loyalty", requireUserAuth, async (req, res) => {
   try {
-    const { rows: user } = await pool.query("SELECT * FROM users WHERE id=$1", [req.session.userId]);
-    if (!user.length) return res.status(404).json({ error: "User not found" });
-    const { rows: referrals } = await pool.query(
-      `SELECT u.id, u.name, u.email, u.created_at, r.bonus_amount, r.order_id
-       FROM referrals r JOIN users u ON u.id = r.referred_id
-       WHERE r.referrer_id=$1 ORDER BY r.created_at DESC`,
+    const { rows: users } = await pool.query("SELECT * FROM users WHERE id=$1", [req.session.userId]);
+    if (!users.length) return res.status(404).json({ error: "User not found" });
+    const user = users[0];
+    const { rows: transactions } = await pool.query(
+      "SELECT * FROM loyalty_transactions WHERE user_id=$1 ORDER BY created_at DESC LIMIT 50",
       [req.session.userId]
     );
-    res.json({ referralCode: user[0].referral_code, referrals, totalBonus: user[0].referral_bonus });
+    res.json({
+      points: parseInt(user.loyalty_points || 0),
+      earnPercent: LOYALTY_EARN_PERCENT,
+      maxSpendPercent: LOYALTY_MAX_SPEND_PERCENT,
+      transactions,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/api/auth/loyalty/check", requireUserAuth, async (req, res) => {
+  try {
+    const { rows } = await pool.query("SELECT loyalty_points FROM users WHERE id=$1", [req.session.userId]);
+    if (!rows.length) return res.status(404).json({ error: "User not found" });
+    res.json({ points: parseInt(rows[0].loyalty_points || 0) });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -1362,12 +1446,17 @@ function rowToUser(r) {
     referralCode: r.referral_code,
     referredBy: r.referred_by,
     referralBonus: parseFloat(r.referral_bonus || 0),
+    loyaltyPoints: parseInt(r.loyalty_points || 0),
     role: r.role,
     isVerified: r.is_verified,
     createdAt: r.created_at,
     updatedAt: r.updated_at,
   };
 }
+
+// ===== LOYALTY CONSTANTS =====
+const LOYALTY_EARN_PERCENT = 5; // earn 5% of order value as points
+const LOYALTY_MAX_SPEND_PERCENT = 30; // spend up to 30% of order as points discount
 
 // ===== ADMIN USER MANAGEMENT =====
 
@@ -1377,14 +1466,14 @@ app.get("/api/admin/users", requireAdminApi, async (_req, res) => {
       SELECT u.*,
         (SELECT COUNT(*) FROM orders o WHERE o.user_id = u.id) AS order_count,
         (SELECT COALESCE(SUM(o.total),0) FROM orders o WHERE o.user_id = u.id AND (o.payment='receipt' OR o.payment_status='succeeded')) AS total_spent,
-        (SELECT COUNT(*) FROM referrals r WHERE r.referrer_id = u.id) AS referral_count
+        (SELECT COALESCE(SUM(lt.points),0) FROM loyalty_transactions lt WHERE lt.user_id = u.id AND lt.type='earn') AS total_earned
       FROM users u ORDER BY u.created_at DESC
     `);
     res.json(rows.map(r => ({
       ...rowToUser(r),
       orderCount: parseInt(r.order_count || 0),
       totalSpent: parseFloat(r.total_spent || 0),
-      referralCount: parseInt(r.referral_count || 0),
+      totalEarned: parseInt(r.total_earned || 0),
     })));
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -1414,24 +1503,37 @@ app.get("/api/admin/users/:id", requireAdminApi, async (req, res) => {
 });
 
 app.put("/api/admin/users/:id", requireAdminApi, async (req, res) => {
-  const { role, referralBonus, name, phone } = req.body || {};
+  const { role, loyaltyPoints, loyaltyAdjust, loyaltyReason, name, phone } = req.body || {};
+  const client = await pool.connect();
   try {
+    await client.query("BEGIN");
     const updates = ["updated_at=NOW()"];
     const vals = [];
     let idx = 1;
     if (role !== undefined) { updates.push(`role=$${idx++}`); vals.push(String(role)); }
-    if (referralBonus !== undefined) { updates.push(`referral_bonus=$${idx++}`); vals.push(parseFloat(referralBonus) || 0); }
+    if (loyaltyPoints !== undefined) { updates.push(`loyalty_points=$${idx++}`); vals.push(Math.max(0, parseInt(loyaltyPoints) || 0)); }
     if (name !== undefined) { updates.push(`name=$${idx++}`); vals.push(String(name).trim()); }
     if (phone !== undefined) { updates.push(`phone=$${idx++}`); vals.push(String(phone).trim()); }
     vals.push(req.params.id);
-    const { rows } = await pool.query(
+    const { rows } = await client.query(
       `UPDATE users SET ${updates.join(",")} WHERE id=$${idx} RETURNING *`,
       vals
     );
-    if (!rows.length) return res.status(404).json({ error: "Пользователь не найден" });
+    if (!rows.length) { await client.query("ROLLBACK"); return res.status(404).json({ error: "Пользователь не найден" }); }
+    if (loyaltyAdjust !== undefined && loyaltyAdjust !== 0) {
+      const delta = parseInt(loyaltyAdjust) || 0;
+      await client.query(
+        "INSERT INTO loyalty_transactions (user_id, points, type, description) VALUES ($1,$2,$3,$4)",
+        [req.params.id, delta, delta > 0 ? 'admin_add' : 'admin_sub', loyaltyReason || `Корректировка администратором`]
+      );
+    }
+    await client.query("COMMIT");
     res.json({ user: rowToUser(rows[0]) });
   } catch (err) {
+    await client.query("ROLLBACK");
     res.status(500).json({ error: err.message });
+  } finally {
+    client.release();
   }
 });
 

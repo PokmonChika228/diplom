@@ -186,6 +186,7 @@
       payment: paymentVal,
       paymentLabel: PAYMENT_OPTIONS[paymentVal] || paymentVal,
       items: lines.map(function (l) { return { productId: l.productId, qty: l.qty, size: l.size || "" }; }),
+      spendPoints: window._loyaltySpendPoints || 0,
     };
 
     const res = await fetch("/api/orders", {
