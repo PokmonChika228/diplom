@@ -1645,6 +1645,26 @@ app.delete("/api/admin/users/:id", requireAdminApi, async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server started: http://localhost:${PORT}`);
+// ── Auto-migrations: add columns added after initial schema creation ──────────
+async function runMigrations() {
+  const migrations = [
+    `ALTER TABLE orders ADD COLUMN IF NOT EXISTS stock_restored BOOLEAN NOT NULL DEFAULT FALSE`,
+    `ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_id TEXT`,
+    `ALTER TABLE orders ADD COLUMN IF NOT EXISTS payment_url TEXT`,
+    `ALTER TABLE verification_codes ADD COLUMN IF NOT EXISTS used BOOLEAN NOT NULL DEFAULT FALSE`,
+  ];
+  for (const sql of migrations) {
+    try { await pool.query(sql); } catch (e) { console.warn("Migration warning:", e.message); }
+  }
+}
+
+runMigrations().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server started: http://localhost:${PORT}`);
+  });
+}).catch((err) => {
+  console.error("Migration failed, starting anyway:", err.message);
+  app.listen(PORT, () => {
+    console.log(`Server started: http://localhost:${PORT}`);
+  });
 });

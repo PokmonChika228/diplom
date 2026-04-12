@@ -42,7 +42,6 @@
   function render() {
     if (!_state) return;
     const { lines, byId, sum, discount, deliveryCost } = _state;
-    const total = Math.max(0, sum - discount) + deliveryCost;
 
     root.innerHTML = "";
     lines.forEach((line) => {
@@ -73,16 +72,28 @@
       root.appendChild(row);
     });
 
-    if (subEl) subEl.textContent = fp(sum, Math.round(sum / (window.EXCHANGE_RATE || 90)));
-    if (totalEl) totalEl.textContent = fp(total, Math.round(total / (window.EXCHANGE_RATE || 90)));
+    if (subEl) {
+      subEl.textContent = fp(sum, Math.round(sum / (window.EXCHANGE_RATE || 90)));
+      subEl.dataset.value = Math.round(sum);
+    }
     if (discountRow && discountEl) {
       discountRow.hidden = discount <= 0;
       discountEl.textContent = "− " + fp(discount, Math.round(discount / (window.EXCHANGE_RATE || 90)));
+      discountEl.dataset.value = Math.round(discount);
     }
     if (deliveryCostEl) {
       deliveryCostEl.textContent = deliveryCost === 0
         ? "Бесплатно"
         : fp(deliveryCost, Math.round(deliveryCost / (window.EXCHANGE_RATE || 90)));
+    }
+    // Let checkout-submit.js recalculate total (it also knows loyalty discount)
+    if (typeof window._updateCheckoutTotal === "function") {
+      window._updateCheckoutTotal();
+    } else {
+      // Fallback before checkout-submit.js is loaded
+      const loyaltyDisc = parseInt(window._loyaltySpendPoints || 0, 10) || 0;
+      const total = Math.max(0, sum - discount - loyaltyDisc) + deliveryCost;
+      if (totalEl) totalEl.textContent = fp(total, Math.round(total / (window.EXCHANGE_RATE || 90)));
     }
   }
 
@@ -126,6 +137,7 @@
       if (_state) {
         _state.deliveryCost = getDeliveryCost();
         render();
+        if (typeof window._updateCheckoutTotal === "function") window._updateCheckoutTotal();
       }
     });
   });

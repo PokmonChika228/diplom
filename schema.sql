@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS orders (
   payment_status TEXT NOT NULL DEFAULT 'pending',
   payment_id TEXT,             -- YooKassa payment ID
   payment_url TEXT,            -- redirect URL for payment
+  stock_restored BOOLEAN NOT NULL DEFAULT FALSE,
   items JSONB NOT NULL DEFAULT '[]',
   promo_code TEXT NOT NULL DEFAULT '',
   promo_applied JSONB,
