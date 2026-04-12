@@ -273,11 +273,14 @@
     const discountEl = document.querySelector("[data-checkout-discount]");
     if (subtotalEl && totalEl) {
       const sub = parseInt(subtotalEl.dataset.value || "0", 10) || 0;
-      const disc = parseInt((discountEl && discountEl.dataset.value) || "0", 10) || 0;
-      const total = Math.max(0, sub - disc) + info.cost;
+      const promoDisc = parseInt((discountEl && discountEl.dataset.value) || "0", 10) || 0;
+      const loyaltyDisc = parseInt(window._loyaltySpendPoints || 0, 10) || 0;
+      const total = Math.max(0, sub - promoDisc - loyaltyDisc) + info.cost;
       totalEl.textContent = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " ₽";
     }
   }
+
+  window._updateCheckoutTotal = updateDeliveryDisplay;
 
   form.querySelectorAll('[name="delivery"]').forEach(function (r) {
     r.addEventListener("change", updateDeliveryDisplay);

@@ -291,6 +291,9 @@
             }
           }
           window._loyaltySpendPoints = spendVal;
+          if (typeof window._updateCheckoutTotal === "function") {
+            window._updateCheckoutTotal();
+          }
         }
 
         async function init() {
@@ -328,6 +331,7 @@
                 var discountRow = document.getElementById("loy-discount-row");
                 if (discountRow) discountRow.hidden = true;
                 window._loyaltySpendPoints = 0;
+                if (typeof window._updateCheckoutTotal === "function") window._updateCheckoutTotal();
               }
             });
           }

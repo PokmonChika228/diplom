@@ -1022,14 +1022,17 @@ app.post("/api/admin/cleanup", requireAdminApi, async (req, res) => {
   try {
     switch (target) {
       case "orders":
+        await pool.query("DELETE FROM loyalty_transactions WHERE order_id IS NOT NULL");
         await pool.query("DELETE FROM orders");
+        await pool.query("ALTER SEQUENCE orders_id_seq RESTART WITH 1");
         break;
       case "inventory":
         await pool.query("DELETE FROM inventory_logs");
         break;
       case "reports":
-        // analytics are derived from orders — clear orders to reset
+        await pool.query("DELETE FROM loyalty_transactions WHERE order_id IS NOT NULL");
         await pool.query("DELETE FROM orders");
+        await pool.query("ALTER SEQUENCE orders_id_seq RESTART WITH 1");
         break;
       case "products":
         await pool.query("DELETE FROM inventory_logs");
@@ -1039,7 +1042,9 @@ app.post("/api/admin/cleanup", requireAdminApi, async (req, res) => {
         await pool.query("DELETE FROM promo_codes");
         break;
       case "all":
+        await pool.query("DELETE FROM loyalty_transactions WHERE order_id IS NOT NULL");
         await pool.query("DELETE FROM orders");
+        await pool.query("ALTER SEQUENCE orders_id_seq RESTART WITH 1");
         await pool.query("DELETE FROM inventory_logs");
         await pool.query("DELETE FROM products");
         await pool.query("DELETE FROM promo_codes");
@@ -1059,13 +1064,21 @@ app.delete("/api/admin/cleanup/products", requireAdminApi, async (_req, res) => 
   catch (err) { res.status(500).json({ error: err.message }); }
 });
 app.delete("/api/admin/cleanup/orders", requireAdminApi, async (_req, res) => {
-  try { await pool.query("DELETE FROM orders"); res.json({ ok: true }); }
-  catch (err) { res.status(500).json({ error: err.message }); }
+  try {
+    await pool.query("DELETE FROM loyalty_transactions WHERE order_id IS NOT NULL");
+    await pool.query("DELETE FROM orders");
+    await pool.query("ALTER SEQUENCE orders_id_seq RESTART WITH 1");
+    res.json({ ok: true });
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 app.delete("/api/admin/cleanup/all", requireAdminApi, async (_req, res) => {
   try {
-    await pool.query("DELETE FROM orders"); await pool.query("DELETE FROM inventory_logs");
-    await pool.query("DELETE FROM products"); await pool.query("DELETE FROM promo_codes");
+    await pool.query("DELETE FROM loyalty_transactions WHERE order_id IS NOT NULL");
+    await pool.query("DELETE FROM orders");
+    await pool.query("ALTER SEQUENCE orders_id_seq RESTART WITH 1");
+    await pool.query("DELETE FROM inventory_logs");
+    await pool.query("DELETE FROM products");
+    await pool.query("DELETE FROM promo_codes");
     res.json({ ok: true });
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
