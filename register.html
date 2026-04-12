@@ -22,9 +22,6 @@
       .code-hint { font-size: 0.8rem; color: var(--color-text-muted); }
       .err-msg { color: var(--color-sale); font-size: 0.875rem; display: none; }
       .err-msg.visible { display: block; }
-      .divider { display: flex; align-items: center; gap: 12px; color: var(--color-text-muted); font-size: 0.8rem; margin: 4px 0; }
-      .divider::before, .divider::after { content:''; flex: 1; height: 1px; background: var(--color-border); }
-      .ref-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: end; }
       .countdown { font-size: 0.8rem; color: var(--color-text-muted); }
     </style>
     <script src="js/theme.js"></script>
@@ -65,15 +62,6 @@
             <label class="field-label" for="reg-password">Пароль <span style="font-weight:400;opacity:.6">(необязательно)</span></label>
             <input class="input" id="reg-password" type="password" autocomplete="new-password" placeholder="Минимум 8 символов" />
           </div>
-          <div class="divider">реферальная программа</div>
-          <div class="field">
-            <label class="field-label" for="reg-ref">Реферальный код <span style="font-weight:400;opacity:.6">(если есть)</span></label>
-            <div class="ref-row">
-              <input class="input" id="reg-ref" type="text" placeholder="XXXX-XXXX" style="text-transform:uppercase" />
-              <button class="btn btn--outline" id="btn-check-ref" type="button" style="white-space:nowrap;padding:0 14px">Проверить</button>
-            </div>
-            <span id="ref-status" style="font-size:0.8rem;min-height:18px"></span>
-          </div>
           <button class="btn btn--secondary btn--block" id="btn-register" type="button">Зарегистрироваться</button>
           <p class="countdown" id="resend-row">
             <span id="resend-timer">Повторно отправить через <strong id="resend-count">60</strong> сек.</span>
@@ -91,12 +79,6 @@
           var el = document.getElementById("err-global");
           el.textContent = msg;
           el.classList.toggle("visible", !!msg);
-        }
-
-        var urlRef = new URLSearchParams(location.search).get("ref");
-        if (urlRef) {
-          document.getElementById("reg-ref").value = urlRef.toUpperCase();
-          document.getElementById("btn-check-ref").click();
         }
 
         document.getElementById("btn-send-code").addEventListener("click", async function () {
@@ -140,34 +122,11 @@
           startResendTimer();
         });
 
-        document.getElementById("btn-check-ref").addEventListener("click", async function () {
-          var code = document.getElementById("reg-ref").value.trim().toUpperCase();
-          var status = document.getElementById("ref-status");
-          if (!code) { status.textContent = ""; return; }
-          try {
-            const r = await fetch("/api/users/check-referral?code=" + encodeURIComponent(code));
-            const d = await r.json();
-            if (d.valid) {
-              status.style.color = "var(--color-success, #22c55e)";
-              status.textContent = "✓ Реферальный код действителен — " + (d.referrerName || "приглашение принято");
-            } else {
-              status.style.color = "var(--color-sale)";
-              status.textContent = "✕ Код не найден";
-            }
-          } catch (e) { status.textContent = ""; }
-        });
-
-        document.getElementById("reg-ref").addEventListener("input", function () {
-          this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, "");
-          document.getElementById("ref-status").textContent = "";
-        });
-
         document.getElementById("btn-register").addEventListener("click", async function () {
           showErr("");
           var code = document.getElementById("reg-code").value.trim();
           var name = document.getElementById("reg-name").value.trim();
           var password = document.getElementById("reg-password").value;
-          var referralCode = document.getElementById("reg-ref").value.trim().toUpperCase();
           if (!code || code.length !== 6) return showErr("Введите 6-значный код из письма");
           if (!name) return showErr("Введите ваше имя");
           if (password && password.length < 8) return showErr("Пароль должен быть не менее 8 символов");
@@ -176,7 +135,7 @@
             const r = await fetch("/api/auth/register", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ email, code, name, password: password || undefined, referralCode: referralCode || undefined })
+              body: JSON.stringify({ email, code, name, password: password || undefined })
             });
             const d = await r.json();
             if (!r.ok) { showErr(d.error || "Ошибка"); this.disabled = false; this.textContent = "Зарегистрироваться"; return; }
