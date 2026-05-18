@@ -466,7 +466,10 @@
     if (!tbody) return;
     tbody.innerHTML = "";
     (orders || []).forEach(function (o) {
-      var items = (o.items || []).map(function (it) { return esc(it.productName) + " ×" + it.qty; }).join("<br>");
+      var items = (o.items || []).map(function (it) {
+        var size = it.size && it.size !== "ONE SIZE" ? ' <span style="color:var(--color-text-muted);font-size:0.75rem">(' + esc(it.size) + ')</span>' : "";
+        return esc(it.productName) + " ×" + it.qty + size;
+      }).join("<br>");
       var promoInfo = o.promoCode ? '<span style="color:var(--color-sale)">' + esc(o.promoCode) + "</span><br>–" + fmt(o.discountAmount || 0) : "—";
       var totalRub = o.total || 0;
       var totalInfo = fmt(o.subtotal || 0) + " товары<br>" + fmt(o.deliveryCost || 0) + " дост." +
@@ -1443,7 +1446,7 @@
           '<td>' + esc(statusMap[o.status] || o.status) + '</td>' +
           '<td style="font-size:0.8rem">' + esc(o.deliveryLabel || o.delivery || "—") + '</td>' +
           '<td>' + fmt(o.total) + '</td>' +
-          '<td style="font-size:0.75rem;max-width:200px">' + (o.items || []).map(function (it) { return esc(it.productName || "?") + " ×" + it.qty; }).join(", ") + '</td>' +
+          '<td style="font-size:0.75rem;max-width:200px">' + (o.items || []).map(function (it) { return esc(it.productName || "?") + " ×" + it.qty + (it.size && it.size !== "ONE SIZE" ? " (" + esc(it.size) + ")" : ""); }).join(", ") + '</td>' +
         '</tr>';
       });
       html += '</tbody></table></div>';
