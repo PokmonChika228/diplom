@@ -290,12 +290,54 @@
     if (emptyMsg) emptyMsg.style.display = (visible === 0 && cards.length > 0) ? "" : "none";
   }
 
+  function renderSizeSummary(products) {
+    var el = document.getElementById("inventory-size-summary");
+    if (!el) return;
+
+    // Standard size order
+    var SIZE_ORDER = ["XXS","XS","S","M","L","XL","XXL","XXXL","2XL","3XL","ONE SIZE","36","37","38","39","40","41","42","43","44","45","46","48","50","52","54"];
+    var totals = {};
+    products.forEach(function (p) {
+      var sizes = (p.sizes && p.sizes.length > 0) ? p.sizes : ["ONE SIZE"];
+      var sbs = p.stockBySizes || {};
+      sizes.forEach(function (s) {
+        totals[s] = (totals[s] || 0) + (parseInt(sbs[s], 10) || 0);
+      });
+    });
+
+    var keys = Object.keys(totals);
+    if (!keys.length) { el.innerHTML = ""; return; }
+    keys.sort(function (a, b) {
+      var ia = SIZE_ORDER.indexOf(a), ib = SIZE_ORDER.indexOf(b);
+      if (ia === -1) ia = 999; if (ib === -1) ib = 999;
+      return ia !== ib ? ia - ib : a.localeCompare(b);
+    });
+
+    var cells = keys.map(function (s) {
+      var qty = totals[s];
+      var col = qty === 0 ? "var(--color-sale)" : (qty <= 5 ? "#f4a261" : "var(--color-text)");
+      return "<div style='text-align:center;background:var(--color-surface);border:1px solid var(--color-border);"
+        + "border-radius:var(--radius-sm);padding:10px 14px;min-width:60px'>"
+        + "<div style='font-size:.75rem;font-weight:600;color:var(--color-text-muted);margin-bottom:4px'>" + esc(s) + "</div>"
+        + "<div style='font-size:1.1rem;font-weight:700;color:" + col + "'>" + qty + "</div>"
+        + "<div style='font-size:.7rem;color:var(--color-text-muted);margin-top:2px'>шт.</div>"
+        + "</div>";
+    }).join("");
+
+    el.innerHTML = "<div class='admin-card' style='margin-bottom:0'>"
+      + "<h3 style='margin:0 0 12px;font-size:.875rem;font-weight:600'>Сводка по размерам (все товары)</h3>"
+      + "<div style='display:flex;flex-wrap:wrap;gap:8px'>" + cells + "</div>"
+      + "</div>";
+  }
+
   function loadInventory() {
     var inv = DB.inventory || {};
     var products = inv.products || DB.products || [];
     var grid = document.getElementById("inventory-grid");
     if (!grid) return;
     grid.innerHTML = "";
+
+    renderSizeSummary(products);
 
     products.forEach(function (p) {
       grid.appendChild(buildInventoryCard(p));
@@ -409,7 +451,15 @@
   /* ===================== ORDERS ===================== */
   var orderSearch = "";
 
-  var STATUS_MAP = { new: "Новый", processing: "В обработке", shipped: "Отправлен", done: "Выполнен", cancelled: "Отменён" };
+  var STATUS_MAP = {
+    new:       "Создан",
+    confirmed: "Подтверждён",
+    paid:      "Оплачен",
+    assembly:  "Сборка",
+    shipped:   "Отправлен",
+    delivered: "Доставлен",
+    cancelled: "Отменён"
+  };
 
   function renderOrders(orders) {
     var tbody = document.querySelector("#orders-table tbody");
@@ -649,7 +699,11 @@
   }
 
   function formatStatusBreakdown(byStatus) {
-    var LABELS = { new: "Новый", processing: "В обработке", shipped: "Отправлен", done: "Выполнен", cancelled: "Отменён" };
+    var LABELS = {
+      new: "Создан", confirmed: "Подтверждён", paid: "Оплачен",
+      assembly: "Сборка", shipped: "Отправлен", delivered: "Доставлен",
+      done: "Выполнен", processing: "В обработке", cancelled: "Отменён"
+    };
     return Object.keys(byStatus).map(function (k) { return { label: LABELS[k] || k, value: byStatus[k] }; });
   }
 
@@ -1334,7 +1388,11 @@
   };
 
   function renderUserDetail(u, orders, refs) {
-    var statusMap = { new: "Новый", processing: "В обработке", shipped: "Отправлен", done: "Выполнен", cancelled: "Отменён" };
+    var statusMap = {
+      new: "Создан", confirmed: "Подтверждён", paid: "Оплачен",
+      assembly: "Сборка", shipped: "Отправлен", delivered: "Доставлен",
+      done: "Выполнен", processing: "В обработке", cancelled: "Отменён"
+    };
     var html = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;flex-wrap:wrap">' +
       '<div>' +
         '<h4 style="margin:0 0 12px;font-size:0.875rem;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:1px">Профиль</h4>' +
